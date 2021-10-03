@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 
 import 'ui/lockedscreen/home.dart';
 import 'ui/lockedscreen/settings.dart';
-import 'ui/signin/newaccount.dart';
-import 'ui/signin/signin.dart';
 import 'ui/signin/Kakaologin.dart';
 
 void main() => runApp(MyApp());
@@ -56,7 +54,6 @@ class _MyAppState extends State<MyApp> {
               "/menu": (BuildContext context) => Home(),
               "/home": (BuildContext context) => Home(),
               "/settings": (BuildContext context) => SettingsPage(),
-              "/create": (BuildContext context) => CreateAccount(),
             },
           ),
         ));
