@@ -70,7 +70,9 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    KakaoContext.clientId = '4jD9QBO4Qs3NrW9KO0bF9rINTJiGMTU4';
+    // KakaoContext.clientId = '4jD9QBO4Qs3NrW9KO0bF9rINTJiGMTU4';
+    KakaoContext.clientId = 'aca6149f183ca8e52113ddcb5cafe2eb';
+    KakaoContext.javascriptClientId = '1dd0e6325c1be9c1451814daa0839a87';
 
     isKakaoTalkInstalled();
 

@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-var BACK_END_HOST = 'https://api.winefi.site/';
-// var BACK_END_HOST = 'http://192.168.0.9:8080/';
-
-// var BACK_END_HOST =
-//     'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
+//TO-DO
+//추후 API 추가 진행
+//postman url
+var BACK_END_HOST =
+    'https://ef3dbfd3-0d19-432f-9bdb-3f540b5d97f5.mock.pstmn.io';
 
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
