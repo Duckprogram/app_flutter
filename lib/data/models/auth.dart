@@ -12,6 +12,7 @@ import '../../constants.dart';
 import '../classes/user.dart';
 
 class AuthModel extends ChangeNotifier {
+
   String errorMessage = "";
 
   bool _rememberMe = false;

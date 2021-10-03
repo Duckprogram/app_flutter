@@ -17,21 +17,25 @@ class KakoaLoginPage extends StatefulWidget {
   KakoaLoginPage({this.username});
 
   final String username;
-
+  
   @override
   KakoaLoginPageState createState() => KakoaLoginPageState();
 }
 
 class KakoaLoginPageState extends State<KakoaLoginPage> {
+
+  bool _isKakaoTalkInstalled = false;
+  User user;
+  String userKakaoId='';
+
   String _status = 'no-action';
   String _username, _password;
-  bool _isKakaoTalkInstalled = false;
 
   final formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TextEditingController _controllerUsername, _controllerPassword;
-
+  
   @override
   initState() {
     _controllerUsername = TextEditingController(text: widget?.username ?? "");
@@ -40,6 +44,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     super.initState();
     _initKakaoTalkInstalled();
     print(_status);
+    print('Kakao Login Page');
 
   }
 
@@ -62,6 +67,81 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     super.dispose();
   }
 
+  void requestUserCheck(User user){
+    SvcHeader gHeader=SvcHeader();
+    BytesBuilder gRequst = BytesBuilder();
+    UsrSvc16111 usrSvc16111 = UsrSvc16111();
+    usrSvc16111.makeUsrSvc16111(gb: '2',currency: 'KRW',nation: 'KR',personCheckGb: '1',infoGb: '1', userId: user.kakaoAccount!.email!);
+    checkSeq=gGlobalSGA.getRequestSeq();
+    gRequst.add(gHeader.setSvcHeader(usrSvc16111.requestData(), usrSvc16111.svcCode, checkSeq));
+    gRequst.add(usrSvc16111.requestData());
+
+    globals.gChannel.sink.add(gRequst.toBytes());
+
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    KakaoContext.clientId = '4jD9QBO4Qs3NrW9KO0bF9rINTJiGMTU4';
+
+    isKakaoTalkInstalled();
+
+    final _auth = Provider.of<AuthModel>(context, listen: true);
+
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/login/backgroud.gif'))),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        key: _scaffoldKey,
+        body: SafeArea(
+          child: ListView(
+            reverse: true,
+            physics: AlwaysScrollableScrollPhysics(),
+            key: PageStorageKey("Divider 1"),
+            padding: EdgeInsets.all(16),
+            children: <Widget>[
+              SizedBox(
+                height: 16,
+              ),
+              CircleAvatar(
+                  backgroundColor: Colors.white54,
+                  radius: 36,
+                  child: Image.asset('assets/login/logo.png')),
+              SizedBox(
+                height: 16,
+              ),
+              ButtonBar(
+                // 가운데로
+                alignment: MainAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    child: Text("Login with Talk"),
+                    onPressed:
+                      _isKakaoTalkInstalled ? _loginWithTalk : _loginWithKakao),
+                ],
+              ),
+              ListTile(
+                title: Text(
+                  'Remember Me',
+                  textScaleFactor: textScaleFactor,
+                ),
+                trailing: Switch.adaptive(
+                  onChanged: _auth.handleRememberMe,
+                  value: _auth.rememberMe,
+                ),
+              ),
+            ].reversed.toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
+
   _initKakaoTalkInstalled() async {
     final installed = await isKakaoTalkInstalled();
     print('kakao Install : ' + installed.toString());
@@ -76,10 +156,15 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       print(token);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginDone()),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => LoginDone()),
+      // );
+      user = await UserApi.instance.me();
+      print('인증 완료 : '+user.kakaoAccount!.email.toString());
+      userKakaoId=user.kakaoAccount!.email.toString();
+      //Navigator.push(context, MaterialPageRoute(builder: (context) => LoginResult()));
+      requestUserCheck(user);
     } catch (e) {
       print("error on issuing access token: $e");
     }
@@ -120,160 +205,6 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       print(e);
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    KakaoContext.clientId = '4jD9QBO4Qs3NrW9KO0bF9rINTJiGMTU4';
-
-    isKakaoTalkInstalled();
-
-    final _auth = Provider.of<AuthModel>(context, listen: true);
-
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/login/backgroud.gif'))),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        key: _scaffoldKey,
-        body: SafeArea(
-          child: ListView(
-            reverse: true,
-            physics: AlwaysScrollableScrollPhysics(),
-            key: PageStorageKey("Divider 1"),
-            padding: EdgeInsets.all(16),
-            children: <Widget>[
-              SizedBox(
-                height: 16,
-              ),
-              CircleAvatar(
-                  backgroundColor: Colors.white54,
-                  radius: 36,
-                  child: Image.asset('assets/login/logo.png')),
-              SizedBox(
-                height: 16,
-              ),
-              // Form(
-              //   key: formKey,
-              //   child: Column(
-              //     mainAxisSize: MainAxisSize.min,
-              //     children: <Widget>[
-              //       ListTile(
-              //         title: TextFormField(
-              //           decoration: InputDecoration(labelText: 'Username'),
-              //           validator: (val) =>
-              //               val.length < 1 ? 'Username Required' : null,
-              //           onSaved: (val) => _username = val,
-              //           obscureText: false,
-              //           keyboardType: TextInputType.text,
-              //           controller: _controllerUsername,
-              //           autocorrect: false,
-              //         ),
-              //       ),
-              //       ListTile(
-              //         title: TextFormField(
-              //           decoration: InputDecoration(labelText: 'Password'),
-              //           validator: (val) =>
-              //               val.length < 1 ? 'Password Required' : null,
-              //           onSaved: (val) => _password = val,
-              //           obscureText: true,
-              //           controller: _controllerPassword,
-              //           keyboardType: TextInputType.text,
-              //           autocorrect: false,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              ListTile(
-                title: Text(
-                  'Remember Me',
-                  textScaleFactor: textScaleFactor,
-                ),
-                trailing: Switch.adaptive(
-                  onChanged: _auth.handleRememberMe,
-                  value: _auth.rememberMe,
-                ),
-              ),
-              ListTile(
-                title: RaisedButton(
-                  child: Text(
-                    'Login',
-                    textScaleFactor: textScaleFactor,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: Colors.blue,
-                  onPressed: () {
-                    final form = formKey.currentState;
-                    if (form.validate()) {
-                      form.save();
-                      final snackbar = SnackBar(
-                        duration: Duration(seconds: 30),
-                        content: Row(
-                          children: <Widget>[
-                            CircularProgressIndicator(),
-                            Text("  Logging In...")
-                          ],
-                        ),
-                      );
-                      _scaffoldKey.currentState.showSnackBar(snackbar);
-
-                      setState(() => this._status = 'loading');
-                      _auth
-                          .login(
-                        username: _username.toString().toLowerCase().trim(),
-                        password: _password.toString().trim(),
-                      )
-                          .then((result) {
-                        if (result) {
-                        } else {
-                          setState(() => this._status = 'rejected');
-                          showAlertPopup(context, 'Info', _auth.errorMessage);
-                        }
-                        if (!_auth.isBioSetup) {
-                          setState(() {
-                            print('Bio No Longer Setup');
-                          });
-                        }
-                        _scaffoldKey.currentState.hideCurrentSnackBar();
-                      });
-                    }
-                  },
-                ),
-                // trailing: !_auth.isBioSetup
-                //     ? null
-                //     : NativeButton(
-                //         child: Icon(
-                //           Icons.fingerprint,
-                //           color: Colors.white,
-                //         ),
-                //         color: Colors.redAccent[400],
-                //         onPressed: _auth.isBioSetup
-                //             ? loginWithBio
-                //             : () {
-                //                 globals.Utility.showAlertPopup(context, 'Info',
-                //                     "Please Enable in Settings after you Login");
-                //               },
-                //       ),
-              ),
-              ButtonBar(
-                // 가운데로
-                alignment: MainAxisAlignment.center,
-                children: [
-                  RaisedButton(
-                    child: Text("Login with Talk"),
-                    onPressed:
-                      _isKakaoTalkInstalled ? _loginWithTalk : _loginWithKakao),
-                ],
-              )
-            ].reversed.toList(),
-          ),
-        ),
-      ),
-    );
-  }
-
 }
 
 class LoginDone extends StatelessWidget {
