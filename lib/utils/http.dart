@@ -9,6 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 //TO-DO
 //추후 API 추가 진행
 //postman url
+
 var BACK_END_HOST =
     'https://ef3dbfd3-0d19-432f-9bdb-3f540b5d97f5.mock.pstmn.io';
 
@@ -30,36 +31,16 @@ Future<dynamic> http_get({header, String path}) async {
       "Authorization": "Bearer " + jwt
     });
 
-    var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      print(responseJson);
-      return responseJson;
-    } else {
-      var responseCode = _getResponseCode(responseJson);
-      if (responseCode == null) throw Exception("Failed to HTTP GET");
-
-      if (responseCode == -9999) {
-        //이미 가입된 회원
-        return responseJson;
-      } else if (responseCode == -9998) {
-        //만료된 Access Token
-        print("만료된 Access Token");
-        if (await _reissueAccessToken())
-          return await http_get(header: header, path: path);
-        else
-          return responseJson;
-      } else if (responseCode == -9997) {
-        //TODO 만료된 Refresh Token(아예 로그아웃 처리)
-        return responseJson;
-      } else if (responseCode == -1008) {
-        print("No Result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        return responseJson;
-      } else {
-        throw Exception('Failed to HTTP GET(2)');
-      }
-    }
+    return response;
   } catch (ex) {
     print(ex);
+    debugPrint("http.post().exception: " +
+        ex.toString() +
+        ', statusCode:' +
+        response.statusCode.toString() +
+        ', url:' +
+        url);
+    return response;
   }
 }
 
@@ -73,7 +54,7 @@ Future<dynamic> http_post(
   print(body);
 
   var url = BACK_END_HOST + path;
-  String expiredTokenUrl = BACK_END_HOST + "exception/expiredtoken";
+
   var response;
 
   try {
@@ -99,85 +80,16 @@ Future<dynamic> http_post(
         body: convert.jsonEncode(body),
       );
     }
-
-    print(response.headers['location'].toString());
-    if (response.body.isNotEmpty && response.statusCode == 200) {
-      //Response가 비어있지 않고 정상응답인 경우
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print(responseJson);
-      return responseJson;
-    } else if (!response.body.isNotEmpty &&
-        response.statusCode == 302 &&
-        response.headers['location'].toString() == expiredTokenUrl) {
-      // HTTP 라이브러리에서 HTTP POST가 redirect 되는 경우 302 응답을 받음(Postman이나 Swagger에서는 발생하지 않는 문제)
-      // 302 응답을 받는 경우 response body는 비어있어서 URL과 응답코드로 액세스 토큰 만료 여부를 판단
-      if (await _reissueAccessToken()) {
-        //AccessToken 재발급
-        return await http_post(
-            header: header, path: path, body: body); //HTTP POST 재시도
-      }
-    } else {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
-      print(responseJson);
-      var responseCode = _getResponseCode(responseJson);
-      if (responseCode == null) throw Exception("Failed to HTTP POST");
-      if (responseCode == -9999) {
-        //이미 가입된 회원
-        return responseJson;
-      } else if (responseCode == -9997) {
-        //TODO 만료된 Refresh Token(아예 로그아웃 처리)
-        return responseJson;
-      } else {
-        throw Exception("Failed to HTTP POST(2)");
-      }
-    }
+    return response;
   } catch (ex) {
     print(ex);
-  }
-}
-
-dynamic _getResponseCode(dynamic responseJson) {
-  var responseCode = responseJson['code'];
-  if (responseCode != null) {
-    return responseCode;
-  } else {
-    return null;
-  }
-}
-
-Future<bool> _reissueAccessToken() async {
-  final storage = FlutterSecureStorage();
-  String accessToken = await storage.read(key: 'access_token');
-  String refreshToken = await storage.read(key: 'refresh_token');
-
-  var url = BACK_END_HOST + 'api/token/refreshrefreshToken=' + refreshToken;
-
-  print(url);
-
-  var response;
-
-  try {
-    response = await http.get(
-      Uri.parse(Uri.encodeFull(url)),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + accessToken
-      },
-    );
-
-    var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      print(responseJson);
-      await storage.write(
-          key: "access_token", value: responseJson['data']['access_token']);
-      return true;
-    } else {
-      return false;
-    }
-  } catch (ex) {
-    print(ex);
-    return false;
+    debugPrint("http.post().exception: " +
+        ex.toString() +
+        ', statusCode:' +
+        response.statusCode.toString() +
+        ', url:' +
+        url);
+    return response;
   }
 }
 

@@ -9,7 +9,7 @@ import '../../data/models/auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../../utils/http.dart';
+import '../../api/auth.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
@@ -165,13 +165,11 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
   Future<bool> _registerUserInfoWithKakao(String accessToken) async {
     var signUpBody = {
-      'userIdentifier': 'compatibleForApple'
-    }; //애플로그인과 호환성을 위해 Body 담음
+      // 'userIdentifier': 'compatibleForApple'
+    }; //추후 애플로그인과 사용 가능성 있음
     try {
-      var response = await http_post(
-          header: null,
-          path: 'v1/signup/kakao?accessToken=' + accessToken,
-          body: signUpBody);
+      var response = await api_userRegisterCheck(
+          header: null, path: 'auth/signin/', body: signUpBody);
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
@@ -184,22 +182,14 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   }
 
   _issueJWTandLogin(String accessToken) async {
-    // var url =
-    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
-    //         accessToken;
     try {
-      // var response = await http.post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
-
       print('toooken');
       var fcm_token = await FirebaseMessaging.instance.getToken();
       print(fcm_token);
       var signUpBody = {'fcmToken': fcm_token};
 
-      var response = await http_post(
-          header: null,
-          path: 'v1/signin/kakao?accessToken=' + accessToken,
-          body: signUpBody);
+      var response = await api_userRegisterCheck(
+          header: null, path: 'auth/signin/', body: signUpBody);
 
       print("access_token : " + response['data']['access_token']);
       await storage.write(
@@ -217,17 +207,21 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     if (_isKakaoTalkInstalled) {
       try {
         var code = await AuthCodeClient.instance.requestWithTalk();
+        print(code);
         await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);
       }
     } else {
       //카톡이 깔려있지 않으면 웹으로 진행
+      print("로그인 이상여부 확인 ");
       final snackBar = SnackBar(content: Text("카카오톡이 설치되어있지 않습니다."));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       try {
         //Not Working
         var code = await AuthCodeClient.instance.request();
+
+        print(code);
         await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);
