@@ -16,10 +16,6 @@ import 'package:kakao_flutter_sdk/user.dart';
 // import 'forgot.dart';
 
 class KakoaLoginPage extends StatefulWidget {
-  KakoaLoginPage({this.username});
-
-  final String username;
-
   @override
   KakoaLoginPageState createState() => KakoaLoginPageState();
 }
@@ -28,38 +24,32 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   bool _isKakaoTalkInstalled = false;
   static final storage = FlutterSecureStorage();
   User user;
-  String userKakaoId = '';
 
   String _status = 'no-action';
-  String _username, _password;
 
   final formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TextEditingController _controllerUsername, _controllerPassword;
-
   @override
   initState() {
-    _controllerUsername = TextEditingController(text: widget?.username ?? "");
-    _controllerPassword = TextEditingController();
-    _loadUsername();
     super.initState();
     _initKakaoTalkInstalled();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
     print(_status);
     print('Kakao Login Page');
   }
 
-  void _loadUsername() async {
-    try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _username = _prefs.getString("saved_username") ?? "";
-      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+  _asyncMethod() async {
+    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
+    //(데이터가 없을때는 null을 반환을 합니다.)
+    var code = await storage.read(key: "authCode");
+    print(code);
 
-      if (_remeberMe) {
-        _controllerUsername.text = _username ?? "";
-      }
-    } catch (e) {
-      print(e);
+    //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
+    if (code != null) {
+      await _issueKakaoAccessToken(code);
     }
   }
 
@@ -70,7 +60,6 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // KakaoContext.clientId = '4jD9QBO4Qs3NrW9KO0bF9rINTJiGMTU4';
     KakaoContext.clientId = 'aca6149f183ca8e52113ddcb5cafe2eb';
     KakaoContext.javascriptClientId = '1dd0e6325c1be9c1451814daa0839a87';
 
@@ -81,8 +70,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/login/backgroud.gif'))),
+              fit: BoxFit.cover, image: AssetImage('assets/login/login.png'))),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         key: _scaffoldKey,
@@ -96,31 +84,14 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
               SizedBox(
                 height: 16,
               ),
-              CircleAvatar(
-                  backgroundColor: Colors.white54,
-                  radius: 36,
-                  child: Image.asset('assets/login/logo.png')),
-              SizedBox(
-                height: 16,
-              ),
               ButtonBar(
                 // 가운데로
                 alignment: MainAxisAlignment.center,
                 children: [
                   RaisedButton(
-                      child: Text("Login with Talk"),
+                      child: Text("카카오톡 으로 로그인 하기"),
                       onPressed: _loginWithKakaoTalk),
                 ],
-              ),
-              ListTile(
-                title: Text(
-                  'Remember Me',
-                  textScaleFactor: textScaleFactor,
-                ),
-                trailing: Switch.adaptive(
-                  onChanged: _auth.handleRememberMe,
-                  value: _auth.rememberMe,
-                ),
               ),
             ].reversed.toList(),
           ),
@@ -138,24 +109,25 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     });
   }
 
+  //먼저 code를 활용하여 백앤드로 보냄 이상이 없는 경우 jwt로 보내기
   _issueKakaoAccessToken(String authCode) async {
     try {
       AccessTokenResponse token =
           await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
-      //print("AccessToken : " + token.accessToken);
+      print("AccessToken : " + token.accessToken);
       try {
         User user = await UserApi.instance.me();
-
+        print("user : " + user.toString());
         final snackBar =
             SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        if (!(await _registerUserInfoWithKakao(token.accessToken))) {
+        if (!(await _registerUserInfoWithKakao(authCode))) {
           final snackBar = SnackBar(content: Text("회원가입 실패"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
         }
-        await _issueJWTandLogin(token.accessToken);
+        await _issueJWTandLogin(authCode);
       } on KakaoAuthException catch (e) {
       } catch (e) {}
     } catch (e) {
@@ -163,13 +135,11 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     }
   }
 
-  Future<bool> _registerUserInfoWithKakao(String accessToken) async {
-    var signUpBody = {
-      // 'userIdentifier': 'compatibleForApple'
-    }; //추후 애플로그인과 사용 가능성 있음
+  Future<bool> _registerUserInfoWithKakao(String authCode) async {
+    var signUpBody = {'authCode': authCode};
     try {
       var response = await api_userRegisterCheck(
-          header: null, path: 'auth/signin/', body: signUpBody);
+          header: null, path: 'auth/signup/', body: signUpBody);
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
@@ -181,12 +151,13 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     }
   }
 
-  _issueJWTandLogin(String accessToken) async {
+  //로그인 혹은 회원가입이 잘 되어 있다면 jwt 토큰 발행 향후 모든 로그인은 해당 토큰으로 해결
+  _issueJWTandLogin(String authCode) async {
     try {
-      print('toooken');
+      print('Jwt Login');
       var fcm_token = await FirebaseMessaging.instance.getToken();
       print(fcm_token);
-      var signUpBody = {'fcmToken': fcm_token};
+      var signUpBody = {'fcmToken': fcm_token, 'authCode': authCode};
 
       var response = await api_userRegisterCheck(
           header: null, path: 'auth/signin/', body: signUpBody);
@@ -196,6 +167,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
           key: "access_token", value: response['data']['access_token']);
       await storage.write(
           key: "refresh_token", value: response['data']['refresh_token']);
+      await storage.write(key: "authCode", value: authCode);
       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {

@@ -1,3 +1,4 @@
+// 미사용 코드 혹시 몰라 나둠
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -12,18 +13,13 @@ import '../../constants.dart';
 import '../classes/user.dart';
 
 class AuthModel extends ChangeNotifier {
-
   String errorMessage = "";
 
-  bool _rememberMe = false;
   bool _stayLoggedIn = true;
   bool _useBio = false;
   User _user;
 
-  bool get rememberMe => _rememberMe;
-
   void handleRememberMe(bool value) {
-    _rememberMe = value;
     notifyListeners();
     SharedPreferences.getInstance().then((prefs) {
       prefs.setBool("remember_me", value);
@@ -57,12 +53,6 @@ class AuthModel extends ChangeNotifier {
     } catch (e) {
       print(e);
       _useBio = false;
-    }
-    try {
-      _rememberMe = _prefs.getBool("remember_me") ?? false;
-    } catch (e) {
-      print(e);
-      _rememberMe = false;
     }
     try {
       _stayLoggedIn = _prefs.getBool("stay_logged_in") ?? false;
@@ -131,12 +121,6 @@ class AuthModel extends ChangeNotifier {
     // TODO: API LOGIN CODE HERE
     await Future.delayed(Duration(seconds: 3));
     print("Logging In => $_username, $_password");
-
-    if (_rememberMe) {
-      SharedPreferences.getInstance().then((prefs) {
-        prefs.setString("saved_username", _username);
-      });
-    }
 
     // Get Info For User
     User _newUser = await getInfo(uuid.v4().toString());

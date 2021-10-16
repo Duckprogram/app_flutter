@@ -81,6 +81,7 @@ dynamic _getResponseCode(dynamic responseJson) {
   }
 }
 
+// 혹시 몰라 token issue 추가
 Future<bool> _reissueAccessToken() async {
   final storage = FlutterSecureStorage();
   String accessToken = await storage.read(key: 'access_token');
