@@ -11,7 +11,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 //postman url
 
 var BACK_END_HOST =
-    'https://ef3dbfd3-0d19-432f-9bdb-3f540b5d97f5.mock.pstmn.io';
+    'https://b4ffd983-ca34-4d5b-ae84-b1db3a438d56.mock.pstmn.io';
 
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
@@ -51,7 +51,6 @@ Future<dynamic> http_post(
 
   print(BACK_END_HOST + path);
   print('JWT $jwt');
-  print(body);
 
   var url = BACK_END_HOST + path;
 
@@ -59,6 +58,7 @@ Future<dynamic> http_post(
 
   try {
     if (jwt == null) {
+      print("jwt 없음");
       response = await http.post(
         Uri.parse(Uri.encodeFull(url)),
         headers: {
@@ -80,6 +80,8 @@ Future<dynamic> http_post(
         body: convert.jsonEncode(body),
       );
     }
+    print("post 전송 진행");
+    print(Uri.parse(Uri.encodeFull(url)));
     return response;
   } catch (ex) {
     print(ex);

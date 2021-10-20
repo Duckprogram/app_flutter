@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../constants.dart';
 import '../../data/models/auth.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../api/auth.dart';
 import 'package:kakao_flutter_sdk/auth.dart';
@@ -23,10 +19,7 @@ class KakoaLoginPage extends StatefulWidget {
 class KakoaLoginPageState extends State<KakoaLoginPage> {
   bool _isKakaoTalkInstalled = false;
   static final storage = FlutterSecureStorage();
-  User user;
-
   String _status = 'no-action';
-
   final formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -38,7 +31,6 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       _asyncMethod();
     });
     print(_status);
-    print('Kakao Login Page');
   }
 
   _asyncMethod() async {
@@ -47,7 +39,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     var code = await storage.read(key: "authCode");
     print(code);
 
-    //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
+    //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     if (code != null) {
       await _issueKakaoAccessToken(code);
     }
@@ -65,8 +57,6 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
     isKakaoTalkInstalled();
 
-    final _auth = Provider.of<AuthModel>(context, listen: true);
-
     return Container(
       decoration: BoxDecoration(
           image: DecorationImage(
@@ -78,7 +68,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
           child: ListView(
             reverse: true,
             physics: AlwaysScrollableScrollPhysics(),
-            key: PageStorageKey("Divider 1"),
+            // key: PageStorageKey("Divider 1"),
             padding: EdgeInsets.all(16),
             children: <Widget>[
               SizedBox(
@@ -117,12 +107,17 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       AccessTokenStore.instance.toStore(token);
       print("AccessToken : " + token.accessToken);
       try {
-        User user = await UserApi.instance.me();
-        print("user : " + user.toString());
-        final snackBar =
-            SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
+        // User user = await UserApi.instance.me();
+        // listen 은 전체를 rebuild 한다는 뜻으로 set 함수를 사용하기 위해서 단순하게
+        // listen 을 false로 하여 진행한다.
+        final _auth = Provider.of<AuthModel>(context, listen: false);
+        _auth.user = await UserApi.instance.me();
+        print("user : " + _auth.user.toString());
+        final snackBar = SnackBar(
+            content: Text(_auth.user.properties['nickname'] + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         if (!(await _registerUserInfoWithKakao(authCode))) {
+          print("회원가입 실패");
           final snackBar = SnackBar(content: Text("회원가입 실패"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
@@ -131,6 +126,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       } on KakaoAuthException catch (e) {
       } catch (e) {}
     } catch (e) {
+      await storage.write(key: "authCode", value: "");
       print("error on issuing access token: $e");
     }
   }
@@ -139,7 +135,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     var signUpBody = {'authCode': authCode};
     try {
       var response = await api_userRegisterCheck(
-          header: null, path: 'auth/signup/', body: signUpBody);
+          header: null, path: '/auth/signup', body: signUpBody);
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
@@ -155,12 +151,12 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   _issueJWTandLogin(String authCode) async {
     try {
       print('Jwt Login');
-      var fcm_token = await FirebaseMessaging.instance.getToken();
-      print(fcm_token);
-      var signUpBody = {'fcmToken': fcm_token, 'authCode': authCode};
-
+      // var fcm_token = await FirebaseMessaging.instance.getToken();
+      // print(fcm_token);
+      // var signUpBody = {'fcmToken': fcm_token, 'authCode': authCode};
+      var signUpBody = {'authCode': authCode};
       var response = await api_userRegisterCheck(
-          header: null, path: 'auth/signin/', body: signUpBody);
+          header: null, path: '/auth/signin', body: signUpBody);
 
       print("access_token : " + response['data']['access_token']);
       await storage.write(
@@ -169,7 +165,9 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
           key: "refresh_token", value: response['data']['refresh_token']);
       await storage.write(key: "authCode", value: authCode);
       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      // 이상없이 잘 되었다면 main 화면으로 넘어가기
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       print(e);
     }
@@ -187,13 +185,11 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     } else {
       //카톡이 깔려있지 않으면 웹으로 진행
       print("로그인 이상여부 확인 ");
-      final snackBar = SnackBar(content: Text("카카오톡이 설치되어있지 않습니다."));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // final snackBar = SnackBar(content: Text("카카오톡이 설치되어있지 않습니다."));
+      // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       try {
         //Not Working
         var code = await AuthCodeClient.instance.request();
-
-        print(code);
         await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);
@@ -208,28 +204,5 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     } catch (e) {
       print(e);
     }
-  }
-}
-
-class LoginDone extends StatelessWidget {
-  Future<bool> _getUser() async {
-    try {
-      User user = await UserApi.instance.me();
-      print(user.toString());
-    } on KakaoAuthException catch (e) {
-    } catch (e) {}
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _getUser();
-
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Text('Login Success!'),
-        ),
-      ),
-    );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/constants.dart';
-import 'package:flutter_login/data/models/auth.dart';
+import 'package:flutter_login/data/models/old_auth.dart';
 // import 'package:flutter_whatsnew/flutter_whatsnew.dart';
 import 'package:provider/provider.dart';
 

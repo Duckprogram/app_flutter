@@ -4,8 +4,7 @@ import 'package:flutter_login/ui/signin/Kakaologin.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
 
-import 'ui/lockedscreen/home.dart';
-import 'ui/lockedscreen/settings.dart';
+import 'ui/home.dart';
 import 'ui/signin/Kakaologin.dart';
 
 void main() => runApp(MyApp());
@@ -21,11 +20,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    try {
-      _auth.loadSettings();
-    } catch (e) {
-      print("Error Loading Settings: $e");
-    }
     try {
       _model.init();
     } catch (e) {
@@ -46,14 +40,13 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             theme: model.theme,
             home: Consumer<AuthModel>(builder: (context, model, child) {
-              if (model?.user != null) return Home();
+              // if (model?.user != null) return Home();
               return KakoaLoginPage();
             }),
+            initialRoute: "/login",
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => KakoaLoginPage(),
-              "/menu": (BuildContext context) => Home(),
               "/home": (BuildContext context) => Home(),
-              "/settings": (BuildContext context) => SettingsPage(),
             },
           ),
         ));
