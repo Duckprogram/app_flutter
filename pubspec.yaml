@@ -28,7 +28,7 @@ dependencies:
     firebase_messaging: ^10.0.2
     #app bar slides
     transparent_image: ^1.0.0
-
+        
 dev_dependencies:
     flutter_test:
         sdk: flutter

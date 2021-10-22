@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 import '../../common/type.dart';
+import 'home_detail/channellist.dart';
+import 'home_detail/mychannel.dart';
+import 'home_detail/timeline.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -44,9 +49,18 @@ class _HomePageState extends State<HomePage> {
           body: new TabBarView(
             children: categories.map((Category choice) {
               return new Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: new CategoryCard(choice: choice),
-              );
+                  padding: const EdgeInsets.all(16.0),
+                  // child: new CategoryCard(choice: choice),
+                  child: Builder(builder: (context) {
+                    /// some operation here ...
+                    if (choice.name == "채널 리스트") {
+                      return new ChannelList(choice: choice);
+                    } else if (choice.name == "타임라인") {
+                      return new TimeLine(choice: choice);
+                    } else {
+                      return new MyChannel(choice: choice);
+                    }
+                  }));
             }).toList(),
           ),
         ),
@@ -55,27 +69,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// Our CategoryCard data object
-class CategoryCard extends StatelessWidget {
-  const CategoryCard({Key key, this.choice}) : super(key: key);
-  final Category choice;
-
-  //build and return our card with icon and text
-  @override
-  Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.headline1;
-    return Container(
-      child: new Center(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Text(choice.name, style: textStyle),
-          ],
-        ),
-      ),
-    );
-  }
-}
-// Our main method
