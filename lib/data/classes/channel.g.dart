@@ -10,16 +10,16 @@ Channel _$ChannelFromJson(Map<String, dynamic> json) {
   return Channel(
       no: json['no'] as int,
       user_no: json['user_no'] as int,
-      id: json['id'] as int,
-      name: json['name'] as String,
-      introduction: json['introduction'] as String,
-      rule: json['rule'] as String,
-      content: json['content'] as String,
-      created_date: json['created_date'] as DateTime,
-      last_modified_date: json['last_modified_date'] as DateTime,
-      is_active: json['is_active'] as bool,
-      icon: json['icon'] as String,
-      numOfPeople: json['numOfPeople'] as int
+      id: json['id'] as int?,
+      name: json['name'] as String?,
+      introduction: json['introduction'] as String?,
+      rule: json['rule'] as String?,
+      content: json['content'] as String?,
+      created_date: json['created_date'] as DateTime?,
+      last_modified_date: json['last_modified_date'] as DateTime?,
+      is_active: json['is_active'] as bool?,
+      icon: json['icon'] as String?,
+      numOfPeople: json['numOfPeople'] as int?
   );
 }
 

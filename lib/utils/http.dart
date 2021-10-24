@@ -30,11 +30,10 @@ Future<dynamic> http_get({header, String? path}) async {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwt!
     });
-
     return response;
   } catch (ex) {
     print(ex);
-    debugPrint("http.post().exception: " +
+    debugPrint("http.get().exception: " +
         ex.toString() +
         ', statusCode:' +
         response.statusCode.toString() +

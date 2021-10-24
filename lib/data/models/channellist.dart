@@ -12,11 +12,10 @@ class ChannelListModel extends ChangeNotifier {
   List<Channel>? _channellist;
   List<Channel>? _mychannellist;
 
-  List<Channel> get channellist => _channellist!;
+  List<Channel>? get channellist => _channellist;
 
-  set channellist(List<Channel> channellist) {
+  set channellist(List<Channel>? channellist) {
     _channellist = channellist;
-    print(_channellist.toString());
     notifyListeners();
   }
 
@@ -28,19 +27,20 @@ class ChannelListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  getChannelList(String authCode) async {
+  getChannelList() async {
     var path = '/channels';
     try {
       var response = await api_ChannelList(header: null, path: path);
-      _channellist = response;
-      print(_channellist.toString());
+      _channellist = List<Channel>.from(response.map((json) => Channel.fromJson(json)));
+      print("channellist " + _channellist.toString());
+      print("channellist " + response.toString());
       notifyListeners();
     } catch (e) {
       print(e);
     }
   }
 
-  getMyChannelList(String authCode) async {
+  getMyChannelList() async {
     final queryParameters = {
       'param1': 'one',
       'param2': 'two',
