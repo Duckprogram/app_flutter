@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/ui/signin/Kakaologin.dart';
-import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_login/data/models/auth.dart';
@@ -16,16 +15,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final ThemeModel _model = ThemeModel();
   final AuthModel _auth = AuthModel();
 
   @override
   void initState() {
-    try {
-      _model.init();
-    } catch (e) {
-      print("Error Loading Theme: $e");
-    }
     super.initState();
   }
 
@@ -33,7 +26,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider<ThemeModel>.value(value: _model),
           ChangeNotifierProvider<AuthModel>.value(value: _auth),
         ],
         // child: Consumer<ThemeModel>(
@@ -52,7 +44,6 @@ class _MyAppState extends State<MyApp> {
         //   ),
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: _model.theme,
             home: KakoaLoginPage(),
             initialRoute: "/login",
             routes: <String, WidgetBuilder>{

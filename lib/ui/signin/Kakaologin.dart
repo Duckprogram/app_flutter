@@ -106,7 +106,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     try {
       AccessTokenResponse token =
           await AuthApi.instance.issueAccessToken(authCode);
-      AccessTokenStore.instance.toStore(token);
+      // AccessTokenStore.instance.toStore(token);
       print("AccessToken : " + token.accessToken);
       try {
         print("login");
@@ -117,7 +117,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         _auth.user = await UserApi.instance.me();
         print("user : " + _auth.user.toString());
         final snackBar = SnackBar(
-            content: Text(_auth.user.properties['nickname']! + "님 반갑습니다."));
+            content: Text(_auth.user.properties!['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         if (!(await _registerUserInfoWithKakao(authCode))) {
           print("회원가입 실패");
