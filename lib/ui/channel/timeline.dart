@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../common/type.dart';
 
 class TimeLine extends StatefulWidget {
-  TimeLine({Key key, this.choice}) : super(key: key);
+  TimeLine({Key? key, required this.choice}) : super(key: key);
   final Category choice;
 
   @override

@@ -13,11 +13,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 var BACK_END_HOST =
     'https://b4ffd983-ca34-4d5b-ae84-b1db3a438d56.mock.pstmn.io';
 
-Future<dynamic> http_get({header, String path}) async {
+Future<dynamic> http_get({header, String? path}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
-  var url = BACK_END_HOST + path;
+  var url = BACK_END_HOST + path!;
 
   print('JWT $jwt');
   print(BACK_END_HOST + path);
@@ -28,7 +28,7 @@ Future<dynamic> http_get({header, String path}) async {
     response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt
+      "Authorization": "Bearer " + jwt!
     });
 
     return response;
@@ -45,11 +45,11 @@ Future<dynamic> http_get({header, String path}) async {
 }
 
 Future<dynamic> http_post(
-    {header, String path, Map<String, dynamic> body}) async {
+    {header, String? path, Map<String, dynamic>? body}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
-  print(BACK_END_HOST + path);
+  print(BACK_END_HOST + path!);
   print('JWT $jwt');
 
   var url = BACK_END_HOST + path;
@@ -98,7 +98,7 @@ Future<dynamic> http_post(
 // 추가 구현 필요
 Future<dynamic> http_delete(url, path, header) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
   print(BACK_END_HOST + path);
 }

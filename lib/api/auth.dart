@@ -7,8 +7,8 @@ import '../utils/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-Future<dynamic> api_userRegisterInformation({header, String path}) async {
-  var response = await http_get(header: header, path: path);
+Future<dynamic> api_userRegisterInformation({header, required String path}) async {
+  var response = await http_get(header: header, path : path);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
@@ -35,7 +35,7 @@ Future<dynamic> api_userRegisterInformation({header, String path}) async {
 }
 
 Future<dynamic> api_userRegisterCheck(
-    {header, String path, Map<String, dynamic> body}) async {
+    {header, required String path, required Map<String, dynamic> body}) async {
   var response = await http_post(header: header, path: path, body: body);
   String expiredTokenUrl = BACK_END_HOST + "exception/expiredtoken";
 
@@ -84,10 +84,10 @@ dynamic _getResponseCode(dynamic responseJson) {
 // 혹시 몰라 token issue 추가
 Future<bool> _reissueAccessToken() async {
   final storage = FlutterSecureStorage();
-  String accessToken = await storage.read(key: 'access_token');
-  String refreshToken = await storage.read(key: 'refresh_token');
+  String? accessToken = await storage.read( key: 'access_token');
+  String? refreshToken = await storage.read( key: 'refresh_token');
 
-  var url = BACK_END_HOST + 'api/token/refreshrefreshToken=' + refreshToken;
+  var url = BACK_END_HOST + 'api/token/refreshrefreshToken=' + refreshToken!;
 
   print(url);
 
@@ -99,7 +99,7 @@ Future<bool> _reissueAccessToken() async {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + accessToken
+        "Authorization": "Bearer " + accessToken!
       },
     );
 

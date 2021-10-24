@@ -10,7 +10,7 @@ class AuthModel extends ChangeNotifier {
   String errorMessage = "";
   bool _isKakaoTalkInstalled = false;
 
-  User _user;
+  late User _user;
 
   User get user => _user;
 
@@ -21,7 +21,7 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    _user = null;
+    // _user = null;
     notifyListeners();
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("user_data", null);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/data/models/auth.dart';
 import 'package:flutter_login/ui/signin/Kakaologin.dart';
 import 'package:persist_theme/persist_theme.dart';
 import 'package:provider/provider.dart';
+
+import 'package:flutter_login/data/models/auth.dart';
 
 import 'ui/home.dart';
 import 'ui/signin/Kakaologin.dart';
@@ -35,20 +36,30 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<ThemeModel>.value(value: _model),
           ChangeNotifierProvider<AuthModel>.value(value: _auth),
         ],
-        child: Consumer<ThemeModel>(
-          builder: (context, model, child) => MaterialApp(
+        // child: Consumer<ThemeModel>(
+        //   builder: (context, model, child) => MaterialApp(
+        //     debugShowCheckedModeBanner: false,
+        //     theme: model.theme,
+        //     home: Consumer<AuthModel>(builder: (context, model, child) {
+        //       // if (model?.user != null) return Home();
+        //       return KakoaLoginPage();
+        //     }),
+        //     initialRoute: "/login",
+        //     routes: <String, WidgetBuilder>{
+        //       "/login": (BuildContext context) => KakoaLoginPage(),
+        //       "/home": (BuildContext context) => Home(),
+        //     },
+        //   ),
+        child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: model.theme,
-            home: Consumer<AuthModel>(builder: (context, model, child) {
-              // if (model?.user != null) return Home();
-              return KakoaLoginPage();
-            }),
+            theme: _model.theme,
+            home: KakoaLoginPage(),
             initialRoute: "/login",
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => KakoaLoginPage(),
               "/home": (BuildContext context) => Home(),
             },
-          ),
-        ));
+        )
+      );
   }
 }

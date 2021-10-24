@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 
 import 'mypage/my_page.dart';
+import 'package:flutter_login/data/models/channellist.dart';
 import 'notification/notification_page.dart';
 import 'search/search_page.dart';
 import 'channel/home_page.dart';
@@ -16,7 +17,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
-  List _pages;
+  late List _pages;
+  final ChannelListModel _channellist = ChannelListModel();
 
   @override
   void initState() {
@@ -34,48 +36,53 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: _pages[_selectedIndex],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
+      ],
+      child: Scaffold(
+        body: Center(
+          child: _pages[_selectedIndex],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            fixedColor: primaryColor,
+            unselectedItemColor: Colors.grey,
+            onTap: _onItemTapped,
+            currentIndex: _selectedIndex,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                    // color: Colors.grey.shade400,
+                  ),
+                  title: Text('홈'),
+                  backgroundColor: Colors.white),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  title: Text('검색'),
+                  backgroundColor: Colors.white),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.shopping_bag,
+                  ),
+                  title: Text('마켓'),
+                  backgroundColor: Colors.white),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.notifications,
+                  ),
+                  title: Text('알림'),
+                  backgroundColor: Colors.white),
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.account_circle,
+                  ),
+                  title: Text('My'),
+                  backgroundColor: Colors.white),
+            ]),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          fixedColor: primaryColor,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
-          currentIndex: _selectedIndex,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                  // color: Colors.grey.shade400,
-                ),
-                title: Text('홈'),
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.search,
-                ),
-                title: Text('검색'),
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.shopping_bag,
-                ),
-                title: Text('마켓'),
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notifications,
-                ),
-                title: Text('알림'),
-                backgroundColor: Colors.white),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.account_circle,
-                ),
-                title: Text('My'),
-                backgroundColor: Colors.white),
-          ]),
     );
   }
 

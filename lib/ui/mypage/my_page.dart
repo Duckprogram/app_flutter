@@ -11,7 +11,6 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
       body: _buildbody(),
     );
   }

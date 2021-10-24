@@ -12,18 +12,18 @@ class User {
     this.lastname,
   });
 
-  final int id;
+  final int? id;
 
   @JsonKey(name: "first_name")
-  final String firstname;
+  final String? firstname;
 
   @JsonKey(name: "last_name")
-  final String lastname;
+  final String? lastname;
 
-  final String avatar;
+  final String? avatar;
 
   @JsonKey(nullable: true)
-  String token;
+  String? token;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

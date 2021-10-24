@@ -18,7 +18,7 @@ class AuthModel extends ChangeNotifier {
   bool _rememberMe = false;
   bool _stayLoggedIn = true;
   bool _useBio = false;
-  User _user;
+  late User _user;
 
   bool get rememberMe => _rememberMe;
 
@@ -72,7 +72,7 @@ class AuthModel extends ChangeNotifier {
     }
 
     if (_stayLoggedIn) {
-      User _savedUser;
+      User _savedUser = new User();
       try {
         String _saved = _prefs.getString("user_data");
         print("Saved: $_saved");
@@ -107,7 +107,7 @@ class AuthModel extends ChangeNotifier {
 
   User get user => _user;
 
-  Future<User> getInfo(String token) async {
+  Future<User?> getInfo(String token) async {
     try {
       var _data = await http.get(apiURL);
       // var _json = json.decode(json.encode(_data));
@@ -121,8 +121,8 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<bool> login({
-    @required String username,
-    @required String password,
+    required String username,
+    required String password,
   }) async {
     var uuid = new Uuid();
     String _username = username;
@@ -139,7 +139,7 @@ class AuthModel extends ChangeNotifier {
     }
 
     // Get Info For User
-    User _newUser = await getInfo(uuid.v4().toString());
+    User? _newUser = await getInfo(uuid.v4().toString());
     if (_newUser != null) {
       _user = _newUser;
       notifyListeners();
@@ -151,12 +151,12 @@ class AuthModel extends ChangeNotifier {
       });
     }
 
-    if (_newUser?.token == null || _newUser.token.isEmpty) return false;
+    if (_newUser?.token == null || _newUser!.token!.isEmpty) return false;
     return true;
   }
 
   Future<void> logout() async {
-    _user = null;
+    _user = new User() ;
     notifyListeners();
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("user_data", null);

@@ -5,8 +5,8 @@ part 'channel.g.dart';
 @JsonSerializable()
 class Channel {
   Channel({
-    this.no,
-    this.user_no,
+    required this.no,
+    required this.user_no,
     this.id,
     this.name,
     this.introduction,
@@ -24,15 +24,15 @@ class Channel {
   @JsonKey(name: "user_no")
   final int user_no;
 
-  final int id;
-  final String name;
-  final String introduction;
-  final String rule;
-  final String content;
-  final DateTime created_date;
-  final DateTime last_modified_date;
-  final bool is_active;
-  final String icon;
+  final int? id;
+  final String? name;
+  final String? introduction;
+  final String? rule;
+  final String? content;
+  final DateTime? created_date;
+  final DateTime? last_modified_date;
+  final bool? is_active;
+  final String? icon;
 
   factory Channel.fromJson(Map<String, dynamic> json) =>
       _$ChannelFromJson(json);

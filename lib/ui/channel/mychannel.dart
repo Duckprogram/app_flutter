@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../common/type.dart';
 
 class MyChannel extends StatefulWidget {
-  MyChannel({Key key, this.choice}) : super(key: key);
+  MyChannel({Key? key, required this.choice}) : super(key: key);
   final Category choice;
 
   @override

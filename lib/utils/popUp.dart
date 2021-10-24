@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void showAlertPopup(BuildContext context, String title, String detail) async {
-  void showDemoDialog<T>({BuildContext context, Widget child}) {
+  void showDemoDialog<T>({BuildContext? context, Widget? child}) {
     showDialog<T>(
-      context: context,
+      context: context!,
       barrierDismissible: false,
-      builder: (BuildContext context) => child,
+      builder: (BuildContext context) => child!,
     );
   }
 

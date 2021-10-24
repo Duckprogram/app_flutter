@@ -11,15 +11,15 @@ class Post {
     this.type,
     this.channelName,
     this.channelImage,
-    this.numOfView,
+    required this.numOfView,
   });
 
-  final String imagePath;
-  final String title;
-  final String username;
-  final String type;
-  final String channelName;
-  final String channelImage;
+  final String? imagePath;
+  final String? title;
+  final String? username;
+  final String? type;
+  final String? channelName;
+  final String? channelImage;
   final int numOfView;
 
   factory Post.fromJson(Map<String, dynamic> json) =>

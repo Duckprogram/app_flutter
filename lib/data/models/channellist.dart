@@ -6,16 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../classes/channel.dart';
 
-class AuthModel extends ChangeNotifier {
+class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
 
-  List<Channel> _channel;
+  late List<Channel> _channellist;
+  late List<Channel> _mychannellist;
 
-  List<Channel> get channel => _channel;
+  List<Channel> get channellist => _channellist;
 
-  set channel(List<Channel> channel) {
-    _channel = channel;
-    print(_channel.toString());
+  set channellist(List<Channel> channellist) {
+    _channellist = channellist;
+    print(_channellist.toString());
+    notifyListeners();
+  }
+
+  List<Channel> get mychannellist => _mychannellist;
+
+  set mychannellist(List<Channel> mychannellist) {
+    _mychannellist = _mychannellist;
+    print(_mychannellist.toString());
     notifyListeners();
   }
 

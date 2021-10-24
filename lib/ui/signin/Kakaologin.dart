@@ -27,7 +27,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   initState() {
     super.initState();
     _initKakaoTalkInstalled();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _asyncMethod();
     });
     print(_status);
@@ -37,10 +37,11 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
     var code = await storage.read(key: "authCode");
-    print("code" + code);
+    print("code" + code!);
 
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     if (code != null) {
+      print('is it not null?');
       await _issueKakaoAccessToken(code);
     }
   }
@@ -116,7 +117,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         _auth.user = await UserApi.instance.me();
         print("user : " + _auth.user.toString());
         final snackBar = SnackBar(
-            content: Text(_auth.user.properties['nickname'] + "님 반갑습니다."));
+            content: Text(_auth.user.properties['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         if (!(await _registerUserInfoWithKakao(authCode))) {
           print("회원가입 실패");
