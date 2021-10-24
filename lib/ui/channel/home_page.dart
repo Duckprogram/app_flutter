@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 import '../../common/type.dart';
-import 'home_detail/channellist.dart';
-import 'home_detail/mychannel.dart';
-import 'home_detail/timeline.dart';
+import 'channellist.dart';
+import 'mychannel.dart';
+import 'timeline.dart';
+import '../../styles/styles.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,8 +19,6 @@ const List<Category> categories = <Category>[
   Category(name: '채널 리스트'),
   Category(name: '타임라인'),
   Category(name: '내 채널 1'),
-  Category(name: '내 채널 2'),
-  Category(name: '내 채널 2'),
   Category(name: '내 채널 2'),
 ];
 
@@ -36,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         child: new Scaffold(
           appBar: new AppBar(
             toolbarHeight: 0,
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: primaryColor,
             bottom: new TabBar(
               isScrollable: true,
               tabs: categories.map((Category choice) {

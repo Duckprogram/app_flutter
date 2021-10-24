@@ -37,7 +37,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
     var code = await storage.read(key: "authCode");
-    print(code);
+    print("code" + code);
 
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     if (code != null) {
@@ -101,12 +101,14 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
   //먼저 code를 활용하여 백앤드로 보냄 이상이 없는 경우 jwt로 보내기
   _issueKakaoAccessToken(String authCode) async {
+    print("authCode " + authCode);
     try {
       AccessTokenResponse token =
           await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       print("AccessToken : " + token.accessToken);
       try {
+        print("login");
         // User user = await UserApi.instance.me();
         // listen 은 전체를 rebuild 한다는 뜻으로 set 함수를 사용하기 위해서 단순하게
         // listen 을 false로 하여 진행한다.
@@ -124,7 +126,9 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         }
         await _issueJWTandLogin(authCode);
       } on KakaoAuthException catch (e) {
-      } catch (e) {}
+      } catch (e) {
+        print(e);
+      }
     } catch (e) {
       await storage.write(key: "authCode", value: "");
       print("error on issuing access token: $e");

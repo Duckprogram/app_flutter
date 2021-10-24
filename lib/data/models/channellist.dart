@@ -9,13 +9,14 @@ import '../classes/channel.dart';
 class AuthModel extends ChangeNotifier {
   String errorMessage = "";
 
-  Channel _channel;
+  List<Channel> _channel;
 
-  Channel get channel => _channel;
+  List<Channel> get channel => _channel;
 
-  set channel(Channel channel) {
+  set channel(List<Channel> channel) {
     _channel = channel;
     print(_channel.toString());
     notifyListeners();
   }
+
 }

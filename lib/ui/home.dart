@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 
-import 'bottombar/my_page.dart';
-import 'bottombar/notification_page.dart';
-import 'bottombar/search_page.dart';
-import 'bottombar/home_page.dart';
-import 'bottombar/market_page.dart';
+import 'mypage/my_page.dart';
+import 'notification/notification_page.dart';
+import 'search/search_page.dart';
+import 'channel/home_page.dart';
+import 'market/market_page.dart';
+import '../styles/styles.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
         child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-          fixedColor: Colors.deepPurple,
+          fixedColor: primaryColor,
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           currentIndex: _selectedIndex,
