@@ -24,7 +24,8 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    _channellist.getChannelList('go');
+    _channellist.getMyChannelList('go');
     _pages = [
       HomePage(),
       SearchPage(),

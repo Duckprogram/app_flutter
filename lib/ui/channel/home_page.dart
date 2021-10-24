@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           body: new TabBarView(
             children: categories.map((Category choice) {
               return new Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(0),
                   // child: new CategoryCard(choice: choice),
                   child: Builder(builder: (context) {
                     /// some operation here ...

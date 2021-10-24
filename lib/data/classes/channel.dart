@@ -16,6 +16,7 @@ class Channel {
     this.last_modified_date,
     this.is_active,
     this.icon,
+    this.numOfPeople,
   });
 
   @JsonKey(name: "no")
@@ -33,6 +34,7 @@ class Channel {
   final DateTime? last_modified_date;
   final bool? is_active;
   final String? icon;
+  final int? numOfPeople;
 
   factory Channel.fromJson(Map<String, dynamic> json) =>
       _$ChannelFromJson(json);

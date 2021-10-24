@@ -18,7 +18,9 @@ Channel _$ChannelFromJson(Map<String, dynamic> json) {
       created_date: json['created_date'] as DateTime,
       last_modified_date: json['last_modified_date'] as DateTime,
       is_active: json['is_active'] as bool,
-      icon: json['icon'] as String);
+      icon: json['icon'] as String,
+      numOfPeople: json['numOfPeople'] as int
+  );
 }
 
 Map<String, dynamic> _$ChannelToJson(Channel instance) => <String, dynamic>{
@@ -33,4 +35,5 @@ Map<String, dynamic> _$ChannelToJson(Channel instance) => <String, dynamic>{
       'last_modified_date': instance.last_modified_date,
       'is_active': instance.is_active,
       'icon': instance.icon,
+      'numOfPeople' : instance.numOfPeople,
     };
