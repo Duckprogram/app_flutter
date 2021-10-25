@@ -10,31 +10,43 @@ import 'mychannel.dart';
 import 'timeline.dart';
 import '../../styles/styles.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-// List of Category Data objects.
-const List<Category> categories = <Category>[
-  Category(name: '채널 리스트'),
-  Category(name: '타임라인'),
-  Category(name: '내 채널 1'),
-  Category(name: '내 채널 2'),
-];
-
 // Our MrTabs class.
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   final ChannelListModel _channellist = ChannelListModel();
+  // List of Category Data objects.
+
+  final List<String> init_categories = [
+    '채널 리스트',
+    '타임라인',
+  ];
+
+  late List<String> categories = init_categories;
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     _channellist.getChannelList();
-    _channellist.getMyChannelList();
+    _channellist.getMyChannelList().then((_) => (_asyncMethod()));
+    super.initState();
+  }
+
+  //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
+  _asyncMethod() { 
+    setState(() {
+      categories = init_categories;
+      if (_channellist.mychannellist != null) {
+        var mychannllist = List<String>.from(
+            _channellist.mychannellist!.map((mychannel) => mychannel.name));
+        categories.addAll(mychannllist);
+        print("homepage mychannellist everything " + categories.toString());
+      }
+    });
   }
 
   @override
@@ -45,7 +57,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: false);
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
@@ -59,23 +70,23 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: primaryColor,
               bottom: new TabBar(
                 isScrollable: true,
-                tabs: categories.map((Category choice) {
+                tabs: categories.map((String choice) {
                   return new Tab(
-                    text: choice.name,
+                    text: choice,
                   );
                 }).toList(),
               ),
             ),
             body: new TabBarView(
-              children: categories.map((Category choice) {
+              children: categories.map((String choice) {
                 return new Padding(
                     padding: const EdgeInsets.all(0),
                     // child: new CategoryCard(choice: choice),
                     child: Builder(builder: (context) {
                       /// some operation here ...
-                      if (choice.name == "채널 리스트") {
+                      if (choice == "채널 리스트") {
                         return new ChannelList(choice: choice);
-                      } else if (choice.name == "타임라인") {
+                      } else if (choice == "타임라인") {
                         return new TimeLine(choice: choice);
                       } else {
                         return new MyChannel(choice: choice);

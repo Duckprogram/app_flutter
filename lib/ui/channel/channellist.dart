@@ -7,61 +7,18 @@ import '../../data/classes/channel.dart';
 
 class ChannelList extends StatefulWidget {
   ChannelList({Key? key, required this.choice}) : super(key: key);
-  final Category choice;
+  final String choice;
 
   @override
   _ChannelListState createState() => _ChannelListState();
 }
 
-// class Channel {
-//   String? imagePath;
-//   String? name;
-//   String? type;
-//   String? channelName;
-//   int numOfPeople;
-
-//   Channel(
-//       {required this.imagePath,
-//       required this.name,
-//       required this.type,
-//       required this.numOfPeople,
-//       required this.channelName});
-// }
-
 class _ChannelListState extends State<ChannelList> {
-  // List<Channel> postList = new List.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
-    // postList.add(Channel(
-    //     imagePath:
-    //         "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg",
-    //     name: "귀청소하는 그날까지 가입",
-    //     numOfPeople: 89,
-    //     type: "normal",
-    //     channelName: "귀덕귀덕"));
-    // postList.add(Channel(
-    //     imagePath:
-    //         "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-    //     name: "프로출근러",
-    //     numOfPeople: 19,
-    //     type: "normal",
-    //     channelName: "명탐정코난"));
-    // postList.add(Channel(
-    //     imagePath:
-    //         "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg",
-    //     name: "안읽어본 추리 소설 공유",
-    //     numOfPeople: 33,
-    //     type: "normal",
-    //     channelName: "프로출근러"));
-    // postList.add(Channel(
-    //     imagePath:
-    //         "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg",
-    //     name: "내가 왕이 될 상인가",
-    //     numOfPeople: 66,
-    //     type: "normal",
-    //     channelName: "청소왕이될상"));
+
   }
 
   @override
@@ -73,8 +30,7 @@ class _ChannelListState extends State<ChannelList> {
   Widget build(BuildContext context) {
     final postList = Provider.of<ChannelListModel>(context, listen: true);
     List<Channel>? list = postList.channellist;
-    // return ChannelListPage(list: postList.channellist);
-    // return ChannelListPage(list: postList );
+
     Widget titleSection = Container(
         padding: EdgeInsets.only(top: 5, left: 36),
         child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [

@@ -6,7 +6,7 @@ part 'channel.g.dart';
 class Channel {
   Channel({
     required this.no,
-    required this.user_no,
+    this.user_no,
     this.id,
     this.name,
     this.introduction,
@@ -22,9 +22,7 @@ class Channel {
   @JsonKey(name: "no")
   final int no;
 
-  @JsonKey(name: "user_no")
-  final int user_no;
-
+  final int? user_no;
   final int? id;
   final String? name;
   final String? introduction;

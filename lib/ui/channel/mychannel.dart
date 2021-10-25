@@ -4,7 +4,7 @@ import '../../../common/type.dart';
 
 class MyChannel extends StatefulWidget {
   MyChannel({Key? key, required this.choice}) : super(key: key);
-  final Category choice;
+  final String choice;
 
   @override
   _MyChannelState createState() => _MyChannelState();

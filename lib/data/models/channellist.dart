@@ -19,9 +19,9 @@ class ChannelListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Channel> get mychannellist => _mychannellist!;
+  List<Channel>? get mychannellist => _mychannellist;
 
-  set mychannellist(List<Channel> mychannellist) {
+  set mychannellist(List<Channel>? mychannellist) {
     _mychannellist = _mychannellist;
     print(_mychannellist.toString());
     notifyListeners();
@@ -32,8 +32,6 @@ class ChannelListModel extends ChangeNotifier {
     try {
       var response = await api_ChannelList(header: null, path: path);
       _channellist = List<Channel>.from(response.map((json) => Channel.fromJson(json)));
-      print("channellist " + _channellist.toString());
-      print("channellist " + response.toString());
       notifyListeners();
     } catch (e) {
       print(e);
@@ -41,18 +39,17 @@ class ChannelListModel extends ChangeNotifier {
   }
 
   getMyChannelList() async {
-    final queryParameters = {
-      'param1': 'one',
-      'param2': 'two',
-    };
-    // var path = '/channels/my';
-    var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
+    // final queryParameters = {
+    //   'param1': 'one',
+    //   'param2': 'two',
+    // };
+    var path = '/channels/my';
+    // var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
 
     print(path);
     try {
       var response = await api_MyChannelList(header: null, path: path);
-      _mychannellist = response;
-      print(_mychannellist.toString());
+      _mychannellist = List<Channel>.from(response.map((json) => Channel.fromJson(json)));
       notifyListeners();
     } catch (e) {
       print(e);

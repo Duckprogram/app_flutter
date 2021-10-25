@@ -9,7 +9,7 @@ part of 'channel.dart';
 Channel _$ChannelFromJson(Map<String, dynamic> json) {
   return Channel(
       no: json['no'] as int,
-      user_no: json['user_no'] as int,
+      user_no: json['user_no'] as int?,
       id: json['id'] as int?,
       name: json['name'] as String?,
       introduction: json['introduction'] as String?,
