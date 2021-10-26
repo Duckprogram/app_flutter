@@ -9,6 +9,7 @@ import 'channellist.dart';
 import 'mychannel.dart';
 import 'timeline.dart';
 import '../../styles/styles.dart';
+import 'package:collection/collection.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   final ChannelListModel _channellist = ChannelListModel();
   // List of Category Data objects.
 
-  final List<String> init_categories = [
+  List<String> init_categories = [
     '채널 리스트',
     '타임라인',
   ];
@@ -37,16 +38,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
-  _asyncMethod() { 
-    setState(() {
-      categories = init_categories;
-      if (_channellist.mychannellist != null) {
-        var mychannllist = List<String>.from(
-            _channellist.mychannellist!.map((mychannel) => mychannel.name));
-        categories.addAll(mychannllist);
+  _asyncMethod() {
+    var newChannel = List<String>.from(
+        _channellist.mychannellist!.map((mychannel) => mychannel.name));
+    if (_channellist.mychannellist != null &&
+        !ListEquality()
+            .equals(categories.sublist(2), _channellist.mychannellist)) {
+      setState(() {
+        categories = init_categories;
+        categories.addAll(newChannel);
         print("homepage mychannellist everything " + categories.toString());
-      }
-    });
+      });
+    }
   }
 
   @override

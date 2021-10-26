@@ -14,11 +14,9 @@ class ChannelList extends StatefulWidget {
 }
 
 class _ChannelListState extends State<ChannelList> {
-
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -28,8 +26,12 @@ class _ChannelListState extends State<ChannelList> {
 
   @override
   Widget build(BuildContext context) {
-    final postList = Provider.of<ChannelListModel>(context, listen: true);
-    List<Channel>? list = postList.channellist;
+    final postList = context.select((ChannelListModel channellistmodel) {
+      return channellistmodel.channellist;
+    });
+    // final postList =  Provider.of<ChannelListModel>(context, listen: true);
+    // List<Channel>? list = postList.channellist;
+    List<Channel>? list = postList;
 
     Widget titleSection = Container(
         padding: EdgeInsets.only(top: 5, left: 36),
@@ -92,9 +94,9 @@ class _ChannelListState extends State<ChannelList> {
                             padding: EdgeInsets.only(bottom: 12),
                             child: Text(
                                 "#" +
-                                list![position].name.toString() +
-                                "\n" +
-                                list[position].name.toString(),
+                                    list![position].name.toString() +
+                                    "\n" +
+                                    list[position].name.toString(),
                                 style: channelName),
                           ),
                           Container(
@@ -109,7 +111,8 @@ class _ChannelListState extends State<ChannelList> {
                                         width: 12,
                                         height: 12)),
                                 Text(
-                                    list[position].numOfPeople.toString() + " 모임중",
+                                    list[position].numOfPeople.toString() +
+                                        " 모임중",
                                     style: smallDescStyle),
                                 Container(
                                   padding: EdgeInsets.only(left: 20),
