@@ -1,4 +1,5 @@
 class Category {
-  const Category({this.name});
-  final String? name;
+  const Category({required this.name, this.id});
+  final String name;
+  final int? id;
 }

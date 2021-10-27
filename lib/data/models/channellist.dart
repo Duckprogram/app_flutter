@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../classes/channel.dart';
 import '../../api/channel.dart';
-
+import '../../common/type.dart';
 class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
 

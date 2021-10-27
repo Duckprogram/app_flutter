@@ -4,7 +4,7 @@ import '../../../common/type.dart';
 
 class TimeLine extends StatefulWidget {
   TimeLine({Key? key, required this.choice}) : super(key: key);
-  final String choice;
+  final Category choice;
   @override
   _TimeLineState createState() => _TimeLineState();
 }

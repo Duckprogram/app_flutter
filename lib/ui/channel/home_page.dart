@@ -16,18 +16,18 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+List<Category> init_categories = [
+  Category(name: '채널 리스트'),
+  Category(name: '타임라인'),
+];
+
+late List<Category> categories = List.of(init_categories);
+
 // Our MrTabs class.
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   final ChannelListModel _channellist = ChannelListModel();
   // List of Category Data objects.
-
-  List<String> init_categories = [
-    '채널 리스트',
-    '타임라인',
-  ];
-
-  late List<String> categories = init_categories;
 
   @override
   void initState() {
@@ -39,15 +39,15 @@ class _HomePageState extends State<HomePage> {
 
   //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
   _asyncMethod() {
-    var newChannel = List<String>.from(
-        _channellist.mychannellist!.map((mychannel) => mychannel.name));
-    if (_channellist.mychannellist != null &&
-        !ListEquality()
-            .equals(categories.sublist(2), _channellist.mychannellist)) {
+    var newChannel = List<Category>.from(_channellist.mychannellist!.map(
+        (mychannel) =>
+            Category(name: mychannel.name.toString(), id: mychannel.id)));
+    print("new mychannellist everything " + newChannel.toString());
+    print("init_categories" + init_categories.toString());
+    if (!ListEquality().equals(categories.sublist(2), newChannel)) {
       setState(() {
-        categories = init_categories;
+        categories = List.of(init_categories);
         categories.addAll(newChannel);
-        print("homepage mychannellist everything " + categories.toString());
       });
     }
   }
@@ -73,23 +73,23 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: primaryColor,
               bottom: new TabBar(
                 isScrollable: true,
-                tabs: categories.map((String choice) {
+                tabs: categories.map((Category choice) {
                   return new Tab(
-                    text: choice,
+                    text: choice.name,
                   );
                 }).toList(),
               ),
             ),
             body: new TabBarView(
-              children: categories.map((String choice) {
+              children: categories.map((Category choice) {
                 return new Padding(
                     padding: const EdgeInsets.all(0),
                     // child: new CategoryCard(choice: choice),
                     child: Builder(builder: (context) {
                       /// some operation here ...
-                      if (choice == "채널 리스트") {
+                      if (choice.name == "채널 리스트") {
                         return new ChannelList(choice: choice);
-                      } else if (choice == "타임라인") {
+                      } else if (choice.name == "타임라인") {
                         return new TimeLine(choice: choice);
                       } else {
                         return new MyChannel(choice: choice);

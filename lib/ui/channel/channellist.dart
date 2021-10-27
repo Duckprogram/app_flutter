@@ -4,10 +4,13 @@ import '../../../common/type.dart';
 import '../../styles/styles.dart';
 import '../../data/models/channellist.dart';
 import '../../data/classes/channel.dart';
+import 'package:collection/collection.dart';
+
+List<Channel>? list;
 
 class ChannelList extends StatefulWidget {
   ChannelList({Key? key, required this.choice}) : super(key: key);
-  final String choice;
+  final Category choice;
 
   @override
   _ChannelListState createState() => _ChannelListState();
@@ -31,10 +34,14 @@ class _ChannelListState extends State<ChannelList> {
     });
     // final postList =  Provider.of<ChannelListModel>(context, listen: true);
     // List<Channel>? list = postList.channellist;
-    List<Channel>? list = postList;
+    if (postList != null &&
+        !ListEquality()
+            .equals(list, postList)) {
+      list = postList;
+    } 
 
     Widget titleSection = Container(
-        padding: EdgeInsets.only(top: 5, left: 36),
+        padding: EdgeInsets.only(top: 15, left: 36),
         child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Text(
             "덕님! 취향저격 \n채널을 찾아보세요",
@@ -53,7 +60,7 @@ class _ChannelListState extends State<ChannelList> {
         ]));
 
     Widget listSection = Container(
-        padding: EdgeInsets.all(12),
+        padding: EdgeInsets.all(15),
         child: ListView.builder(
           itemCount: list?.length ?? 0,
           physics: AlwaysScrollableScrollPhysics(),
@@ -96,7 +103,7 @@ class _ChannelListState extends State<ChannelList> {
                                 "#" +
                                     list![position].name.toString() +
                                     "\n" +
-                                    list[position].name.toString(),
+                                    list![position].name.toString(),
                                 style: channelName),
                           ),
                           Container(
@@ -111,7 +118,7 @@ class _ChannelListState extends State<ChannelList> {
                                         width: 12,
                                         height: 12)),
                                 Text(
-                                    list[position].numOfPeople.toString() +
+                                    list![position].numOfPeople.toString() +
                                         " 모임중",
                                     style: smallDescStyle),
                                 Container(
@@ -136,9 +143,12 @@ class _ChannelListState extends State<ChannelList> {
         ));
 
     return Scaffold(
-        body: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Flexible(child: titleSection),
-      Expanded(child: listSection, flex: 10)
-    ]));
+      body: Container (
+        child:SafeArea(
+        child: Column(
+          children: <Widget>[
+      Flexible(fit : FlexFit.loose,  child: titleSection),
+      Expanded(child: listSection),
+    ]))));
   }
 }
