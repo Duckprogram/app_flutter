@@ -16,3 +16,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * https://github.com/Solido/awesome-flutter
 * https://reqres.in
 * https://github.com/GeekyAnts/FlatApp-Flutter
+
+
+## 리소스 업데이트
+flutter pub get && flutter upgrade

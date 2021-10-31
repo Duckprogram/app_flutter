@@ -1,11 +1,14 @@
+import 'package:duckie_app/ui/mypage/modify_profile.dart';
+import 'package:duckie_app/ui/mypage/my_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/ui/signin/Kakaologin.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_login/data/models/auth.dart';
-
-import 'ui/home.dart';
 import 'ui/signin/Kakaologin.dart';
+import 'ui/home.dart';
+
+import 'data/models/auth.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -45,10 +48,12 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             home: KakoaLoginPage(),
-            initialRoute: "/login",
+            initialRoute: "/home",
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => KakoaLoginPage(),
               "/home": (BuildContext context) => Home(),
+              "/modify_profile": (BuildContext context) => ModifyProfile(),
+              "/mypage": (BuildContext context) => MyPage(),
             },
         )
       );

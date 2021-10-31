@@ -50,27 +50,9 @@ class _MyChannelState extends State<MyChannel> {
                           "마이채널",
                           style: body1Bold,
                         ),
-                        arrowIcon()
                       ])),
               onTap: _moveChannelPage)
         ]));
   }
 
-  arrowIcon() {
-    return Image.asset(
-      'assets/images/ic_right_arrow.png',
-      fit: BoxFit.cover,
-      height: 24.0,
-      width: 24.0,
-    );
-  }
-
-  modifyIcon() {
-    return Image.asset(
-      'images/ic_modify.png',
-      fit: BoxFit.cover,
-      height: 24.0,
-      width: 24.0,
-    );
-  }
 }

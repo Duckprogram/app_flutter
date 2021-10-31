@@ -18,7 +18,6 @@ Future<dynamic> http_get({header, String? path}) async {
   String? jwt = await storage.read(key: 'access_token');
 
   var url = BACK_END_HOST + path!;
-
   print('JWT $jwt');
   print(BACK_END_HOST + path);
 
@@ -28,7 +27,7 @@ Future<dynamic> http_get({header, String? path}) async {
     response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt!
+      "Authorization": "Bearer 1"
     });
     return response;
   } catch (ex) {
