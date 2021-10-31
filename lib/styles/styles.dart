@@ -7,6 +7,7 @@ const primaryColor = const Color(0xff5648FB);
 const primaryColor2 = const Color(0xffF1E9FF);
 const secondaryColor = const Color(0xff8E35FF);
 const secondaryColor2 = const Color(0xff000000);
+const white = const Color(0xffffffff);
 const gray01 = const Color(0xff212121);
 const gray02 = const Color(0xff616161);
 const gray03 = const Color(0xff888888);
@@ -60,6 +61,13 @@ const body1Bold = TextStyle(
 
 const body1BoldPrimary = TextStyle(
   color: primaryColor,
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+);
+
+const body1BoldWhite = TextStyle(
+  color: white,
   fontSize: 15,
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: FontWeight.w700,
