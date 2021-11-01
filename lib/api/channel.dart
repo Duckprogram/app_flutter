@@ -7,31 +7,28 @@ import '../utils/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-
-
 Future<dynamic> api_ChannelList({header, required String path}) async {
-  var response = await http_get(header: header, path : path);
+  var response = await http_get(header: header, path: path);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
-
+  responseJson = responseJson['content'];
   if (response.statusCode == 200) {
     print(responseJson);
     return responseJson;
-  } else{
+  } else {
     throw Exception('Failed to HTTP GET Channellist');
   }
 }
 
-
 Future<dynamic> api_MyChannelList({header, required String path}) async {
-  var response = await http_get(header: header, path : path);
+  var response = await http_get(header: header, path: path);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
   if (response.statusCode == 200) {
     print(responseJson);
     return responseJson;
-  } else{
+  } else {
     throw Exception('Failed to HTTP GET Channellist');
   }
 }

@@ -136,7 +136,7 @@ class _MyChannelState extends State<MyChannel> {
                   shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.grey, width: 0.5),
                       borderRadius: BorderRadius.circular(5)),
-                  title: Text( postitemlist![index].title.toString() + postitemlist![index].username.toString() + postitemlist![index].numOfView.toString() ),
+                  // title: Text( postitemlist![index].title.toString() + postitemlist![index].username.toString() + postitemlist![index].numOfView.toString() ),
                   minVerticalPadding: 50,
                 )));
     return Scaffold(

@@ -5,7 +5,7 @@ part 'channel.g.dart';
 @JsonSerializable()
 class Channel {
   Channel({
-    required this.no,
+    this.no,
     this.user_no,
     this.id,
     this.name,
@@ -19,9 +19,7 @@ class Channel {
     this.numOfPeople,
   });
 
-  @JsonKey(name: "no")
-  final int no;
-
+  final int? no;
   final int? user_no;
   final int? id;
   final String? name;
