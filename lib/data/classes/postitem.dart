@@ -3,8 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'postitem.g.dart';
 
 @JsonSerializable()
-class Post {
-  Post({
+class Postitem {
+  Postitem({
+    required this.no,
     this.imagePath,
     this.title,
     this.username,
@@ -14,6 +15,9 @@ class Post {
     required this.numOfView,
   });
 
+  @JsonKey(name: "no")
+  final int no;
+
   final String? imagePath;
   final String? title;
   final String? username;
@@ -22,7 +26,7 @@ class Post {
   final String? channelImage;
   final int numOfView;
 
-  factory Post.fromJson(Map<String, dynamic> json) =>
+  factory Postitem.fromJson(Map<String, dynamic> json) =>
       _$PostFromJson(json);
 
   Map<String, dynamic> toJson() => _$PostToJson(this);

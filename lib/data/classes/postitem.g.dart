@@ -6,8 +6,9 @@ part of 'postitem.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Post _$PostFromJson(Map<String, dynamic> json) {
-  return Post(
+Postitem _$PostFromJson(Map<String, dynamic> json) {
+  return Postitem(
+      no : json['no'] as int,
       imagePath: json['imagePath'] as String,
       title: json['title'] as String,
       username: json['username'] as String,
@@ -17,7 +18,8 @@ Post _$PostFromJson(Map<String, dynamic> json) {
       numOfView: json['numOfView'] as int );
 }
 
-Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
+Map<String, dynamic> _$PostToJson(Postitem instance) => <String, dynamic>{
+      'no' : instance.no,
       'imagePath': instance.imagePath,
       'title': instance.title,
       'username': instance.username,

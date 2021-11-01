@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
 import '../../styles/styles.dart';
+
 import '../../data/models/channellist.dart';
 import '../../data/classes/channel.dart';
+
 import 'package:collection/collection.dart';
 
 List<Channel>? list;
@@ -17,6 +19,7 @@ class ChannelList extends StatefulWidget {
 }
 
 class _ChannelListState extends State<ChannelList> {
+
   @override
   void initState() {
     super.initState();

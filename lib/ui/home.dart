@@ -5,7 +5,7 @@ import '../../data/models/auth.dart';
 import 'mypage/my_page.dart';
 import 'notification/notification_page.dart';
 import 'search/search_page.dart';
-import 'channel/home_page.dart';
+import 'home/home_page.dart';
 import 'market/market_page.dart';
 import '../styles/styles.dart';
 
