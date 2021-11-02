@@ -27,9 +27,9 @@ class Postitem {
   final int numOfView;
 
   factory Postitem.fromJson(Map<String, dynamic> json) =>
-      _$PostFromJson(json);
+      _$PostitemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PostToJson(this);
+  Map<String, dynamic> toJson() => _$PostitemToJson(this);
 
   @override
   String toString() {
