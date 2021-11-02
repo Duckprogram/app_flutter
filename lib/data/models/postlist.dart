@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../classes/Postitem.dart';
+import '../classes/postitem.dart';
 import '../../api/postitem.dart';
 import '../../common/type.dart';
 

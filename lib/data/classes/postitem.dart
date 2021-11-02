@@ -35,5 +35,4 @@ class Postitem {
   String toString() {
     return "$title $channelName".toString();
   }
-
 }
