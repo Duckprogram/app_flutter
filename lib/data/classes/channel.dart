@@ -5,13 +5,12 @@ part 'channel.g.dart';
 @JsonSerializable()
 class Channel {
   Channel({
-    this.no,
-    this.user_no,
     this.id,
     this.name,
     this.introduction,
     this.rule,
     this.content,
+    this.background,
     this.created_date,
     this.last_modified_date,
     this.is_active,
@@ -19,13 +18,12 @@ class Channel {
     this.numOfPeople,
   });
 
-  final int? no;
-  final int? user_no;
   final int? id;
   final String? name;
   final String? introduction;
   final String? rule;
   final String? content;
+  final String? background;
   final DateTime? created_date;
   final DateTime? last_modified_date;
   final bool? is_active;

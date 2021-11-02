@@ -7,6 +7,9 @@ import '../../data/classes/postitem.dart';
 import '../../data/models/channellist.dart';
 import '../../data/classes/channel.dart';
 
+//list 비교 함수
+import 'package:collection/collection.dart';
+
 class MyChannel extends StatefulWidget {
   MyChannel({Key? key, required this.choice}) : super(key: key);
   final Category choice;
@@ -17,29 +20,19 @@ class MyChannel extends StatefulWidget {
 
 class _MyChannelState extends State<MyChannel> {
   final PostListModel _postlist = PostListModel();
+  var channel_info;
 
   @override
   void initState() {
     // _postlist.getPostList().then((_) => (_asyncMethod()));
-    _postlist.no = widget.choice.id;
-    _postlist.getPostList();
+    channel_info = widget.choice;
+    _postlist.no = channel_info.id;
+    _postlist.getPostList().then( (_) => setState( (){} ));
+    
     super.initState();
   }
 
   //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
-  // _asyncMethod() {
-  //   var newChannel = List<Category>.from(_postlist.mychannellist!.map(
-  //       (mychannel) =>
-  //           Category(name: mychannel.name.toString(), id: mychannel.id)));
-  //   print("new mychannellist everything " + newChannel.toString());
-  //   print("init_categories" + init_categories.toString());
-  //   if (!ListEquality().equals(categories.sublist(2), newChannel)) {
-  //     setState(() {
-  //       categories = List.of(init_categories);
-  //       categories.addAll(newChannel);
-  //     });
-  //   }
-  // }
 
   @override
   void dispose() {
@@ -50,10 +43,6 @@ class _MyChannelState extends State<MyChannel> {
   Widget build(BuildContext context) {
     // channel의 상세정보를 가져온다.
     // 이름, 수, icon
-    final channeldetail = context.select((ChannelListModel channellistmodel) {
-      return channellistmodel.mychannellist!
-          .singleWhere((list) => list.id == widget.choice.id);
-    });
     final postitemlist = _postlist.postlist;
 
     Widget channelsection = Container(
@@ -88,7 +77,7 @@ class _MyChannelState extends State<MyChannel> {
               Padding(padding: EdgeInsets.all(5.0)),
               Container(
                 padding: EdgeInsets.only(bottom: 6),
-                child: Text(channeldetail.name.toString() + "\n채널 바로가기",
+                child: Text(channel_info.name.toString() + "\n채널 바로가기",
                     style: channelName),
               ),
               Container(
@@ -100,7 +89,7 @@ class _MyChannelState extends State<MyChannel> {
                         padding: EdgeInsets.only(right: 2),
                         child: Image.asset('assets/images/ic_person.png',
                             width: 12, height: 12)),
-                    Text(channeldetail.numOfPeople.toString() + " 모임중",
+                    Text(channel_info.numOfPeople.toString() + " 모임중",
                         style: smallDescStyle),
                     Container(
                       padding: EdgeInsets.only(left: 80),
@@ -136,7 +125,9 @@ class _MyChannelState extends State<MyChannel> {
                   shape: RoundedRectangleBorder(
                       side: BorderSide(color: Colors.grey, width: 0.5),
                       borderRadius: BorderRadius.circular(5)),
-                  // title: Text( postitemlist![index].title.toString() + postitemlist![index].username.toString() + postitemlist![index].numOfView.toString() ),
+                  title: Text(postitemlist![index].title.toString() +
+                      postitemlist![index].username.toString() +
+                      postitemlist![index].views.toString()),
                   minVerticalPadding: 50,
                 )));
     return Scaffold(

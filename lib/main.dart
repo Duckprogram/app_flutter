@@ -49,6 +49,7 @@ class _MyAppState extends State<MyApp> {
             routes: <String, WidgetBuilder>{
               "/login": (BuildContext context) => KakoaLoginPage(),
               "/home": (BuildContext context) => Home(),
+              "/channel": (BuildContext context) => Home(),
             },
         )
       );

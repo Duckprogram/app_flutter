@@ -43,7 +43,7 @@ class ChannelListModel extends ChangeNotifier {
     //   'param1': 'one',
     //   'param2': 'two',
     // };
-    var path = '/auth/channel';
+    var path = '/user/channels';
     // var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
 
     print(path);

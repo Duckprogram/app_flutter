@@ -25,6 +25,9 @@ dependencies:
     firebase_messaging: ^10.0.9
     #app bar slides
     transparent_image: ^2.0.0
+    #무한 스크래핑
+    flutter_bloc: ^0.13.0
+    equatable: ^0.2.0
 
 dev_dependencies:
     flutter_test:

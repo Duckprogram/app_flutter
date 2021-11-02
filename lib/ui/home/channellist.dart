@@ -95,8 +95,9 @@ class _ChannelListState extends State<ChannelList> {
                             color: gray08,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Image.network(
-                              "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg")),
+                          // child: Image.network(
+                          //     "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg")
+                          ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -151,7 +152,7 @@ class _ChannelListState extends State<ChannelList> {
         child: Column(
           children: <Widget>[
       Flexible(fit : FlexFit.loose,  child: titleSection),
-      Expanded(child: listSection),
+      Expanded(child: listSection, flex : 5),
     ]))));
   }
 }
