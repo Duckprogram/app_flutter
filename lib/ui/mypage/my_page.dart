@@ -87,7 +87,7 @@ class _MyPageState extends State<MyPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "닉네임",
+                    "오덕왕자더키",
                     style: h4,
                   ),
                   modifyIcon(),

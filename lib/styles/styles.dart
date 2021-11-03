@@ -109,6 +109,12 @@ const body2Gray03 = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
 );
 
+const body2Gray04 = TextStyle(
+  color: gray04,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+
 const body2Bold = TextStyle(
   color: Colors.black,
   fontSize: 13,
@@ -170,3 +176,4 @@ const bottomBorder = Border(
   color: gray07,
   width: 0.8,
 ));
+
