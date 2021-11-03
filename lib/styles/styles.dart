@@ -6,7 +6,9 @@ final tabStyle = TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
 const primaryColor = const Color(0xff5648FB);
 const primaryColor2 = const Color(0xffF1E9FF);
 const secondaryColor = const Color(0xff8E35FF);
-const secondaryColor2 = const Color(0xff000000);
+const secondaryColor2 = const Color(0xffF1E7FF);
+const negativeColor1 = const Color(0xffFF3364);
+const positiveColor1 = const Color(0xff0047FF);
 const white = const Color(0xffffffff);
 const gray01 = const Color(0xff212121);
 const gray02 = const Color(0xff616161);
@@ -58,6 +60,12 @@ const body1Bold = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: FontWeight.w700,
 );
+const body1BoldGray3 = TextStyle(
+  color: gray03,
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+);
 
 const body1BoldPrimary = TextStyle(
   color: primaryColor,
@@ -75,6 +83,17 @@ const body1BoldWhite = TextStyle(
 
 const body2 = TextStyle(
   color: Colors.black,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+
+const body2RegularPrimary = TextStyle(
+  color: primaryColor,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+const body2RegularNegative = TextStyle(
+  color: negativeColor1,
   fontSize: 13,
   fontFamily: "Spoqa Han Sans Neo",
 );
@@ -139,4 +158,10 @@ const BorderTop = BoxDecoration(
     color: gray07,
     width: 0.8,
   ),
+));
+
+const BottomBorder = Border(
+    bottom: BorderSide(
+  color: gray07,
+  width: 0.8,
 ));
