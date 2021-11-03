@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
 import '../../styles/styles.dart';
+
 import '../../data/models/channellist.dart';
 import '../../data/classes/channel.dart';
+
+import '../channel/channelhome.dart';
 import 'package:collection/collection.dart';
 
 List<Channel>? list;
@@ -34,11 +37,9 @@ class _ChannelListState extends State<ChannelList> {
     });
     // final postList =  Provider.of<ChannelListModel>(context, listen: true);
     // List<Channel>? list = postList.channellist;
-    if (postList != null &&
-        !ListEquality()
-            .equals(list, postList)) {
+    if (postList != null && !ListEquality().equals(list, postList)) {
       list = postList;
-    } 
+    }
 
     Widget titleSection = Container(
         padding: EdgeInsets.only(top: 15, left: 36),
@@ -84,16 +85,17 @@ class _ChannelListState extends State<ChannelList> {
                   child: Row(
                     children: [
                       Container(
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.only(right: 12),
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: gray08,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Image.network(
-                              "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg")),
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.only(right: 12),
+                        height: 32,
+                        width: 32,
+                        decoration: BoxDecoration(
+                          color: gray08,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        // child: Image.network(
+                        //     "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg")
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -134,21 +136,24 @@ class _ChannelListState extends State<ChannelList> {
                   ),
                 ),
                 onTap: () {
-                  AlertDialog dialog = AlertDialog(content: Text("선택한 채널로 이동"));
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => dialog);
+                  // AlertDialog dialog = AlertDialog(content: Text("선택한 채널로 이동"));
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (BuildContext context) => dialog);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChannelHome()),
+                  );
                 });
           },
         ));
 
     return Scaffold(
-      body: Container (
-        child:SafeArea(
-        child: Column(
-          children: <Widget>[
-      Flexible(fit : FlexFit.loose,  child: titleSection),
-      Expanded(child: listSection),
+        body: Container(
+            child: SafeArea(
+                child: Column(children: <Widget>[
+      Flexible(fit: FlexFit.loose, child: titleSection),
+      Expanded(child: listSection, flex: 5),
     ]))));
   }
 }

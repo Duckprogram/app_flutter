@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_login/data/models/auth.dart';
 
-import 'ui/home.dart';
+import 'ui/home/home.dart';
+import 'ui/channel/channelhome.dart';
 import 'ui/signin/Kakaologin.dart';
 
 void main() => runApp(MyApp());
@@ -43,14 +44,14 @@ class _MyAppState extends State<MyApp> {
         //     },
         //   ),
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: KakoaLoginPage(),
-            initialRoute: "/login",
-            routes: <String, WidgetBuilder>{
-              "/login": (BuildContext context) => KakoaLoginPage(),
-              "/home": (BuildContext context) => Home(),
-            },
-        )
-      );
+          debugShowCheckedModeBanner: false,
+          home: KakoaLoginPage(),
+          initialRoute: "/login",
+          routes: <String, WidgetBuilder>{
+            "/login": (BuildContext context) => KakoaLoginPage(),
+            "/home": (BuildContext context) => Home(),
+            "/channel": (BuildContext context) => ChannelHome(),
+          },
+        ));
   }
 }

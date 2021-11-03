@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/models/auth.dart';
+import '../../../data/models/auth.dart';
 
-import 'mypage/my_page.dart';
-import 'notification/notification_page.dart';
-import 'search/search_page.dart';
-import 'channel/home_page.dart';
-import 'market/market_page.dart';
-import '../styles/styles.dart';
+import '../mypage/my_page.dart';
+import '../notification/notification_page.dart';
+import '../search/search_page.dart';
+import 'home_page.dart';
+import '../market/market_page.dart';
+import '../../styles/styles.dart';
 
 class Home extends StatefulWidget {
   @override

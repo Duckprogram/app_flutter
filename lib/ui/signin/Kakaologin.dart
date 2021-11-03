@@ -119,13 +119,14 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         final snackBar = SnackBar(
             content: Text(_auth.user.properties!['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        if (!(await _registerUserInfoWithKakao(authCode))) {
-          print("회원가입 실패");
-          final snackBar = SnackBar(content: Text("회원가입 실패"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          return;
-        }
-        await _issueJWTandLogin(authCode);
+        // if (!(await _registerUserInfoWithKakao(authCode))) {
+        //   print("회원가입 실패");
+        //   final snackBar = SnackBar(content: Text("회원가입 실패"));
+        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        //   return;
+        // }
+        // await _issueJWTandLogin(authCode);
+        Navigator.pushReplacementNamed(context, '/home');
       } on KakaoAuthException catch (e) {
       } catch (e) {
         print(e);
