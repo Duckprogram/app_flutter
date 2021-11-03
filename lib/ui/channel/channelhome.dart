@@ -58,10 +58,11 @@ class _ChannelHomeState extends State<ChannelHome> {
       color: Colors.transparent,
       child: Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               child : IconButton(
+                alignment: Alignment.bottomLeft,
                 onPressed: (){
                   Navigator.pop(context);
                 },
@@ -92,6 +93,7 @@ class _ChannelHomeState extends State<ChannelHome> {
                 ),
                 child:
                 Text("채널 가입하기",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: gray08,
                       fontSize: 11,
