@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/ui/signin/Kakaologin.dart';
+import 'package:duckie_app/ui/signin/Kakaologin.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_login/data/models/auth.dart';
+import 'package:duckie_app/data/models/auth.dart';
 
 import 'ui/home/home.dart';
 import 'ui/channel/channelhome.dart';
