@@ -43,7 +43,7 @@ class _MyChannelState extends State<MyChannel> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              decoration: BoxDecoration(color: white, border: BottomBorder),
+              decoration: BoxDecoration(color: white, border: bottomBorder),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,7 +67,7 @@ class _MyChannelState extends State<MyChannel> {
           Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
               margin: const EdgeInsets.only(top: 10),
-              decoration: BoxDecoration(color: white, border: BottomBorder),
+              decoration: BoxDecoration(color: white, border: bottomBorder),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

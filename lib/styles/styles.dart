@@ -87,6 +87,11 @@ const body2 = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
 );
 
+const body2Regular = TextStyle(
+  color: Colors.black,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+);
 const body2RegularPrimary = TextStyle(
   color: primaryColor,
   fontSize: 13,
@@ -160,7 +165,7 @@ const BorderTop = BoxDecoration(
   ),
 ));
 
-const BottomBorder = Border(
+const bottomBorder = Border(
     bottom: BorderSide(
   color: gray07,
   width: 0.8,

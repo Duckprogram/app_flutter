@@ -17,3 +17,12 @@ Widget modifyIcon() {
     width: 24.0,
   );
 }
+
+Image iconImageSmall(name, size) {
+  return Image.asset(
+    'assets/images/ic_' + name + '.png',
+    fit: BoxFit.cover,
+    height: size,
+    width: size,
+  );
+}

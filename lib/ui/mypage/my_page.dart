@@ -1,3 +1,4 @@
+import 'package:duckie_app/api/profile.dart';
 import 'package:duckie_app/components/Icons.dart';
 import 'package:duckie_app/ui/mypage/my_channel.dart';
 import 'package:duckie_app/ui/mypage/setting.dart';
@@ -13,7 +14,10 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-
+  @override
+  initState() {
+    super.initState();
+  }
 
   _logout() {
     AlertDialog dialog = AlertDialog(content: Text("로그아웃 되었습니다"));
@@ -44,6 +48,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: white,
           foregroundColor: gray01,
           title: Text(
@@ -162,5 +167,4 @@ class _MyPageState extends State<MyPage> {
           ],
         ));
   }
-
 }
