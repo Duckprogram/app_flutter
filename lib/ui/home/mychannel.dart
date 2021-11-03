@@ -126,8 +126,8 @@ class _MyChannelState extends State<MyChannel> {
                       side: BorderSide(color: Colors.grey, width: 0.5),
                       borderRadius: BorderRadius.circular(5)),
                   title: Text(postitemlist![index].title.toString() +
-                      postitemlist![index].username.toString() +
-                      postitemlist![index].views.toString()),
+                      postitemlist[index].username.toString() +
+                      postitemlist[index].views.toString()),
                   minVerticalPadding: 50,
                 )));
     return Scaffold(
