@@ -1,4 +1,3 @@
-import 'package:duckie_app/api/profile.dart';
 import 'package:duckie_app/components/Icons.dart';
 import 'package:duckie_app/ui/mypage/my_channel.dart';
 import 'package:duckie_app/ui/mypage/setting.dart';

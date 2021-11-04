@@ -11,7 +11,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<Post> postList = new List.empty(growable: true);
+
+  List<Postitem>? postList;
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
   FocusNode focusNode = FocusNode();
@@ -37,46 +38,46 @@ class _SearchPageState extends State<SearchPage> {
       _filter.clear();
     });
 
-    postList.add(Post(
-        channelImage:
-            "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-        username: "수양대군",
-        imagePath:
-            "https://cdn.pixabay.com/photo/2014/02/17/14/28/vacuum-cleaner-268179_1280.jpg",
-        title: "소설 꿀팁 정리 모음집 #23 - 주방편",
-        numOfView: 89,
-        type: "normal",
-        channelName: "청소광"));
-    postList.add(Post(
-        imagePath:
-            "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-        title: "한가위 소설 이벤트 보셨나요? ",
-        numOfView: 19,
-        type: "normal",
-        username: "할로",
-        channelName: "빵빠라방",
-        channelImage:
-            "https://cdn.pixabay.com/photo/2016/03/27/21/41/summer-1284386_1280.jpg"));
+    // postList.add(PostItem(
+    //     channelImage:
+    //         "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
+    //     username: "수양대군",
+    //     imagePath:
+    //         "https://cdn.pixabay.com/photo/2014/02/17/14/28/vacuum-cleaner-268179_1280.jpg",
+    //     title: "소설 꿀팁 정리 모음집 #23 - 주방편",
+    //     numOfView: 89,
+    //     type: "normal",
+    //     channelName: "청소광"));
+    // postList.add(PostItem(
+    //     imagePath:
+    //         "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
+    //     title: "한가위 소설 이벤트 보셨나요? ",
+    //     numOfView: 19,
+    //     type: "normal",
+    //     username: "할로",
+    //     channelName: "빵빠라방",
+    //     channelImage:
+    //         "https://cdn.pixabay.com/photo/2016/03/27/21/41/summer-1284386_1280.jpg"));
 
-    postList.add(Post(
-        channelImage:
-            "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-        username: "할로21",
-        imagePath:
-            "https://cdn.pixabay.com/photo/2016/03/27/21/41/summer-1284386_1280.jpg",
-        title: "스콘 겁나 맛있는 집 공유",
-        numOfView: 33,
-        type: "normal",
-        channelName: "빵빠라방"));
-    postList.add(Post(
-        channelImage:
-            "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-        username: "할로11",
-        imagePath: null,
-        title: "내가 왕이 될 상인가",
-        numOfView: 66,
-        type: "normal",
-        channelName: "청소왕이될상"));
+    // postList.add(PostItem(
+    //     channelImage:
+    //         "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
+    //     username: "할로21",
+    //     imagePath:
+    //         "https://cdn.pixabay.com/photo/2016/03/27/21/41/summer-1284386_1280.jpg",
+    //     title: "스콘 겁나 맛있는 집 공유",
+    //     numOfView: 33,
+    //     type: "normal",
+    //     channelName: "빵빠라방"));
+    // postList.add(PostItem(
+    //     channelImage:
+    //         "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
+    //     username: "할로11",
+    //     imagePath: null,
+    //     title: "내가 왕이 될 상인가",
+    //     numOfView: 66,
+    //     type: "normal",
+    //     channelName: "청소왕이될상"));
   }
 
   @override
@@ -235,3 +236,4 @@ class _SearchPageState extends State<SearchPage> {
         ]));
   }
 }
+

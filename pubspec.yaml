@@ -22,7 +22,7 @@ dependencies:
     #Secure Storage
     flutter_secure_storage: ^4.2.1
 
-    firebase_messaging: ^10.0.9
+    # firebase_messaging: ^10.0.9
     #app bar slides
     transparent_image: ^2.0.0
     #무한 스크래핑
