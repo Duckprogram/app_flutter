@@ -7,6 +7,7 @@ const primaryColor = const Color(0xff5648FB);
 const primaryColor2 = const Color(0xffF1E9FF);
 const secondaryColor = const Color(0xff8E35FF);
 const secondaryColor2 = const Color(0xff000000);
+const white = const Color(0xffffffff);
 const gray01 = const Color(0xff212121);
 const gray02 = const Color(0xff616161);
 const gray03 = const Color(0xff888888);
@@ -65,6 +66,13 @@ const body1BoldPrimary = TextStyle(
   fontWeight: FontWeight.w700,
 );
 
+const body1BoldWhite = TextStyle(
+  color: white,
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+);
+
 const body2 = TextStyle(
   color: Colors.black,
   fontSize: 13,
@@ -91,6 +99,12 @@ const caption = TextStyle(
 
 const captionGray03 = TextStyle(
   color: gray03,
+  fontSize: 11,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+
+const hashTag = TextStyle(
+  color: secondaryColor,
   fontSize: 11,
   fontFamily: "Spoqa Han Sans Neo",
 );

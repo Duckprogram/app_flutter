@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-abstract class PostEvent extends Equatable {}
+abstract class PostEvent {}
 
 class Fetch extends PostEvent {
   @override

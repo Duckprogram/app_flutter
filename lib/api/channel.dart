@@ -32,3 +32,18 @@ Future<dynamic> api_MyChannelList({header, required String path}) async {
     throw Exception('Failed to HTTP GET Channellist');
   }
 }
+
+Future<dynamic> api_ChannelDetail({header, required int id}) async {
+  var path = '/channels/' + id.toString() + '/info/detail';
+
+  var response = await http_get(header: header, path: path);
+
+  var responseJson = json.decode(utf8.decode(response.bodyBytes));
+  // responseJson = responseJson['registered'];
+  if (response.statusCode == 200) {
+    print(responseJson);
+    return responseJson;
+  } else {
+    throw Exception('Failed to HTTP GET Channellist');
+  }
+}
