@@ -70,7 +70,7 @@ class _MyPageState extends State<MyPage> {
 
   Widget _profileWidget() {
     // const profileImage<> =  NetworkImage(widget.user.photoUrl);
-    const profileImage = ExactAssetImage('images/profile_default.png');
+    const profileImage = ExactAssetImage('assets/images/profile_default.png');
     return Container(
         color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 30),

@@ -57,9 +57,9 @@ class _MyChannelState extends State<MyChannel> {
                     Container(
                         child: Column(
                       children: [
-                        _channelItem(Image.asset("images/em_brush.png"),
+                        _channelItem(Image.asset("assets/images/em_brush.png"),
                             "내가 청소왕이 될 상인가", false),
-                        _channelItem(Image.asset("images/em_brush.png"),
+                        _channelItem(Image.asset("assets/images/em_brush.png"),
                             "내가 청소왕이 될 상인가", false)
                       ],
                     ))
@@ -83,7 +83,7 @@ class _MyChannelState extends State<MyChannel> {
                         child: Column(
                       children: [
                         _channelItem(
-                          Image.asset("images/em_brush.png"),
+                          Image.asset("assets/images/em_brush.png"),
                           "내가 청소왕이 될 상인가",
                           true,
                         ),
@@ -167,7 +167,7 @@ class _MyChannelState extends State<MyChannel> {
           child: SizedBox(
               width: 24,
               height: 24,
-              child: Image.asset('images/ic_withdraw.png'))),
+              child: Image.asset('assets/images/ic_withdraw.png'))),
       GestureDetector(
         child: Text("탈퇴하기", style: body1BoldPrimary),
         onTap: _handleWithdraw,
