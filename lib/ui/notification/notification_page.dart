@@ -105,8 +105,8 @@ class _NotificationPageState extends State<NotificationPage> {
                               ),
                               type == "oprNotice"
                                   ? (isOpen
-                                      ? iconImageSmall("arrow_bottom", 16)
-                                      : iconImageSmall("arrow_top", 16))
+                                      ? iconImageSmall("arrow_bottom", 16.0)
+                                      : iconImageSmall("arrow_top", 16.0))
                                   : Container()
                             ],
                           )),
@@ -145,7 +145,7 @@ class _NotificationPageState extends State<NotificationPage> {
             ),
             child: SizedBox(
               child: iconImageSmall(
-                  type == "oprNotice" ? "notice_opr" : "notice_default", 10),
+                  type == "oprNotice" ? "notice_opr" : "notice_default", 10.0),
             )),
         Text(title, style: caption),
         Container(

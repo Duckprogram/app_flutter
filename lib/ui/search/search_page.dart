@@ -143,7 +143,7 @@ class _SearchPageState extends State<SearchPage> {
             filled: true,
             fillColor: Colors.white12,
             suffixIcon: IconButton(
-                icon: iconImageSmall("search_2", 24), onPressed: _onSubmit),
+                icon: iconImageSmall("search_2", 24.0), onPressed: _onSubmit),
             hintText: '검색어를 입력하세요.',
             labelStyle: TextStyle(color: Colors.white),
             focusedBorder: OutlineInputBorder(
