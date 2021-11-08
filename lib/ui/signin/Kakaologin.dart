@@ -171,7 +171,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       // final _auth = Provider.of<AuthModel>(context, listen: false);
       // _auth.user = await UserApi.instance.me();
       print(response);
-      if (response != null) {
+      if (response['access_token'] != null) {
         await storage.write(
             key: "accessToken", value: response['access_token']);
         await storage.write(
