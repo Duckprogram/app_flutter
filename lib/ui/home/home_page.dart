@@ -44,8 +44,8 @@ class _HomePageState extends State<HomePage> {
     print("new mychannellist everything " + newChannel.toString());
     print("init_categories" + init_categories.toString());
     if (!ListEquality().equals(categories.sublist(2), newChannel)) {
+      categories = List.of(init_categories);
       setState(() {
-        categories = List.of(init_categories);
         categories.addAll(newChannel);
       });
     }
@@ -87,23 +87,23 @@ class _HomePageState extends State<HomePage> {
       providers: [
         ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
       ],
-      child: new MaterialApp(
-        home: new DefaultTabController(
+      child: MaterialApp(
+        home: DefaultTabController(
           length: categories.length,
-          child: new Scaffold(
-            appBar: new AppBar(
+          child: Scaffold(
+            appBar: AppBar(
               toolbarHeight: 0,
               backgroundColor: primaryColor,
-              bottom: new TabBar(
+              bottom: TabBar(
                 isScrollable: true,
                 tabs: categories.map((Category choice) {
-                  return new Tab(
+                  return Tab(
                     text: choice.name,
                   );
                 }).toList(),
               ),
             ),
-            body: new TabBarView(
+            body: TabBarView(
               children: categories.map((Category choice) {
                 var index = categories.indexOf(choice);
                 return pageCaller(index, choice);
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        theme: new ThemeData(primaryColor: Colors.deepOrange),
+        theme: ThemeData(primaryColor: Colors.deepOrange),
       ),
     );
   }

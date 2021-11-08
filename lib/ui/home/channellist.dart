@@ -185,7 +185,7 @@ class _ChannelListState extends State<ChannelList> {
         ));
 
     return Scaffold(
-        appBar: new AppBar(
+        appBar: AppBar(
             toolbarHeight: 120,
             backgroundColor: Colors.white,
             title: titleSection,

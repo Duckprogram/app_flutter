@@ -13,7 +13,7 @@ Future<dynamic> api_PostlList({header, required String path}) async {
   var response = await http_get(header: header, path : path);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
-  responseJson = responseJson['content'];
+  responseJson = responseJson['data']['content'];
   if (response.statusCode == 200) {
     print(responseJson);
     return responseJson;
