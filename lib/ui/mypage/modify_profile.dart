@@ -1,4 +1,5 @@
-import '../../components/appBarWithBack.dart';
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/components/appBarWithBack.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,8 @@ class _ModifyProfileState extends State<ModifyProfile> {
       "https://cdn.pixabay.com/photo/2021/09/09/12/27/child-6610447_1280.jpg";
 
   _loadPhotos() async {
-    print("사진 리스트 불러오기");
+    AlertDialog dialog = AlertDialog(content: Text("사진 폴더 불러오기"));
+    showDialog(context: context, builder: (BuildContext context) => dialog);
   }
 
   _onSubmit() {
@@ -64,53 +66,37 @@ class _ModifyProfileState extends State<ModifyProfile> {
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 36),
           child: Column(
             children: <Widget>[
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 120.0,
-                          height: 120.0,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(userIamge),
+              GestureDetector(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 120.0,
+                            height: 120.0,
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(userIamge),
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 80.0,
-                          height: 80.0,
-                          alignment: Alignment.bottomRight,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 28.0,
-                                height: 28.0,
-                                child: FloatingActionButton(
-                                  onPressed: _loadPhotos,
-                                  backgroundColor: gray03,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 25.0,
-                                height: 25.0,
-                                child: FloatingActionButton(
-                                  onPressed: null,
-                                  backgroundColor: white,
-                                  child: Image.asset(
-                                    'assets/images/ic_right_arrow.png',
-                                  ),
-                                ),
-                              ),
-                            ],
+                          SizedBox(
+                            width: 120.0,
+                            height: 120.0,
+                            child: Container(
+                              width: 80.0,
+                              height: 80.0,
+                              alignment: Alignment.bottomRight,
+                              child: _loadPhotoButton(),
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.all(8.0)),
-                  ],
+                        ],
+                      ),
+                      Padding(padding: EdgeInsets.all(8.0)),
+                    ],
+                  ),
                 ),
+                onTap: _loadPhotos,
               ),
               Container(
                   padding:
@@ -119,19 +105,44 @@ class _ModifyProfileState extends State<ModifyProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: Text(
                           "프로필 명",
                           style: caption,
                         ),
                       ),
-                      TextFormField(
-                        onChanged: onChangeNickname,
-                      ),
+                      TextField(
+                          onChanged: onChangeNickname,
+                          cursorColor: primaryColor,
+                          decoration: InputDecoration(
+                            fillColor: white,
+                            focusColor: white,
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: gray04),
+                            ),
+                            filled: true,
+                            hintText: '닉네임을 입력해주세요',
+                          )),
                     ],
                   ))
             ],
           )),
+    );
+  }
+
+  Container _loadPhotoButton() {
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+          color: Color(0xffcccccc),
+          width: 1.25,
+        ),
+        color: Colors.white,
+      ),
+      child: iconImageSmall("camera", 25),
     );
   }
 

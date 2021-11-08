@@ -1,5 +1,5 @@
-import '../../components/Icons.dart';
-import '../../ui/mypage/terms.dart';
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/ui/mypage/terms.dart';
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
 

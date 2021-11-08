@@ -1,5 +1,5 @@
-import '../../components/appBarWithBack.dart';
-import '../../styles/styles.dart';
+import 'package:duckie_app/components/appBarWithBack.dart';
+import 'package:duckie_app/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class TermsPage extends StatelessWidget {

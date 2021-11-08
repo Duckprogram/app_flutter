@@ -1,10 +1,10 @@
-import '../../components/Icons.dart';
-import '../../ui/mypage/my_channel.dart';
-import '../../ui/mypage/setting.dart';
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/ui/mypage/my_channel.dart';
+import 'package:duckie_app/ui/mypage/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/models/auth.dart';
-import '../../styles/styles.dart';
+import 'package:duckie_app/data/models/auth.dart';
+import 'package:duckie_app/styles/styles.dart';
 import 'modify_profile.dart';
 
 class MyPage extends StatefulWidget {
@@ -41,9 +41,15 @@ class _MyPageState extends State<MyPage> {
   }
 
   @override
+  initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: white,
           foregroundColor: gray01,
           title: Text(
@@ -64,7 +70,7 @@ class _MyPageState extends State<MyPage> {
 
   Widget _profileWidget() {
     // const profileImage<> =  NetworkImage(widget.user.photoUrl);
-    const profileImage = ExactAssetImage('assets/images/profile_default.png');
+    const profileImage = ExactAssetImage('images/profile_default.png');
     return Container(
         color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 30),
@@ -82,7 +88,7 @@ class _MyPageState extends State<MyPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "닉네임",
+                    "오덕왕자더키",
                     style: h4,
                   ),
                   modifyIcon(),
