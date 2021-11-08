@@ -1,4 +1,4 @@
-import 'package:duckie_app/styles/styles.dart';
+import '../../styles/styles.dart';
 import 'package:flutter/material.dart';
 
 AppBar appBarWithBack(text) {

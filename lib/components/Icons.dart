@@ -11,7 +11,7 @@ Widget arrowIcon() {
 
 Widget modifyIcon() {
   return Image.asset(
-    'images/ic_modify.png',
+    'assets/images/ic_modify.png',
     fit: BoxFit.cover,
     height: 24.0,
     width: 24.0,

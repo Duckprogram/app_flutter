@@ -133,6 +133,12 @@ const captionGray03 = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
 );
 
+const hashTag = TextStyle(
+  color: secondaryColor,
+  fontSize: 11,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+
 const mainTextStyle = TextStyle(
     color: Color(0xff616161),
     fontSize: 14,

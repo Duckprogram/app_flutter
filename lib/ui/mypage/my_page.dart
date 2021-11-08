@@ -13,10 +13,7 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  @override
-  initState() {
-    super.initState();
-  }
+
 
   _logout() {
     AlertDialog dialog = AlertDialog(content: Text("로그아웃 되었습니다"));
@@ -41,6 +38,11 @@ class _MyPageState extends State<MyPage> {
   _moveSetting() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => Setting()));
+  }
+
+  @override
+  initState() {
+    super.initState();
   }
 
   @override
@@ -166,4 +168,5 @@ class _MyPageState extends State<MyPage> {
           ],
         ));
   }
+
 }

@@ -27,7 +27,6 @@ late List<Category> categories = List.of(init_categories);
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   final ChannelListModel _channellist = ChannelListModel();
-  // List of Category Data objects.
 
   @override
   void initState() {
@@ -57,9 +56,33 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Widget pageCaller(int index, Category choice) {
+    switch (index) {
+      case 0:
+        {
+          return ChannelList(
+            choice: choice,
+          );
+        }
+      case 1:
+        {
+          return TimeLine(
+            choice: choice,
+          );
+        }
+      default:
+        {
+          return MyChannel(
+            choice: choice,
+          );
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: false);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
@@ -82,19 +105,8 @@ class _HomePageState extends State<HomePage> {
             ),
             body: new TabBarView(
               children: categories.map((Category choice) {
-                return new Padding(
-                    padding: const EdgeInsets.all(0),
-                    // child: new CategoryCard(choice: choice),
-                    child: Builder(builder: (context) {
-                      /// some operation here ...
-                      if (choice.name == "채널 리스트") {
-                        return new ChannelList(choice: choice);
-                      } else if (choice.name == "타임라인") {
-                        return new TimeLine(choice: choice);
-                      } else {
-                        return new MyChannel(choice: choice);
-                      }
-                    }));
+                var index = categories.indexOf(choice);
+                return pageCaller(index, choice);
               }).toList(),
             ),
           ),
