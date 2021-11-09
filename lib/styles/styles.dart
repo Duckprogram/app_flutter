@@ -73,6 +73,18 @@ const body1BoldPrimary = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: FontWeight.w700,
 );
+const body1MediumPrimary = TextStyle(
+  color: primaryColor,
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w400,
+);
+const body1MediumGray3 = TextStyle(
+  color: gray03,
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w400,
+);
 
 const body1BoldWhite = TextStyle(
   color: white,
