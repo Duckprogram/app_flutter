@@ -174,6 +174,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       if (response['access_token'] != null) {
         await storage.write(
             key: "accessToken", value: response['access_token']);
+        await storage.write(key: "username", value: response['name']);
+        await storage.write(key: "picture", value: response['picture']);
+        await storage.write(
+            key: "refreshToken", value: response['refresh_token']);
         await storage.write(
             key: "refreshToken", value: response['refresh_token']);
         // 이상없이 잘 되었다면 main 화면으로 넘어가기
