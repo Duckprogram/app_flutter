@@ -183,3 +183,16 @@ const bottomBorder = Border(
   width: 0.8,
 ));
 
+backpageArrow(context) {
+  return Container(
+    child: IconButton(
+        alignment: Alignment.bottomLeft,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        color: gray01,
+        icon: Icon(Icons.arrow_back)),
+  );
+}
+
+Widget divider_line = Column(children: [ Padding(padding: const EdgeInsets.all(10)), Divider( indent : 25, thickness: 2.0, endIndent : 25), Padding(padding: const EdgeInsets.all(10)),]);

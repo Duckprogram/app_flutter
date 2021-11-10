@@ -9,8 +9,6 @@ import '../../data/classes/channel.dart';
 import '../channel/channelhome.dart';
 import 'package:collection/collection.dart';
 
-List<Channel>? list;
-
 class ChannelList extends StatefulWidget {
   ChannelList({Key? key, required this.choice}) : super(key: key);
   final Category choice;
@@ -20,6 +18,9 @@ class ChannelList extends StatefulWidget {
 }
 
 class _ChannelListState extends State<ChannelList> {
+
+  List<Channel>? list;
+
   @override
   void initState() {
     super.initState();
@@ -30,11 +31,11 @@ class _ChannelListState extends State<ChannelList> {
     super.dispose();
   }
 
-  _moveChannelHome(int id) {
+  _moveChannelHome(Channel channel) {
     //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
     //rootNavigator를 추가하면 bottombar 제거 가능
     return Navigator.of(context, rootNavigator: true)
-        .push(MaterialPageRoute(builder: (context) => ChannelHome(id: id)));
+        .push(MaterialPageRoute(builder: (context) => ChannelHome( channel : channel)));
   }
 
   @override
@@ -167,7 +168,7 @@ class _ChannelListState extends State<ChannelList> {
                                   fixedSize: 
                                   MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return Size( 330, 50); } else { return Size( 330, 50); } })
                                 ),
-                                onPressed: () => _moveChannelHome(list![position].id!.toInt()),
+                                onPressed: () => _moveChannelHome(list![position]),
                               )
                             ],
                           ),
@@ -175,11 +176,6 @@ class _ChannelListState extends State<ChannelList> {
                       );
                     },
                   );
-                  // AlertDialog dialog = AlertDialog(content: Text("선택한 채널로 이동"));
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) => dialog);
-                  // _moveChannelHome(list![position].id!.toInt());
                 });
           },
         ));
