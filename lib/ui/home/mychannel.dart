@@ -25,7 +25,7 @@ class _MyChannelState extends State<MyChannel> {
   @override
   void initState() {
     channel_info = widget.choice;
-    _postlist.no = channel_info.id;
+    _postlist.channel_id = channel_info.id;
     _postlist.getPostList().then((_) => setState(() {}));
     super.initState();
   }
@@ -119,7 +119,7 @@ class _MyChannelState extends State<MyChannel> {
                         side: BorderSide(color: Colors.grey, width: 0.5),
                         borderRadius: BorderRadius.circular(5)),
                     title: Text(postitemlist![index].title.toString() +
-                        postitemlist[index].username.toString() +
+                        postitemlist[index].created_by.toString() +
                         postitemlist[index].views.toString()),
                     minVerticalPadding: 50,
                   )));

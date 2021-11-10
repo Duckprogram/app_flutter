@@ -7,14 +7,13 @@ import '../../data/classes/channel.dart';
 import '../../data/models/postlist.dart';
 import '../../data/classes/postitem.dart';
 import '../channel/channelhome.dart';
+import '../post/posthome.dart';
 
 import 'package:collection/collection.dart';
 
-List<Channel>? list;
-
 class ChannelPostList extends StatefulWidget {
-  ChannelPostList({Key? key, required this.id}) : super(key: key);
-  final int id;
+  ChannelPostList({Key? key, required this.channel}) : super(key: key);
+  final Channel channel;
 
   @override
   _ChannelPostListState createState() => _ChannelPostListState();
@@ -22,17 +21,23 @@ class ChannelPostList extends StatefulWidget {
 
 class _ChannelPostListState extends State<ChannelPostList> {
   final PostListModel _postlist = PostListModel();
+  late Channel _channel;
 
   final _droplist = ['전체', '일반', '마켓'];
   String _index = '전체';
 
   @override
   void initState() {
-    _postlist.no = widget.id;
+    _channel = widget.channel;
+    _postlist.channel_id = _channel.id;
     // _postlist.getPostList().then((_) => setState(() {}));
     // _postlist.getPostNormalList().then((_) => setState(() {}));
     // _postlist.getPostMarketList().then((_) => setState(() {}));
-    _postlist.getPostList().then( (_) => _postlist.getPostNormalList() ).then( (_) => _postlist.getPostMarketList() ).then((_) => setState(() {}));
+    _postlist
+        .getPostList()
+        .then((_) => _postlist.getPostNormalList())
+        .then((_) => _postlist.getPostMarketList())
+        .then((_) => setState(() {}));
     super.initState();
   }
 
@@ -57,16 +62,17 @@ class _ChannelPostListState extends State<ChannelPostList> {
         }
     }
   }
-  // _movePostdetail() {
-  //   //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
-  //   //rootNavigator를 추가하면 bottombar 제거 가능
-  //   return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-  //       builder: (context) => ChannelHome(id: widget.id!)));
-  // }
+
+  _movePostdetail(Postitem postitem, Channel channel) {
+    //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
+    //rootNavigator를 추가하면 bottombar 제거 가능
+    // return PostHome(postitem: postitem);
+    return Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PostHome(postitem: postitem, channel : channel)));
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final postitemlist = selectpost(_index);
 
     Widget dropdownbutton = Container(
@@ -95,14 +101,14 @@ class _ChannelPostListState extends State<ChannelPostList> {
             itemCount: postitemlist?.length ?? 0,
             padding: const EdgeInsets.all(6.0),
             itemBuilder: (context, index) => ListTile(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(color: Colors.grey, width: 0.5),
-                      borderRadius: BorderRadius.circular(5)),
-                  title: Text(postitemlist![index].title.toString() +
-                      postitemlist[index].username.toString() +
-                      postitemlist[index].views.toString()),
-                  minVerticalPadding: 50,
-                )));
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.grey, width: 0.5),
+                    borderRadius: BorderRadius.circular(5)),
+                title: Text(postitemlist![index].title.toString() +
+                    postitemlist[index].created_by.toString() +
+                    postitemlist[index].views.toString()),
+                minVerticalPadding: 50,
+                onTap: () => _movePostdetail( postitemlist[index], _channel))));
 
     return Scaffold(
         body: Column(

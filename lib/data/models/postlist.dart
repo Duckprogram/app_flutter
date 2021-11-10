@@ -10,16 +10,16 @@ import '../../common/type.dart';
 class PostListModel extends ChangeNotifier {
   String errorMessage = "";
 
-  int _no = 0;
+  int _channel_id = 0;
 
   List<Postitem>? _postlist;
   List<Postitem>? _postnormallist;
   List<Postitem>? _postmarketlist;
 
-  int? get no => _no;
+  int? get channel_id => _channel_id;
 
-  set no(int? no) {
-    _no = no!;
+  set channel_id(int? channel_id) {
+    _channel_id = channel_id!;
     notifyListeners();
   }
 
@@ -47,7 +47,7 @@ class PostListModel extends ChangeNotifier {
 
 
   getPostList() async {
-    var home = '/channels/' + _no.toString() + '/posts?';
+    var home = '/channels/' + _channel_id.toString() + '/posts?';
     final queryParameters = {
       'category': 'all',
     };
@@ -63,7 +63,7 @@ class PostListModel extends ChangeNotifier {
   }
 
   getPostNormalList() async {
-    var home = '/channels/' + _no.toString() + '/posts?';
+    var home = '/channels/' + _channel_id.toString() + '/posts?';
     final queryParameters = {
       'category': 'normal',
     };
@@ -79,7 +79,7 @@ class PostListModel extends ChangeNotifier {
   }
 
   getPostMarketList() async {
-    var home = '/channels/' + _no.toString() + '/posts?';
+    var home = '/channels/' + _channel_id.toString() + '/posts?';
     final queryParameters = {
       'category': 'market',
     };
