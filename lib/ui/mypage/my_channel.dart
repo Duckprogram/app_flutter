@@ -13,8 +13,12 @@ class MyChannel extends StatefulWidget {
 
 class _MyChannelState extends State<MyChannel> {
   _moveChannelPage(int id) {
-    return Navigator.of(context, rootNavigator: true)
-        .push(MaterialPageRoute(builder: (context) => ChannelHome(id: id)));
+    // return Navigator.of(context, rootNavigator: true)
+    //     .push(MaterialPageRoute(
+    //     builder: (context) => ChannelHome(
+    //           id: id,
+    //           channel: null,
+    //         )));
   }
 
   _handleWithdraw() {
