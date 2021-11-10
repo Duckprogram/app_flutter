@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:duckie_app/components/Icons.dart';
 import 'package:duckie_app/components/appBarWithBack.dart';
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/link.dart';
-import 'package:provider/provider.dart';
-import '../../data/models/auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../styles/styles.dart';
 
 class ModifyProfile extends StatefulWidget {
@@ -12,8 +13,26 @@ class ModifyProfile extends StatefulWidget {
 }
 
 class _ModifyProfileState extends State<ModifyProfile> {
-  String? nickname;
+  final storage = FlutterSecureStorage();
+
+  String? _username;
+  String? _picture;
   bool isEnabled = false;
+  String? _inputName;
+  String? _newPicture;
+
+  @override
+  initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  _loadProfile() async {
+    String? username = await storage.read(key: 'username');
+    String? picture = await storage.read(key: 'picture');
+    setState(() =>
+        {_username = username, _inputName = username, _picture = picture});
+  }
 
   final ButtonStyle style = ElevatedButton.styleFrom(
     elevation: 0.0,
@@ -26,22 +45,33 @@ class _ModifyProfileState extends State<ModifyProfile> {
       "https://cdn.pixabay.com/photo/2021/09/09/12/27/child-6610447_1280.jpg";
 
   _loadPhotos() async {
-    AlertDialog dialog = AlertDialog(content: Text("사진 폴더 불러오기"));
-    showDialog(context: context, builder: (BuildContext context) => dialog);
+    getImageFromGallery();
+    // AlertDialog dialog = AlertDialog(content: Text("사진 폴더 불러오기"));
+    // showDialog(context: context, builder: (BuildContext context) => dialog);
+  }
+
+  Future getImageFromGallery() async {
+    var image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    print(image!.path);
+    setState(() {
+      _newPicture = image.path;
+    });
   }
 
   _onSubmit() {
     if (isEnabled) {
       final snackBar = SnackBar(content: Text('프로필이 변경되었습니다.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      storage.write(key: 'username', value: _inputName);
     }
     Navigator.of(context).pop();
   }
 
-  onChangeNickname(String? value) {
+  onChangeUsername(String? value) {
     if (value != null && value.length > 1 && value.length <= 20) {
       setState(() {
-        nickname = value;
+        _inputName = value;
         isEnabled = true;
       });
     } else {
@@ -60,8 +90,19 @@ class _ModifyProfileState extends State<ModifyProfile> {
   }
 
   Widget _buildbody() {
+    var profileImage;
+    if (_newPicture != null) {
+      profileImage = Image.file(File(_newPicture!)).image;
+    } else if (_picture != null) {
+      profileImage = Image.network(
+        _picture!,
+      ).image;
+    } else {
+      profileImage = AssetImage('assets/images/profile_default.png');
+    }
     return Scaffold(
-      body: Container(
+        body: SingleChildScrollView(
+      child: Container(
           color: white,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 36),
           child: Column(
@@ -73,19 +114,18 @@ class _ModifyProfileState extends State<ModifyProfile> {
                     children: <Widget>[
                       Stack(
                         children: <Widget>[
-                          SizedBox(
+                          Container(
                             width: 120.0,
                             height: 120.0,
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(userIamge),
-                            ),
+                            decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: new DecorationImage(
+                                    fit: BoxFit.cover, image: profileImage)),
                           ),
                           SizedBox(
-                            width: 120.0,
-                            height: 120.0,
                             child: Container(
-                              width: 80.0,
-                              height: 80.0,
+                              width: 120.0,
+                              height: 120.0,
                               alignment: Alignment.bottomRight,
                               child: _loadPhotoButton(),
                             ),
@@ -100,7 +140,7 @@ class _ModifyProfileState extends State<ModifyProfile> {
               ),
               Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 52),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 52),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -112,7 +152,7 @@ class _ModifyProfileState extends State<ModifyProfile> {
                         ),
                       ),
                       TextField(
-                          onChanged: onChangeNickname,
+                          onChanged: onChangeUsername,
                           cursorColor: primaryColor,
                           decoration: InputDecoration(
                             fillColor: white,
@@ -127,7 +167,7 @@ class _ModifyProfileState extends State<ModifyProfile> {
                   ))
             ],
           )),
-    );
+    ));
   }
 
   Container _loadPhotoButton() {
@@ -142,7 +182,7 @@ class _ModifyProfileState extends State<ModifyProfile> {
         ),
         color: Colors.white,
       ),
-      child: iconImageSmall("camera", 25),
+      child: iconImageSmall("camera", 25.0),
     );
   }
 
