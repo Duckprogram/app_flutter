@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
-import '../../data/models/channellist.dart';
+import '../../data/classes/channel.dart';
 import '../../common/type.dart';
 
 import '../../styles/styles.dart';
@@ -13,13 +13,15 @@ import 'channelpostlist.dart';
 import 'channelinfo.dart';
 
 class ChannelHome extends StatefulWidget {
-  ChannelHome({Key? key, required this.id}) : super(key: key);
-  final int id;
+  ChannelHome({Key? key, required this.channel}) : super(key: key);
+  final Channel channel;
   @override
   _ChannelHomeState createState() => _ChannelHomeState();
 }
 
 class _ChannelHomeState extends State<ChannelHome> {
+  late Channel _channel;
+
   List<String> channel_info = [
     '채널 게시글',
     '채널 정보',
@@ -27,6 +29,7 @@ class _ChannelHomeState extends State<ChannelHome> {
 
   @override
   void initState() {
+    _channel = widget.channel;
     super.initState();
   }
 
@@ -35,13 +38,13 @@ class _ChannelHomeState extends State<ChannelHome> {
       case 0:
         {
           return ChannelPostList(
-            id: widget.id,
+            channel: _channel,
           );
         }
-      default :
+      default:
         {
           return ChannelInfo(
-            id: widget.id,
+            channel: _channel,
           );
         }
     }
@@ -62,15 +65,7 @@ class _ChannelHomeState extends State<ChannelHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              child: IconButton(
-                  alignment: Alignment.bottomLeft,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  color: gray01,
-                  icon: Icon(Icons.arrow_back)),
-            ),
+            backpageArrow(context),
             Container(
               padding: EdgeInsets.only(right: 15, left: 25),
               child: Text("모동숲",
@@ -107,22 +102,22 @@ class _ChannelHomeState extends State<ChannelHome> {
     );
 
     return MaterialApp(
-      home: new DefaultTabController(
+      home: DefaultTabController(
         length: channel_info.length,
-        child: new Scaffold(
-          appBar: new AppBar(
+        child: Scaffold(
+          appBar: AppBar(
             title: titleSection,
             toolbarHeight: 120,
             backgroundColor: gray08,
-            bottom: new TabBar(
+            bottom: TabBar(
               labelColor: gray01,
               isScrollable: false,
               tabs: channel_info.map((String choice) {
-                return new Tab(text: choice);
+                return Tab(text: choice);
               }).toList(),
             ),
           ),
-          body: new TabBarView(
+          body: TabBarView(
             children: channel_info.map((String choice) {
               var index = channel_info.indexOf(choice);
               return pageCaller(index);
