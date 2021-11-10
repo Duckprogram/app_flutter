@@ -15,7 +15,7 @@ class CommunityListModel extends ChangeNotifier {
   }
 
   getPostListByTitle(text) async {
-    var path = '/community/search?title=\'' + text + '\'';
+    var path = '/community/search?title=$text';
     try {
       var response = await api_PostlList(header: null, path: path);
       _postlist =

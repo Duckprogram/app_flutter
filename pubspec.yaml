@@ -27,6 +27,7 @@ dependencies:
     transparent_image: ^2.0.0
     #무한 스크래핑
     flutter_bloc: ^0.13.0
+    image_picker: ^0.8.4+4
 
 dev_dependencies:
     flutter_test:

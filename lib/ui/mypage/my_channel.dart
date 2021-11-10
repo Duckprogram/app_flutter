@@ -1,4 +1,5 @@
 import 'package:duckie_app/components/appBarWithBack.dart';
+import 'package:duckie_app/ui/channel/channelhome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
@@ -11,9 +12,9 @@ class MyChannel extends StatefulWidget {
 }
 
 class _MyChannelState extends State<MyChannel> {
-  _moveChannelPage() {
-    AlertDialog dialog = AlertDialog(content: Text("채널로 이동"));
-    showDialog(context: context, builder: (BuildContext context) => dialog);
+  _moveChannelPage(int id) {
+    return Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(builder: (context) => ChannelHome(id: id)));
   }
 
   _handleWithdraw() {
@@ -57,10 +58,16 @@ class _MyChannelState extends State<MyChannel> {
                     Container(
                         child: Column(
                       children: [
-                        _channelItem(Image.asset("assets/images/em_brush.png"),
-                            "내가 청소왕이 될 상인가", false),
-                        _channelItem(Image.asset("assets/images/em_brush.png"),
-                            "내가 청소왕이 될 상인가", false)
+                        _channelItem(
+                            1,
+                            Image.asset("assets/images/em_brush.png"),
+                            "내가 청소왕이 될 상인가",
+                            false),
+                        _channelItem(
+                            2,
+                            Image.asset("assets/images/em_brush.png"),
+                            "내가 청소왕이 될 상인가",
+                            false)
                       ],
                     ))
                   ])),
@@ -83,6 +90,7 @@ class _MyChannelState extends State<MyChannel> {
                         child: Column(
                       children: [
                         _channelItem(
+                          1,
                           Image.asset("assets/images/em_brush.png"),
                           "내가 청소왕이 될 상인가",
                           true,
@@ -93,7 +101,7 @@ class _MyChannelState extends State<MyChannel> {
         ]));
   }
 
-  Widget _channelItem(icon, title, isCreated) {
+  Widget _channelItem(id, icon, title, isCreated) {
     return GestureDetector(
         child: Container(
             padding: const EdgeInsets.all(24),
@@ -158,7 +166,7 @@ class _MyChannelState extends State<MyChannel> {
                     ))
               ],
             )),
-        onTap: _moveChannelPage);
+        onTap: () => _moveChannelPage(id));
   }
 
   Widget _withdrawButton() {
