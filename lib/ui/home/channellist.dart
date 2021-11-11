@@ -11,7 +11,7 @@ import 'package:collection/collection.dart';
 
 class ChannelList extends StatefulWidget {
   ChannelList({Key? key, required this.choice}) : super(key: key);
-  final Category choice;
+  final Channel choice;
 
   @override
   _ChannelListState createState() => _ChannelListState();

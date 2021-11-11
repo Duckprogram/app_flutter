@@ -10,10 +10,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 //추후 API 추가 진행
 //postman url
 
-var BACK_END_HOST =
-    'https://f2783837-62f0-4fce-9e56-73217fb58142.mock.pstmn.io';
+// var BACK_END_HOST =
+//     'https://f2783837-62f0-4fce-9e56-73217fb58142.mock.pstmn.io';
 
-// var BACK_END_HOST = 'http://133.186.251.46';
+// var BACK_END_HOST =
+//     'https://1b4bc78c-8c0f-4944-a114-a34b8223d2e9.mock.pstmn.io';
+var BACK_END_HOST = 'http://133.186.251.46';
 
 Future<dynamic> http_get({header, String? path}) async {
   final storage = FlutterSecureStorage();
