@@ -1,3 +1,4 @@
+import 'package:duckie_app/ui/splash.dart';
 import 'package:flutter/material.dart';
 import 'ui/signin/Kakaologin.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +37,9 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: KakoaLoginPage(),
-          initialRoute: "/login",
+          initialRoute: "/splash",
           routes: <String, WidgetBuilder>{
+            "/splash": (BuildContext context) => SplashPage(),
             "/login": (BuildContext context) => KakoaLoginPage(),
             "/home": (BuildContext context) => Home(),
           },
