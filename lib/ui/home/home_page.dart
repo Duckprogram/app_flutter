@@ -27,7 +27,6 @@ late List<Category> categories = List.of(init_categories);
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   final ChannelListModel _channellist = ChannelListModel();
-  // List of Category Data objects.
 
   @override
   void initState() {
@@ -45,8 +44,8 @@ class _HomePageState extends State<HomePage> {
     print("new mychannellist everything " + newChannel.toString());
     print("init_categories" + init_categories.toString());
     if (!ListEquality().equals(categories.sublist(2), newChannel)) {
+      categories = List.of(init_categories);
       setState(() {
-        categories = List.of(init_categories);
         categories.addAll(newChannel);
       });
     }
@@ -57,49 +56,62 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Widget pageCaller(int index, Category choice) {
+    switch (index) {
+      case 0:
+        {
+          return ChannelList(
+            choice: choice,
+          );
+        }
+      case 1:
+        {
+          return TimeLine(
+            choice: choice,
+          );
+        }
+      default:
+        {
+          return MyChannel(
+            choice: choice,
+          );
+        }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: false);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
       ],
-      child: new MaterialApp(
-        home: new DefaultTabController(
+      child: MaterialApp(
+        home: DefaultTabController(
           length: categories.length,
-          child: new Scaffold(
-            appBar: new AppBar(
+          child: Scaffold(
+            appBar: AppBar(
               toolbarHeight: 0,
               backgroundColor: primaryColor,
-              bottom: new TabBar(
+              bottom: TabBar(
                 isScrollable: true,
                 tabs: categories.map((Category choice) {
-                  return new Tab(
+                  return Tab(
                     text: choice.name,
                   );
                 }).toList(),
               ),
             ),
-            body: new TabBarView(
+            body: TabBarView(
               children: categories.map((Category choice) {
-                return new Padding(
-                    padding: const EdgeInsets.all(0),
-                    // child: new CategoryCard(choice: choice),
-                    child: Builder(builder: (context) {
-                      /// some operation here ...
-                      if (choice.name == "채널 리스트") {
-                        return new ChannelList(choice: choice);
-                      } else if (choice.name == "타임라인") {
-                        return new TimeLine(choice: choice);
-                      } else {
-                        return new MyChannel(choice: choice);
-                      }
-                    }));
+                var index = categories.indexOf(choice);
+                return pageCaller(index, choice);
               }).toList(),
             ),
           ),
         ),
-        theme: new ThemeData(primaryColor: Colors.deepOrange),
+        theme: ThemeData(primaryColor: Colors.deepOrange),
       ),
     );
   }

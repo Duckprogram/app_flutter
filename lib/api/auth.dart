@@ -7,8 +7,9 @@ import '../utils/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-Future<dynamic> api_userRegisterInformation({header, required String path}) async {
-  var response = await http_get(header: header, path : path);
+Future<dynamic> api_userRegisterInformation(
+    {header, required String path}) async {
+  var response = await http_get(header: header, path: path);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
@@ -38,12 +39,9 @@ Future<dynamic> api_userRegisterCheck(
     {header, required String path, required Map<String, dynamic> body}) async {
   var response = await http_post(header: header, path: path, body: body);
   String expiredTokenUrl = BACK_END_HOST + "exception/expiredtoken";
-
-  print(response.headers['location'].toString());
   if (response.body.isNotEmpty && response.statusCode == 200) {
     //Response가 비어있지 않고 정상응답인 경우
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    print(responseJson);
     return responseJson;
   } else if (!response.body.isNotEmpty &&
       response.statusCode == 302 &&
@@ -57,7 +55,6 @@ Future<dynamic> api_userRegisterCheck(
     }
   } else {
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
-    print(responseJson);
     var responseCode = _getResponseCode(responseJson);
     if (responseCode == null) throw Exception("Failed to HTTP POST");
     if (responseCode == -9999) {
@@ -84,8 +81,8 @@ dynamic _getResponseCode(dynamic responseJson) {
 // 혹시 몰라 token issue 추가
 Future<bool> _reissueAccessToken() async {
   final storage = FlutterSecureStorage();
-  String? accessToken = await storage.read( key: 'access_token');
-  String? refreshToken = await storage.read( key: 'refresh_token');
+  String? accessToken = await storage.read(key: 'access_token');
+  String? refreshToken = await storage.read(key: 'refresh_token');
 
   var url = BACK_END_HOST + 'api/token/refreshrefreshToken=' + refreshToken!;
 

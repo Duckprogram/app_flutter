@@ -7,20 +7,17 @@ class User {
   User({
     this.token,
     this.avatar,
-    this.firstname,
     this.id,
-    this.lastname,
+    this.email,
+    this.name,
+    this.picture,
   });
 
   final int? id;
-
-  @JsonKey(name: "first_name")
-  final String? firstname;
-
-  @JsonKey(name: "last_name")
-  final String? lastname;
-
+  final String? name;
   final String? avatar;
+  final String? email;
+  final String? picture;
 
   @JsonKey(nullable: true)
   String? token;
@@ -31,6 +28,6 @@ class User {
 
   @override
   String toString() {
-    return "$firstname $lastname".toString();
+    return "$name".toString();
   }
 }

@@ -9,8 +9,6 @@ import '../../data/classes/channel.dart';
 import '../channel/channelhome.dart';
 import 'package:collection/collection.dart';
 
-List<Channel>? list;
-
 class ChannelList extends StatefulWidget {
   ChannelList({Key? key, required this.choice}) : super(key: key);
   final Category choice;
@@ -20,6 +18,9 @@ class ChannelList extends StatefulWidget {
 }
 
 class _ChannelListState extends State<ChannelList> {
+
+  List<Channel>? list;
+
   @override
   void initState() {
     super.initState();
@@ -30,19 +31,25 @@ class _ChannelListState extends State<ChannelList> {
     super.dispose();
   }
 
+  _moveChannelHome(Channel channel) {
+    //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
+    //rootNavigator를 추가하면 bottombar 제거 가능
+    return Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(builder: (context) => ChannelHome( channel : channel)));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final postList = context.select((ChannelListModel channellistmodel) {
+    final channellist = context.select((ChannelListModel channellistmodel) {
       return channellistmodel.channellist;
     });
-    // final postList =  Provider.of<ChannelListModel>(context, listen: true);
-    // List<Channel>? list = postList.channellist;
-    if (postList != null && !ListEquality().equals(list, postList)) {
-      list = postList;
+
+    if (channellist != null && !ListEquality().equals(list, channellist)) {
+      list = channellist;
     }
 
     Widget titleSection = Container(
-        padding: EdgeInsets.only(top: 15, left: 36),
+        padding: EdgeInsets.only(left: 36),
         child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
           Text(
             "덕님! 취향저격 \n채널을 찾아보세요",
@@ -62,6 +69,7 @@ class _ChannelListState extends State<ChannelList> {
 
     Widget listSection = Container(
         padding: EdgeInsets.all(15),
+        color: Colors.white,
         child: ListView.builder(
           itemCount: list?.length ?? 0,
           physics: AlwaysScrollableScrollPhysics(),
@@ -136,24 +144,48 @@ class _ChannelListState extends State<ChannelList> {
                   ),
                 ),
                 onTap: () {
-                  // AlertDialog dialog = AlertDialog(content: Text("선택한 채널로 이동"));
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) => dialog);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChannelHome()),
+                  // ignore: unnecessary_statements
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        // color: Colors.amber,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Text('채널 덕후만 읽을 수 있습니다. \n지금 바로 가입하고 덕후가 되어 보세요', style: h3,),
+                              Padding(padding: const EdgeInsets.all(10)),
+                              ElevatedButton(
+                                child: const Text('해당 채널 바로가기'),
+                                style : ButtonStyle ( 
+                                  backgroundColor: 
+                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return primaryColor2; } else { return primaryColor; } }),
+                                  shape: 
+                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return RoundedRectangleBorder( borderRadius: BorderRadius.circular(30)); } else { return RoundedRectangleBorder( borderRadius: BorderRadius.circular(30)); } }),
+                                  fixedSize: 
+                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return Size( 330, 50); } else { return Size( 330, 50); } })
+                                ),
+                                onPressed: () => _moveChannelHome(list![position]),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 });
           },
         ));
 
     return Scaffold(
-        body: Container(
-            child: SafeArea(
-                child: Column(children: <Widget>[
-      Flexible(fit: FlexFit.loose, child: titleSection),
-      Expanded(child: listSection, flex: 5),
-    ]))));
+        appBar: AppBar(
+            toolbarHeight: 120,
+            backgroundColor: Colors.white,
+            title: titleSection,
+            elevation: 0),
+        body: listSection);
   }
 }

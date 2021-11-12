@@ -13,9 +13,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 var BACK_END_HOST =
     'https://f2783837-62f0-4fce-9e56-73217fb58142.mock.pstmn.io';
 
+// var BACK_END_HOST = 'http://133.186.251.46';
+
 Future<dynamic> http_get({header, String? path}) async {
   final storage = FlutterSecureStorage();
-  String? jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'accessToken');
 
   var url = BACK_END_HOST + path!;
 
@@ -46,11 +48,11 @@ Future<dynamic> http_get({header, String? path}) async {
 Future<dynamic> http_post(
     {header, String? path, Map<String, dynamic>? body}) async {
   final storage = FlutterSecureStorage();
-  String? jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'accessToken');
 
   print(BACK_END_HOST + path!);
   print('JWT $jwt');
-
+  print(body);
   var url = BACK_END_HOST + path;
 
   var response;
@@ -81,6 +83,7 @@ Future<dynamic> http_post(
     }
     print("post 전송 진행");
     print(Uri.parse(Uri.encodeFull(url)));
+    print(response);
     return response;
   } catch (ex) {
     print(ex);
@@ -97,7 +100,7 @@ Future<dynamic> http_post(
 // 추가 구현 필요
 Future<dynamic> http_delete(url, path, header) async {
   final storage = FlutterSecureStorage();
-  String? jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'accessToken');
 
   print(BACK_END_HOST + path);
 }
