@@ -143,6 +143,48 @@ Future<dynamic> http_image_put(
     {required String role,
     required String id,
     required List<String> image_files}) async {
+
+ /*
+  {
+    "header": {
+        // 생략
+    },
+    "file": {
+        "isFolder": false,
+        "id": "9cf11176-045c-4708-8dbd-35633f029a91",
+        "url": "http://image.toast.com/aaaaach/myfolder/sample.png",
+        "name": "sample.png",
+        "path": "/myfolder/sample.png",
+        "bytes": 54684,
+        "createdBy": "U",
+        "updatedAt": "2016-02-26T16:38:34+0900",
+        "operationId": "100x100",
+        "imageProperty": {
+            "width": 200,
+            "height": 150,
+            "createdAt": "2016-02-26T16:38:11+0900",
+            "coordinate": {
+                "lat": null,
+                "lng": null
+            }
+        },
+        "queues": [
+            "queueId": "0256316c-7dcf-4940-975b-673afb62e8a3",
+            "queueType": "image",
+            "status": "W",
+            "tryCount": 0,
+            "queuedAt": "2016-02-26T16:38:11+0900",
+            "operationId": "100x100",
+            "url": "http://image.toast.com/aaaaach/myfolder/sample_100x100.png",
+            "name": "sample_100x100.png",
+            "path": "/myfolder/sample_100x100.png"
+        ],
+    }
+  }
+  이미지 전송 결과로 response["file"]["queues"]["url"] 를 받아서 저장.. 
+  아직 다중 파일 저장 방법 개발 미흡.. 
+  
+*/
   print(IMAGE_PUT_URL);
   var url = IMAGE_PUT_URL;
 
