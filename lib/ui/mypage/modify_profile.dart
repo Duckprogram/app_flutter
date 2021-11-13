@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../styles/styles.dart';
+import '../../utils/http.dart';
 
 class ModifyProfile extends StatefulWidget {
   @override
@@ -57,6 +58,13 @@ class _ModifyProfileState extends State<ModifyProfile> {
     setState(() {
       _newPicture = image.path;
     });
+    var image2 =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    // var image =
+    //     await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    var response =
+        await http_image_put(role: 'test', id: '2', image_files: [image.path, image2!.path]);
+    print("response" + response.toString());
   }
 
   _onSubmit() {
