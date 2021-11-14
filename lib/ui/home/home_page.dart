@@ -27,18 +27,24 @@ late List<Channel> categories = List.of(init_categories);
 // Our MrTabs class.
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
+    final _channellist = Provider.of<ChannelListModel>(context, listen: false);
+
+    _channellist
+        .getChannelList()
+        .then((_) => _channellist.getMyChannelList())
+        .then((_) => _asyncMethod(_channellist.mychannellist));
 
     super.initState();
   }
 
   //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
-  _asyncMethod( List<Channel>? newChannel) {
+  _asyncMethod(List<Channel>? newChannel) {
     print("new mychannellist everything " + newChannel.toString());
     print("init_categories" + init_categories.toString());
-    if (!ListEquality().equals(categories.sublist(2), newChannel ) && newChannel != null) {
+    if (!ListEquality().equals(categories.sublist(2), newChannel) &&
+        newChannel != null) {
       categories = List.of(init_categories);
       setState(() {
         categories.addAll(newChannel);
@@ -77,10 +83,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: false);
-    final _channellist = Provider.of<ChannelListModel>(context, listen: true);
-    // TODO: implement initState
-    _channellist.getChannelList();
-    _asyncMethod(_channellist.mychannellist);
+
+
     return MaterialApp(
       home: DefaultTabController(
         length: categories.length,

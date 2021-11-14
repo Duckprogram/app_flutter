@@ -143,8 +143,7 @@ Future<dynamic> http_image_put(
     {required String role,
     required String id,
     required List<String> image_files}) async {
-
- /*
+  /*
   {
     "header": {
         // 생략
@@ -190,101 +189,87 @@ Future<dynamic> http_image_put(
 
   //nhn클라우드 특성상 길이가 무조건 2이상이어야한다. 따라서 00001 이런식으로 폴더를 생성하게 만들었다.
   id = id.padLeft(5, '0');
+
   if (image_files.length == 1) {
-    var querypath =
-        'path=/' + role + '/' + id + '/' + image_files[0].split('/').last;
-    print(querypath);
-    final queryParameters = {
-      'overwrite': 'true',
-    };
-    var path = url +
-        '?' +
-        querypath +
-        '&' +
-        Uri(queryParameters: queryParameters).query;
-    var response;
-    try {
-      response = await http.put(
-        Uri.parse(Uri.encodeFull(path)),
-        headers: {
-          "Content-Type": "application/octet-stream",
-          "Authorization": IMAGE_SECRET_KEY,
-          "Accept": "*/*",
-          "Connection": 'keep-alive',
-        },
-        body: File(image_files[0]).readAsBytesSync(),
-      );
-      print(File(image_files[0]).readAsBytesSync().toString());
-      print("image put 전송 진행");
-      print(Uri.parse(Uri.encodeFull(path)));
-      print("결과" + response.body.toString() + response.statusCode.toString());
-      return response;
-    } catch (ex) {
-      print(ex);
-      debugPrint("http_image_put.exception: " +
-          ex.toString() +
-          ', statusCode:' +
-          response.statusCode.toString() +
-          ', url:' +
-          url);
-      return response;
-    }
+    return await single_image_put(role, id, image_files[0], url);
   } else {
-    var path = Uri.parse(url);
-    var response;
-    var headers = {
-      "Authorization": IMAGE_SECRET_KEY,
-    };
-    try {
-      // var request = new http.MultipartRequest('POST', path)
-      //   ..headers.addAll(headers)
-      //   ..fields['params.basepath'] = '/' + role + '/' + id
-      //   ..fields['params.overwrite'] = 'true';
+    // var path = Uri.parse(url);
+    // var response;
+    // var headers = {
+    //   "Authorization": IMAGE_SECRET_KEY,
+    // };
+    // try {
+    //   final formData = dio.FormData.fromMap({
+    //     'params': {
+    //       'overwrite': 'true',
+    //       'basepath': '/' + role + '/' + id,
+    //     },
+    //     'files':
+    //     [ for ( var image_file in image_files ) await dio.MultipartFile.fromFile(image_file)]
+    //   });
 
-      // for (var image_file in image_files) {
-      //   request.files
-      //       .add(await http.MultipartFile.fromPath('files', image_file));
-      // }
-      // var response = await request.send();
+    //   final response = await dio.Dio().post(
+    //     url,
+    //     data: formData,
+    //     options: dio.Options(headers: headers),
+    //   );
 
-      final formData = dio.FormData.fromMap({
-        'params': {
-          'overwrite': 'true',
-          'basepath': '/' + role + '/' + id,
-        },
-        'files':
-        [ await dio.MultipartFile.fromFile(image_files[0]) ,  await dio.MultipartFile.fromFile(image_files[1])]
-        // [
-        //   dio.MultipartFile.fromFileSync(image_files[0],
-        //       filename: "1.png"),
-        //   dio.MultipartFile.fromFileSync(image_files[1],
-        //       filename: "2.png"),
-        // ]
-      });
+    //   print("image post 전송 진행");
+    //   print(Uri.parse(Uri.encodeFull(url)));
+    //   print(response.headers);
+    //   return response;
+    // } catch (ex) {
+    //   print(ex);
+    //   debugPrint("http_image_put.exception: " +
+    //       ex.toString() +
+    //       ', statusCode:' +
+    //       response.statusMessage.toString() +
+    //       ', url:' +
+    //       url);
+    //   return response;
+    // }
+    return [
+      for (var image_file in image_files)
+        await single_image_put(role, id, image_file, url)
+    ];
+  }
+}
 
-      final response = await dio.Dio().post(
-        url,
-        data: formData,
-        options: dio.Options(headers: headers),
-      );
-
-      print("image post 전송 진행");
-      print(Uri.parse(Uri.encodeFull(url)));
-      print(response.headers);
-      // print(response.toString() + response.statusCode.toString());
-      // response.stream.transform(utf8.decoder).listen((value) {
-      //   print(value);
-      // });
-      return response;
-    } catch (ex) {
-      print(ex);
-      debugPrint("http_image_put.exception: " +
-          ex.toString() +
-          ', statusCode:' +
-          response.statusMessage.toString() +
-          ', url:' +
-          url);
-      return response;
-    }
+Future<dynamic> single_image_put(
+    String role, String id, String image_file, String url) async {
+  var querypath =
+      'path=/' + role + '/' + id + '/' + image_file.split('/').last;
+  print(querypath);
+  final queryParameters = {
+    'overwrite': 'true',
+  };
+  var path =
+      url + '?' + querypath + '&' + Uri(queryParameters: queryParameters).query;
+  var response;
+  try {
+    response = await http.put(
+      Uri.parse(Uri.encodeFull(path)),
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Authorization": IMAGE_SECRET_KEY,
+        "Accept": "*/*",
+        "Connection": 'keep-alive',
+      },
+      body: File(image_file).readAsBytesSync(),
+    );
+    print(File(image_file).readAsBytesSync().toString());
+    print("image put 전송 진행");
+    print(Uri.parse(Uri.encodeFull(path)));
+    print("결과" + response.body.toString() + response.statusCode.toString());
+    return response;
+  } catch (ex) {
+    print(ex);
+    debugPrint("http_image_put.exception: " +
+        ex.toString() +
+        ', statusCode:' +
+        response.statusCode.toString() +
+        ', url:' +
+        url);
+    return response;
   }
 }

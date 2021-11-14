@@ -1,3 +1,4 @@
+import 'package:duckie_app/data/models/channellist.dart';
 import 'package:flutter/material.dart';
 import 'ui/signin/Kakaologin.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AuthModel _auth = AuthModel();
+  final ChannelListModel _channellist = ChannelListModel();
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<AuthModel>.value(value: _auth),
+          ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

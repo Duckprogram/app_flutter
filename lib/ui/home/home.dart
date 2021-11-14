@@ -16,15 +16,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final ChannelListModel _channellist = ChannelListModel();
-
   int _selectedIndex = 0;
   late List _pages;
 
   @override
   void initState() {
     // TODO: implement initState
-    _channellist.getMyChannelList();
     super.initState();
     _pages = [
       HomePage(),
@@ -42,53 +39,48 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
-      ],
-      child: Scaffold(
-        body: Center(
-          child: _pages[_selectedIndex],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            fixedColor: primaryColor,
-            unselectedItemColor: Colors.grey,
-            onTap: _onItemTapped,
-            currentIndex: _selectedIndex,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home,
-                    // color: Colors.grey.shade400,
-                  ),
-                  title: Text('홈'),
-                  backgroundColor: Colors.white),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.search,
-                  ),
-                  title: Text('검색'),
-                  backgroundColor: Colors.white),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.shopping_bag,
-                  ),
-                  title: Text('마켓'),
-                  backgroundColor: Colors.white),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.notifications,
-                  ),
-                  title: Text('알림'),
-                  backgroundColor: Colors.white),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.account_circle,
-                  ),
-                  title: Text('My'),
-                  backgroundColor: Colors.white),
-            ]),
+    return Scaffold(
+      body: Center(
+        child: _pages[_selectedIndex],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          fixedColor: primaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+          currentIndex: _selectedIndex,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  // color: Colors.grey.shade400,
+                ),
+                title: Text('홈'),
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                ),
+                title: Text('검색'),
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.shopping_bag,
+                ),
+                title: Text('마켓'),
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.notifications,
+                ),
+                title: Text('알림'),
+                backgroundColor: Colors.white),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_circle,
+                ),
+                title: Text('My'),
+                backgroundColor: Colors.white),
+          ]),
     );
   }
 
