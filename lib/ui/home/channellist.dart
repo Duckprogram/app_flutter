@@ -18,7 +18,6 @@ class ChannelList extends StatefulWidget {
 }
 
 class _ChannelListState extends State<ChannelList> {
-
   List<Channel>? list;
 
   @override
@@ -34,8 +33,16 @@ class _ChannelListState extends State<ChannelList> {
   _moveChannelHome(Channel channel) {
     //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
     //rootNavigator를 추가하면 bottombar 제거 가능
-    return Navigator.of(context, rootNavigator: true)
-        .push(MaterialPageRoute(builder: (context) => ChannelHome( channel : channel)));
+    return Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) => ChannelHome(channel: channel)));
+  }
+
+  _getChannelIcon(icon) {
+    if (icon != null) {
+      return Image.network(icon.toString());
+    } else {
+      return Image.asset('assets/images/reading_glasses.png');
+    }
   }
 
   @override
@@ -93,32 +100,30 @@ class _ChannelListState extends State<ChannelList> {
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(5),
-                        margin: const EdgeInsets.only(right: 12),
-                        height: 32,
-                        width: 32,
-                        decoration: BoxDecoration(
-                          color: gray08,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        // child: Image.network(
-                        //     "https://cdn.pixabay.com/photo/2020/12/18/05/56/flowers-5841251_1280.jpg")
-                      ),
-                      Column(
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.only(right: 12),
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(
+                            color: gray08,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: _getChannelIcon(list![position].icon)),
+                      Flexible(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             padding: EdgeInsets.only(bottom: 12),
                             child: Text(
-                                "#" +
-                                    list![position].name.toString() +
-                                    "\n" +
-                                    list![position].name.toString(),
-                                style: channelName),
+                              list![position].name.toString(),
+                              style: channelName,
+                              softWrap: true, // 텍스트가 영역을 넘어갈 경우 줄바꿈 여부
+                            ),
                           ),
                           Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
@@ -139,7 +144,7 @@ class _ChannelListState extends State<ChannelList> {
                             ),
                           )
                         ],
-                      ),
+                      )),
                     ],
                   ),
                 ),
@@ -156,19 +161,41 @@ class _ChannelListState extends State<ChannelList> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const Text('채널 덕후만 읽을 수 있습니다. \n지금 바로 가입하고 덕후가 되어 보세요', style: h3,),
+                              const Text(
+                                '채널 덕후만 읽을 수 있습니다. \n지금 바로 가입하고 덕후가 되어 보세요',
+                                style: h3,
+                              ),
                               Padding(padding: const EdgeInsets.all(10)),
                               ElevatedButton(
                                 child: const Text('해당 채널 바로가기'),
-                                style : ButtonStyle ( 
-                                  backgroundColor: 
-                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return primaryColor2; } else { return primaryColor; } }),
-                                  shape: 
-                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return RoundedRectangleBorder( borderRadius: BorderRadius.circular(30)); } else { return RoundedRectangleBorder( borderRadius: BorderRadius.circular(30)); } }),
-                                  fixedSize: 
-                                  MaterialStateProperty.resolveWith((states) { if (states.contains(MaterialState.pressed)) { return Size( 330, 50); } else { return Size( 330, 50); } })
-                                ),
-                                onPressed: () => _moveChannelHome(list![position]),
+                                style: ButtonStyle(backgroundColor:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return primaryColor2;
+                                  } else {
+                                    return primaryColor;
+                                  }
+                                }), shape:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30));
+                                  } else {
+                                    return RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30));
+                                  }
+                                }), fixedSize:
+                                    MaterialStateProperty.resolveWith((states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Size(330, 50);
+                                  } else {
+                                    return Size(330, 50);
+                                  }
+                                })),
+                                onPressed: () =>
+                                    _moveChannelHome(list![position]),
                               )
                             ],
                           ),

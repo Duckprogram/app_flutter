@@ -38,20 +38,19 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
+                      Flexible(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                               padding: EdgeInsets.only(bottom: 12),
-                              child: // 텍스트가 영역을 넘어갈 경우 줄바꿈 여부
+                              child: 
                                   Text(list[position].title!,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                      maxLines: 2,
                                       style: channelName)),
                           Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(list[position].username!,
@@ -72,7 +71,7 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                             ),
                           )
                         ],
-                      ),
+                      )),
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: list[position].images != null &&

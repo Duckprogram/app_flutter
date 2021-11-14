@@ -153,6 +153,14 @@ const body2Bold = TextStyle(
   fontWeight: FontWeight.w700,
 );
 
+
+const body2BoldGray3 = TextStyle(
+  color: gray03,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+);
+
 const caption = TextStyle(
   fontSize: 11,
   fontFamily: "Spoqa Han Sans Neo",

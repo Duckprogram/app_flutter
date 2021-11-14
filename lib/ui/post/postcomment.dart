@@ -1,3 +1,5 @@
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/ui/post/commentList.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -35,68 +37,48 @@ class _PostCommentState extends State<PostComment> {
   @override
   Widget build(BuildContext context) {
     AppBar appBarSection = AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+      backgroundColor: white,
+      foregroundColor: gray01,
+      elevation: 0.1,
       title: Text(
         "댓글",
-        style: h4,
+        style: body2Bold,
       ),
-      backgroundColor: gray08,
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+            icon: iconImageSmall("close", 24.0),
+            onPressed: () => Navigator.of(context).pop()),
+      ],
     );
-    Widget titleSection = Container(
-        padding: EdgeInsets.only(left: 25, top: 15),
-        child: Text(
-          _postitem.title.toString(),
-          style: h2,
+    Widget commentNavigation = Container(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        decoration: BorderBottom,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              child: Text("최신순", style: body2Bold),
+            ),
+            Text(" | ", style: body1Bold),
+            GestureDetector(
+              child: Text("오래된 순", style: body2BoldGray3),
+            )
+          ],
         ));
-
-
-    Widget CommentNavigation = Container(
-      padding: EdgeInsets.only(left: 25, top : 20, right : 25 ),
-      child : Row( 
-        mainAxisAlignment : MainAxisAlignment.start,
-        crossAxisAlignment : CrossAxisAlignment.start,
-        children: [
-           GestureDetector(
-              child: Text("최신순", style : body2Gray03),
-           ),
-          Text(" | ", style : body1Bold),
-          GestureDetector(
-              child: Text("오래된 순", style : body2Gray03),
-          ) 
-        ],
-      )
-    );
-
-    Widget commentlist = Container(
-      padding: EdgeInsets.only(left: 25, top: 15),
-      // padding: flex,
-      // child: ListView.builder(
-      //     shrinkWrap: true,
-      //     physics: AlwaysScrollableScrollPhysics(),
-      //     itemCount: postitemlist?.length ?? 0,
-      //     padding: const EdgeInsets.all(6.0),
-      //     itemBuilder: (context, index) => ListTile(
-      //           shape: RoundedRectangleBorder(
-      //               side: BorderSide(color: Colors.grey, width: 0.5),
-      //               borderRadius: BorderRadius.circular(5)),
-      //           title: Text(postitemlist![index].title.toString() +
-      //               postitemlist[index].username.toString() +
-      //               postitemlist[index].views.toString()),
-      //           minVerticalPadding: 50,
-      //         ))
-      //   );
-    );
 
     return Scaffold(
         appBar: appBarSection,
+        backgroundColor: white,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CommentNavigation,
-            commentlist
+            commentNavigation,
+            SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 32),
+                child: commentlist)
           ],
         ));
   }

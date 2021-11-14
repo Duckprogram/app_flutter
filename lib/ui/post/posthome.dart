@@ -1,4 +1,5 @@
 import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/ui/post/commentList.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import '../../styles/styles.dart';
@@ -49,7 +50,6 @@ class _PostHomeState extends State<PostHome> {
   @override
   Widget build(BuildContext context) {
     AppBar appBarSection = AppBar(
-      shape: Border(bottom: BorderSide(color: gray07, width: 1)),
       backgroundColor: white,
       foregroundColor: gray01,
       elevation: 0.1,
@@ -79,7 +79,6 @@ class _PostHomeState extends State<PostHome> {
           style: h2,
         ));
     Widget writerSection = Container(
-      decoration: BorderBottom,
       padding: EdgeInsets.only(bottom: 24),
       child: Row(
         children: [
@@ -117,48 +116,36 @@ class _PostHomeState extends State<PostHome> {
     );
 
     Widget postSection = Container(
-        decoration: BorderBottom,
         padding: EdgeInsets.symmetric(vertical: 36),
         child: Text(
           _postitem.content.toString(),
           style: body1,
         ));
 
-    Widget CommentNavigation = Container(
+    Widget commentNavigation = Container(
+        padding: EdgeInsets.symmetric(vertical: 8),
         child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("댓글 " + _postitem.views.toString(), style: body1Bold),
-        GestureDetector(
-            child: Text("더보기 >", style: body2Gray03), onTap: _movePostComment)
-      ],
-    ));
-
-    Widget commentlist = Container(
-      padding: EdgeInsets.only(left: 25, top: 15),
-      // padding: flex,
-      // child: ListView.builder(
-      //     shrinkWrap: true,
-      //     physics: AlwaysScrollableScrollPhysics(),
-      //     itemCount: postitemlist?.length ?? 0,
-      //     padding: const EdgeInsets.all(6.0),
-      //     itemBuilder: (context, index) => ListTile(
-      //           shape: RoundedRectangleBorder(
-      //               side: BorderSide(color: Colors.grey, width: 0.5),
-      //               borderRadius: BorderRadius.circular(5)),
-      //           title: Text(postitemlist![index].title.toString() +
-      //               postitemlist[index].username.toString() +
-      //               postitemlist[index].views.toString()),
-      //           minVerticalPadding: 50,
-      //         ))
-      //   );
-    );
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("댓글 ", style: body1Bold),
+                Text(_postitem.views.toString(), style: body1BoldPrimary),
+              ],
+            ),
+            GestureDetector(
+                child: Text("더보기 >", style: body2BoldGray3),
+                onTap: _movePostComment)
+          ],
+        ));
 
     return Scaffold(
         appBar: appBarSection,
         backgroundColor: white,
-        body: Container(
+        body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +155,7 @@ class _PostHomeState extends State<PostHome> {
                 dividerLine,
                 postSection,
                 dividerLine,
-                CommentNavigation,
+                commentNavigation,
                 commentlist
               ],
             )));
