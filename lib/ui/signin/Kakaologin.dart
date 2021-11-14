@@ -61,46 +61,68 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  "어서오세요 덕님!\n더키에 오신걸 환영해요! ",
-                  style: h1,
-                  textAlign: TextAlign.center,
-                )),
-            Container(
-                padding: EdgeInsets.only(bottom: 45),
-                child: Text(
-                  "다른 곳에선 못했던 이야기\n덕친들과 자유롭게 애기하세요!",
-                  style: body1MediumGray3,
-                  textAlign: TextAlign.center,
-                )),
-            Container(
-                width: 220,
-                padding: EdgeInsets.only(bottom: 85),
-                child: Image.asset('assets/login/duckie_character.png')),
-            Container(
-              height: 60,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 20,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Color(0xfffae100),
-              ),
-              child: ElevatedButton(
-                  child: Text("카카오톡 으로 로그인 하기",
-                      textAlign: TextAlign.center, style: body1Bold),
-                  onPressed: _loginWithKakaoTalk),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            toolbarHeight: 56,
+            foregroundColor: gray01,
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            elevation: 0.1,
+            shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+            title: Text(
+              "로그인",
+              textAlign: TextAlign.center,
+              style: body2Bold,
             ),
-          ],
-        ),
-      ),
+          ),
+          body: Container(
+            color: white,
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.only(
+                      top: 56,
+                      bottom: 20,
+                    ),
+                    child: Text(
+                      "어서오세요 덕님!\n더키에 오신걸 환영해요! ",
+                      style: h1,
+                      textAlign: TextAlign.center,
+                    )),
+                Container(
+                    padding: EdgeInsets.only(bottom: 45),
+                    child: Text(
+                      "다른 곳에선 못했던 이야기\n덕친들과 자유롭게 애기하세요!",
+                      style: body1MediumGray3,
+                      textAlign: TextAlign.center,
+                    )),
+                Container(
+                    height: 300,
+                    width: 225,
+                    padding: EdgeInsets.only(bottom: 85),
+                    child: Image.asset('assets/login/duckie_character.png')),
+                Container(
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 60,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Color(0xfffae100),
+                  ),
+                  child: TextButton(
+                      child: Text("카카오톡으로 로그인",
+                          textAlign: TextAlign.center, style: body1Bold),
+                      onPressed: _loginWithKakaoTalk),
+                ),
+              ],
+            ),
+          )),
     );
   }
 
@@ -184,8 +206,6 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
             key: "accessToken", value: response['access_token']);
         await storage.write(key: "username", value: response['name']);
         await storage.write(key: "picture", value: response['picture']);
-        await storage.write(
-            key: "refreshToken", value: response['refresh_token']);
         await storage.write(
             key: "refreshToken", value: response['refresh_token']);
         // 이상없이 잘 되었다면 main 화면으로 넘어가기
