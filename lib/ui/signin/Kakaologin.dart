@@ -1,3 +1,4 @@
+import 'package:duckie_app/styles/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +21,6 @@ class KakoaLoginPage extends StatefulWidget {
 class KakoaLoginPageState extends State<KakoaLoginPage> {
   bool _isKakaoTalkInstalled = false;
   static final storage = FlutterSecureStorage();
-  String _status = 'no-action';
-  final formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   initState() {
@@ -31,7 +29,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _asyncMethod();
     });
-    print(_status);
+
+    KakaoContext.clientId = 'aca6149f183ca8e52113ddcb5cafe2eb';
+    KakaoContext.javascriptClientId = '1dd0e6325c1be9c1451814daa0839a87';
+    isKakaoTalkInstalled();
   }
 
   _asyncMethod() async {
@@ -58,39 +59,46 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    KakaoContext.clientId = 'aca6149f183ca8e52113ddcb5cafe2eb';
-    KakaoContext.javascriptClientId = '1dd0e6325c1be9c1451814daa0839a87';
-
-    isKakaoTalkInstalled();
-
     return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover, image: AssetImage('assets/login/login.png'))),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
-        key: _scaffoldKey,
-        body: SafeArea(
-          child: ListView(
-            reverse: true,
-            physics: AlwaysScrollableScrollPhysics(),
-            // key: PageStorageKey("Divider 1"),
-            padding: EdgeInsets.all(16),
-            children: <Widget>[
-              SizedBox(
-                height: 16,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  "어서오세요 덕님!\n더키에 오신걸 환영해요! ",
+                  style: h1,
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+                padding: EdgeInsets.only(bottom: 45),
+                child: Text(
+                  "다른 곳에선 못했던 이야기\n덕친들과 자유롭게 애기하세요!",
+                  style: body1MediumGray3,
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+                width: 220,
+                padding: EdgeInsets.only(bottom: 85),
+                child: Image.asset('assets/login/duckie_character.png')),
+            Container(
+              height: 60,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 20,
               ),
-              ButtonBar(
-                // 가운데로
-                alignment: MainAxisAlignment.center,
-                children: [
-                  RaisedButton(
-                      child: Text("카카오톡 으로 로그인 하기"),
-                      onPressed: _loginWithKakaoTalk),
-                ],
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Color(0xfffae100),
               ),
-            ].reversed.toList(),
-          ),
+              child: ElevatedButton(
+                  child: Text("카카오톡 으로 로그인 하기",
+                      textAlign: TextAlign.center, style: body1Bold),
+                  onPressed: _loginWithKakaoTalk),
+            ),
+          ],
         ),
       ),
     );

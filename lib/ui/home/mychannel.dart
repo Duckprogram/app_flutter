@@ -94,7 +94,7 @@ class _MyChannelState extends State<MyChannel> {
                           padding: EdgeInsets.only(right: 2),
                           child: Image.asset('assets/images/ic_person.png',
                               width: 12, height: 12)),
-                      Text(channel_info.numOfPeople.toString() + " 모임중",
+                      Text(channel_info.userCount.toString() + " 모임중",
                           style: smallDescStyle),
                       Container(
                         padding: EdgeInsets.only(left: 80),
@@ -134,7 +134,7 @@ class _MyChannelState extends State<MyChannel> {
                         side: BorderSide(color: Colors.grey, width: 0.5),
                         borderRadius: BorderRadius.circular(5)),
                     title: Text(postitemlist![index].title.toString() +
-                        postitemlist[index].created_by.toString() +
+                        postitemlist[index].createdBy.toString() +
                         postitemlist[index].views.toString()),
                     minVerticalPadding: 50,
                     onTap: () => _movePostHome(postitemlist[index]),

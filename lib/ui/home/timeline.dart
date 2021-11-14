@@ -1,6 +1,8 @@
 import 'package:duckie_app/data/classes/channel.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:duckie_app/components/postScrollView.dart';
+import 'package:duckie_app/data/models/channellist.dart';
+import 'package:duckie_app/data/models/community.dart';
 import '../../../common/type.dart';
 
 class TimeLine extends StatefulWidget {
@@ -11,30 +13,37 @@ class TimeLine extends StatefulWidget {
 }
 
 class _TimeLineState extends State<TimeLine> {
+  final CommunityListModel _postlist = CommunityListModel();
+  final ChannelListModel _channel = ChannelListModel();
+  bool _isLoadedPost = false;
+  bool _isLoadedChannel = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _channel.getChannel(1).then((_) => {
+          setState(() {
+            _isLoadedChannel = true;
+          })
+        });
+    _postlist.getCommunityPosts().then((_) => {
+          setState(() {
+            _isLoadedPost = true;
+          })
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
-        itemCount: 20,
-        padding: const EdgeInsets.all(6.0),
-        itemBuilder: (_, index) => ListTile(
-          // leading: Container(
-          //   height: 40,
-          //   width: 40,
-          //   decoration:
-          //       BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-          //   alignment: Alignment.center,
-          //   child: Text(index.toString()),
-          // ),
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.grey, width: 0.5),
-              borderRadius: BorderRadius.circular(5)),
-          title: Text('List element $index'),
-          minVerticalPadding: 50,
-        ),
-      ),
-    );
+    if (_isLoadedPost && _isLoadedChannel) {
+      return Scaffold(
+          body: postScrollView(
+        context,
+        _channel.channel!,
+        _postlist.postlist,
+      ));
+    } else {
+      return Scaffold(body: Container(child: Text("로딩중...")));
+    }
   }
 }

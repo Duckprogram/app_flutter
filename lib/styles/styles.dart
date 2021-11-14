@@ -112,7 +112,6 @@ const body2 = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
 );
 
-
 const body2Primary = TextStyle(
   color: primaryColor,
   fontSize: 13,
@@ -227,4 +226,4 @@ backpageArrow(context) {
   );
 }
 
-Widget divider_line = Column(children: [ Padding(padding: const EdgeInsets.all(10)), Divider( indent : 25, thickness: 2.0, endIndent : 25), Padding(padding: const EdgeInsets.all(10)),]);
+Widget dividerLine = Divider(thickness: 0.7, color: gray07);

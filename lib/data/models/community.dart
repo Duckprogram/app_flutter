@@ -26,4 +26,17 @@ class CommunityListModel extends ChangeNotifier {
       print(e);
     }
   }
+
+  getCommunityPosts() async {
+    var path = '/community';
+    try {
+      var response = await api_PostlList(header: null, path: path);
+
+      _postlist =
+          List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
 }

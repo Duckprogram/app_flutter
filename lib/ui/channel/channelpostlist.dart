@@ -105,7 +105,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
                     side: BorderSide(color: Colors.grey, width: 0.5),
                     borderRadius: BorderRadius.circular(5)),
                 title: Text(postitemlist![index].title.toString() +
-                    postitemlist[index].created_by.toString() +
+                    postitemlist[index].createdBy.toString() +
                     postitemlist[index].views.toString()),
                 minVerticalPadding: 50,
                 onTap: () => _movePostdetail( postitemlist[index], _channel))));

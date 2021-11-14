@@ -3,33 +3,33 @@ part 'postitem.g.dart';
 
 @JsonSerializable()
 class Postitem {
-  Postitem({
-    this.id,
-    this.images,
-    this.title,
-    this.content,
-    this.comments,
-    this.created_by,
-    this.type,
-    this.category,
-    this.channelName,
-    this.channelImage,
-    this.views,
-    this.create_date,
-  });
+  Postitem(
+      {this.id,
+      this.title,
+      this.category,
+      this.content,
+      this.images,
+      this.views,
+      this.username,
+      this.userImage,
+      this.createdBy,
+      this.createdDate,
+      this.channel,
+      this.channelImage});
 
   final int? id;
-  final String? images;
+
   final String? title;
-  final String? content;
-  final String? comments;
-  final String? created_by;
-  final String? type;
   final String? category;
-  final String? channelName;
-  final String? channelImage;
+  final String? content;
+  final String? username;
+  final String? userImage;
+  final List<dynamic>? images;
   final int? views;
-  final DateTime? create_date;
+  final String? createdBy;
+  final String? channel;
+  final DateTime? createdDate;
+  final String? channelImage;
 
   factory Postitem.fromJson(Map<String, dynamic> json) =>
       _$PostitemFromJson(json);
@@ -38,6 +38,6 @@ class Postitem {
 
   @override
   String toString() {
-    return "$title $channelName".toString();
+    return "$title".toString();
   }
 }
