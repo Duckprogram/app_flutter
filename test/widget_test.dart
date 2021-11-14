@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/main.dart';
+import '../lib/utils/http.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -26,5 +28,10 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+
+    var image =
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    var response =
+        http_image_put(role: 'test', id: '1', image_files: [image!.path]);
   });
 }

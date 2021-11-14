@@ -1,3 +1,5 @@
+import 'package:duckie_app/ui/channel/channelhome.dart';
+import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -12,7 +14,7 @@ import 'package:collection/collection.dart';
 
 class MyChannel extends StatefulWidget {
   MyChannel({Key? key, required this.choice}) : super(key: key);
-  final Category choice;
+  final Channel choice;
 
   @override
   _MyChannelState createState() => _MyChannelState();
@@ -33,6 +35,18 @@ class _MyChannelState extends State<MyChannel> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  _moveMyChannelHome() {
+    return Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(builder: (context) => ChannelHome( channel : channel_info)));
+    // return ChannelHome( channel : channel_info);
+  }
+
+  _movePostHome(Postitem postitem) {
+    return Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(builder: (context) => PostHome( postitem : postitem, channel: channel_info,)));
+    // return PostHome( postitem : postitem, channel: channel_info,);
   }
 
   @override
@@ -93,6 +107,7 @@ class _MyChannelState extends State<MyChannel> {
               ],
             ),
           ),
+        onTap: () => _moveMyChannelHome(),
         ),
       );
     }
@@ -122,6 +137,7 @@ class _MyChannelState extends State<MyChannel> {
                         postitemlist[index].createdBy.toString() +
                         postitemlist[index].views.toString()),
                     minVerticalPadding: 50,
+                    onTap: () => _movePostHome(postitemlist[index]),
                   )));
     }
 

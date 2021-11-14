@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:duckie_app/data/classes/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
@@ -16,34 +17,34 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-List<Category> init_categories = [
-  Category(name: '채널 리스트'),
-  Category(name: '타임라인'),
+List<Channel> init_categories = [
+  Channel(name: '채널 리스트'),
+  Channel(name: '타임라인'),
 ];
 
-late List<Category> categories = List.of(init_categories);
+late List<Channel> categories = List.of(init_categories);
 
 // Our MrTabs class.
 //Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
-  final ChannelListModel _channellist = ChannelListModel();
-
   @override
   void initState() {
-    // TODO: implement initState
-    _channellist.getChannelList();
-    _channellist.getMyChannelList().then((_) => (_asyncMethod()));
+    final _channellist = Provider.of<ChannelListModel>(context, listen: false);
+
+    _channellist
+        .getChannelList()
+        .then((_) => _channellist.getMyChannelList())
+        .then((_) => _asyncMethod(_channellist.mychannellist));
+
     super.initState();
   }
 
   //해당 함수의 경우 Mychannellist를 받은 이후에 진행되는 함수
-  _asyncMethod() {
-    var newChannel = List<Category>.from(_channellist.mychannellist!.map(
-        (mychannel) =>
-            Category(name: mychannel.name.toString(), id: mychannel.id)));
+  _asyncMethod(List<Channel>? newChannel) {
     print("new mychannellist everything " + newChannel.toString());
     print("init_categories" + init_categories.toString());
-    if (!ListEquality().equals(categories.sublist(2), newChannel)) {
+    if (!ListEquality().equals(categories.sublist(2), newChannel) &&
+        newChannel != null) {
       categories = List.of(init_categories);
       setState(() {
         categories.addAll(newChannel);
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  Widget pageCaller(int index, Category choice) {
+  Widget pageCaller(int index, Channel choice) {
     switch (index) {
       case 0:
         {
@@ -83,36 +84,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final _auth = Provider.of<AuthModel>(context, listen: false);
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ChannelListModel>.value(value: _channellist),
-      ],
-      child: MaterialApp(
-        home: DefaultTabController(
-          length: categories.length,
-          child: Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 0,
-              backgroundColor: primaryColor,
-              bottom: TabBar(
-                isScrollable: true,
-                tabs: categories.map((Category choice) {
-                  return Tab(
-                    text: choice.name,
-                  );
-                }).toList(),
-              ),
-            ),
-            body: TabBarView(
-              children: categories.map((Category choice) {
-                var index = categories.indexOf(choice);
-                return pageCaller(index, choice);
+
+    return MaterialApp(
+      home: DefaultTabController(
+        length: categories.length,
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            backgroundColor: primaryColor,
+            bottom: TabBar(
+              isScrollable: true,
+              tabs: categories.map((Channel choice) {
+                return Tab(
+                  text: choice.name,
+                );
               }).toList(),
             ),
           ),
+          body: TabBarView(
+            children: categories.map((Channel choice) {
+              var index = categories.indexOf(choice);
+              return pageCaller(index, choice);
+            }).toList(),
+          ),
         ),
-        theme: ThemeData(primaryColor: Colors.deepOrange),
       ),
+      theme: ThemeData(primaryColor: Colors.deepOrange),
     );
   }
 }

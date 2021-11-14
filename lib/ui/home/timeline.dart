@@ -1,3 +1,4 @@
+import 'package:duckie_app/data/classes/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/data/models/channellist.dart';
@@ -6,7 +7,7 @@ import '../../../common/type.dart';
 
 class TimeLine extends StatefulWidget {
   TimeLine({Key? key, required this.choice}) : super(key: key);
-  final Category choice;
+  final Channel choice;
   @override
   _TimeLineState createState() => _TimeLineState();
 }

@@ -1,4 +1,6 @@
 import 'package:duckie_app/components/appBarWithBack.dart';
+import 'package:duckie_app/data/classes/channel.dart';
+import 'package:duckie_app/data/models/channellist.dart';
 import 'package:duckie_app/ui/channel/channelhome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,13 +14,27 @@ class MyChannel extends StatefulWidget {
 }
 
 class _MyChannelState extends State<MyChannel> {
-  _moveChannelPage(int id) {
-    // return Navigator.of(context, rootNavigator: true)
-    //     .push(MaterialPageRoute(
-    //     builder: (context) => ChannelHome(
-    //           id: id,
-    //           channel: null,
-    //         )));
+  late final List<Channel> _mychannellist;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  _getmychannellist() {
+    // 뭔가 multi provider 가 해당 my_channel 화면을 못잡는듯...
+    // 따라서 아래의 provider 기능을 못씀 ㅠ
+    _mychannellist = context.select((ChannelListModel channellistmodel) {
+      return channellistmodel.mychannellist!;
+    });
+  }
+
+  _moveChannelPage(Channel channel) {
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+        builder: (context) => ChannelHome(
+              channel: channel,
+            )));
+    // return ChannelHome(channel: channel,);
   }
 
   _handleWithdraw() {
@@ -28,6 +44,7 @@ class _MyChannelState extends State<MyChannel> {
 
   @override
   Widget build(BuildContext context) {
+    _getmychannellist();
     return Scaffold(
       appBar: appBarWithBack("마이채널"),
       body: _buildbody(),
@@ -43,6 +60,9 @@ class _MyChannelState extends State<MyChannel> {
   }
 
   Widget _registeredChannels() {
+    // _mychannellist = context.select((ChannelListModel channellistmodel) {
+    //   return channellistmodel.mychannellist!;
+    // });
     return Container(
         margin: const EdgeInsetsDirectional.only(top: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -170,7 +190,7 @@ class _MyChannelState extends State<MyChannel> {
                     ))
               ],
             )),
-        onTap: () => _moveChannelPage(id));
+        onTap: () => _moveChannelPage(Channel(id: id)));
   }
 
   Widget _withdrawButton() {

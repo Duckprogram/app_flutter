@@ -1,10 +1,12 @@
 import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/data/models/channellist.dart';
 import 'package:duckie_app/ui/mypage/my_channel.dart';
 import 'package:duckie_app/ui/mypage/setting.dart';
 import 'package:duckie_app/ui/signin/Kakaologin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:duckie_app/styles/styles.dart';
+import 'package:provider/provider.dart';
 import 'modify_profile.dart';
 
 class MyPage extends StatefulWidget {
