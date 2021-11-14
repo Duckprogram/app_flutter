@@ -128,7 +128,7 @@ class _ChannelListState extends State<ChannelList> {
                                         width: 12,
                                         height: 12)),
                                 Text(
-                                    list![position].numOfPeople.toString() +
+                                    list![position].userCount.toString() +
                                         " 모임중",
                                     style: smallDescStyle),
                                 Container(

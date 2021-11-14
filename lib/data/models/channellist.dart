@@ -6,13 +6,16 @@ import 'package:flutter/material.dart';
 import '../classes/channel.dart';
 import '../../api/channel.dart';
 import '../../common/type.dart';
+
 class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
 
   List<Channel>? _channellist;
   List<Channel>? _mychannellist;
+  Channel? _channel;
 
   List<Channel>? get channellist => _channellist;
+  Channel? get channel => _channel;
 
   set channellist(List<Channel>? channellist) {
     _channellist = channellist;
@@ -31,7 +34,19 @@ class ChannelListModel extends ChangeNotifier {
     var path = '/channels';
     try {
       var response = await api_ChannelList(header: null, path: path);
-      _channellist = List<Channel>.from(response.map((json) => Channel.fromJson(json)));
+      _channellist =
+          List<Channel>.from(response.map((json) => Channel.fromJson(json)));
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getChannel(int id) async {
+    var path = '/channels/$id/info/brief';
+    try {
+      var response = await apiGetChannel(header: null, path: path);
+      _channel = Channel.fromJson(response);
       notifyListeners();
     } catch (e) {
       print(e);
@@ -49,7 +64,8 @@ class ChannelListModel extends ChangeNotifier {
     print(path);
     try {
       var response = await api_MyChannelList(header: null, path: path);
-      _mychannellist = List<Channel>.from(response.map((json) => Channel.fromJson(json)));
+      _mychannellist =
+          List<Channel>.from(response.map((json) => Channel.fromJson(json)));
       notifyListeners();
     } catch (e) {
       print(e);

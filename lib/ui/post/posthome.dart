@@ -1,14 +1,11 @@
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../common/type.dart';
 import '../../styles/styles.dart';
-import '../../data/models/postlist.dart';
 import '../../data/classes/postitem.dart';
-import '../../data/models/channellist.dart';
 import '../../data/classes/channel.dart';
 import 'postcomment.dart';
 //list 비교 함수
-import 'package:collection/collection.dart';
 
 class PostHome extends StatefulWidget {
   PostHome({Key? key, required this.postitem, required this.channel})
@@ -28,6 +25,7 @@ class _PostHomeState extends State<PostHome> {
     _postitem = widget.postitem;
     _channel = widget.channel;
     super.initState();
+    print(_postitem.id);
   }
 
   @override
@@ -36,48 +34,82 @@ class _PostHomeState extends State<PostHome> {
   }
 
   _movePostComment() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => PostComment(postitem: _postitem)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PostComment(postitem: _postitem)));
+  }
+
+  _getProfileImage(String? image) {
+    if (image == null) {
+      return Image.asset('assets/images/ic_person.png');
+    } else {
+      return Image.network(image, width: 30, height: 20);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     AppBar appBarSection = AppBar(
+      shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+      backgroundColor: white,
+      foregroundColor: gray01,
+      elevation: 0.1,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
+        icon: iconImageSmall("back", 24.0),
         onPressed: () => Navigator.of(context).pop(),
       ),
       title: Text(
         _channel.name.toString(),
-        style: h4,
+        style: body2Bold,
       ),
-      backgroundColor: gray08,
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+          icon: iconImageSmall("more", 24.0),
+          onPressed: () {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('옵션 팝업')));
+          },
+        ),
+      ],
     );
     Widget titleSection = Container(
-        padding: EdgeInsets.only(left: 25, top: 15),
+        padding: EdgeInsets.only(top: 24, bottom: 16),
         child: Text(
           _postitem.title.toString(),
           style: h2,
         ));
     Widget writerSection = Container(
-      padding: EdgeInsets.only(left: 25, top: 15),
+      decoration: BorderBottom,
+      padding: EdgeInsets.only(bottom: 24),
       child: Row(
         children: [
           Container(
-              padding: EdgeInsets.only(right: 2),
-              child: Image.asset('assets/images/ic_person.png',
-                  width: 30, height: 20)),
-          Padding(padding: const EdgeInsets.all(5)),
+            width: 40.0,
+            height: 40.0,
+            margin: EdgeInsets.only(right: 8),
+            decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    image: _getProfileImage(_postitem.userImage).image)),
+          ),
           Column(
-            crossAxisAlignment : CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text( _postitem.created_by.toString(),
-              style: body1Bold),
-              Row(children: [
-                Text( _postitem.create_date.toString() ),
-                Padding(padding: const EdgeInsets.all(5)),
-                Text( " 조회 " + _postitem.views.toString() )
-              ],)
+              Text(_postitem.username.toString(), style: body1),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 6, bottom: 2),
+                    child: Text(
+                      getCreatedDateStr(_postitem.createdDate!),
+                      style: captionGray03,
+                    ),
+                  ),
+                  Text(" 조회 " + _postitem.views.toString(),
+                      style: captionGray03)
+                ],
+              )
             ],
           )
         ],
@@ -85,23 +117,23 @@ class _PostHomeState extends State<PostHome> {
     );
 
     Widget postSection = Container(
-      padding: EdgeInsets.only(left: 25),
-      child: Text( _postitem.content.toString())
-    );
+        decoration: BorderBottom,
+        padding: EdgeInsets.symmetric(vertical: 36),
+        child: Text(
+          _postitem.content.toString(),
+          style: body1,
+        ));
 
     Widget CommentNavigation = Container(
-      padding: EdgeInsets.only(left: 25, right : 25 ),
-      child : Row( 
-        mainAxisAlignment : MainAxisAlignment.spaceBetween,
-        crossAxisAlignment : CrossAxisAlignment.start,
-        children: [
-          Text("댓글 " + _postitem.views.toString(), style : body1Bold),
-          GestureDetector(
-              child: Text("더보기 >", style : body2Gray03),
-              onTap: _movePostComment ) 
-        ],
-      )
-    );
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("댓글 " + _postitem.views.toString(), style: body1Bold),
+        GestureDetector(
+            child: Text("더보기 >", style: body2Gray03), onTap: _movePostComment)
+      ],
+    ));
 
     Widget commentlist = Container(
       padding: EdgeInsets.only(left: 25, top: 15),
@@ -125,17 +157,20 @@ class _PostHomeState extends State<PostHome> {
 
     return Scaffold(
         appBar: appBarSection,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            titleSection, 
-            writerSection, 
-            divider_line,
-            postSection, 
-            divider_line,
-            CommentNavigation,
-            commentlist
-          ],
-        ));
+        backgroundColor: white,
+        body: Container(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                titleSection,
+                writerSection,
+                dividerLine,
+                postSection,
+                dividerLine,
+                CommentNavigation,
+                commentlist
+              ],
+            )));
   }
 }

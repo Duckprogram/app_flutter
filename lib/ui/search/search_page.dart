@@ -1,4 +1,6 @@
 import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/components/postScrollView.dart';
+import 'package:duckie_app/data/models/channellist.dart';
 import 'package:duckie_app/data/models/community.dart';
 import 'package:duckie_app/styles/styles.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +13,18 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _filter = TextEditingController();
   final CommunityListModel _postlist = CommunityListModel();
+  final ChannelListModel _channel = ChannelListModel();
 
   FocusNode focusNode = FocusNode();
   String _inputText = "";
   String _searchText = "";
   bool _isSubmited = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _channel.getChannel(1);
+  }
 
   _SearchPageState() {
     _filter.addListener(() {
@@ -150,82 +159,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
       );
     } else {
-      return SingleChildScrollView(
-          padding: EdgeInsets.only(left: 12, top: 12, right: 12),
-          child: Column(children: <Widget>[
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: list?.length ?? 0,
-              itemBuilder: (context, position) {
-                return GestureDetector(
-                    child: Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: gray08,
-                            width: 0.8,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(bottom: 12),
-                                child: Text(list[position].title!,
-                                    style: channelName),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.all(2),
-                                        margin: const EdgeInsets.only(right: 4),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          color: Color(0x1e000000),
-                                        ),
-                                        child: Image.network(
-                                          list[position].channelImage != null
-                                              ? list[position].channelImage!
-                                              : "https://cdn.pixabay.com/photo/2014/04/10/11/24/rose-320868_1280.jpg",
-                                          width: 12,
-                                          height: 12,
-                                        )),
-                                    Text("자유게시판", style: smallDescStyle),
-                                    Container(
-                                      padding: EdgeInsets.only(left: 20),
-                                      child: Text(
-                                          '|   ${list[position].username!} 방금 ${list[position].views.toString()}',
-                                          style: captionGray03),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: list[position].images != null
-                                  ? Image.network(list[position].images[0],
-                                      width: 56, height: 56, fit: BoxFit.cover)
-                                  : Container()),
-                        ],
-                      ),
-                    ),
-                    onTap: () {});
-              },
-            )
-          ]));
+      return postScrollView(context, _channel.channel!, list);
     }
   }
 }

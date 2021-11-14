@@ -6,7 +6,10 @@ part 'channel.g.dart';
 class Channel {
   Channel({
     this.id,
+    this.icon,
     this.name,
+    this.interest,
+    this.userCount,
     this.introduction,
     this.rule,
     this.content,
@@ -14,8 +17,6 @@ class Channel {
     this.created_date,
     this.last_modified_date,
     this.is_active,
-    this.icon,
-    this.numOfPeople,
   });
 
   final int? id;
@@ -24,19 +25,18 @@ class Channel {
   final String? rule;
   final String? content;
   final String? background;
+  final List<dynamic>? interest;
   final DateTime? created_date;
   final DateTime? last_modified_date;
   final bool? is_active;
   final String? icon;
-  final int? numOfPeople;
+  final int? userCount;
 
   factory Channel.fromJson(Map<String, dynamic> json) =>
       _$ChannelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChannelToJson(this);
-
   @override
   String toString() {
-    return "$name $introduction".toString();
+    return "$name".toString();
   }
 }

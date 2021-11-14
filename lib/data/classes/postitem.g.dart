@@ -7,33 +7,29 @@ part of 'postitem.dart';
 // **************************************************************************
 
 Postitem _$PostitemFromJson(Map<String, dynamic> json) => Postitem(
-      id: json['id'] as int?,
-      images: json['images'] as String?,
-      title: json['title'] as String?,
-      content: json['content'] as String?,
-      comments: json['comments'] as String?,
-      created_by: json['created_by'] as String?,
-      type: json['type'] as String?,
-      category: json['category'] as String?,
-      channelName: json['channelName'] as String?,
-      channelImage: json['channelImage'] as String?,
-      views: json['views'] as int?,
-      create_date: json['created_date'] == null
-          ? null
-          : DateTime.parse(json['created_date'] as String),
-    );
+    id: json['id'] as int?,
+    images: json['images'] as List<dynamic>?,
+    title: json['title'] as String?,
+    content: json['content'] as String?,
+    // username: json['username'] as String?,
+    // userImage: json['user_image'] as String?,
+    username: "닉네임",
+    userImage:
+        "https://cdn.pixabay.com/photo/2021/10/23/03/35/mountain-6734031_960_720.jpg",
+    category: json['category'] as String?,
+    views: json['views'] as int?,
+    createdBy: json['created_by'] as String?,
+    createdDate: DateTime.parse(json['create_date'] as String),
+    channel: json['channel'] as String?,
+    channelImage: json['channel_image'] as String?);
 
 Map<String, dynamic> _$PostitemToJson(Postitem instance) => <String, dynamic>{
       'id': instance.id,
       'images': instance.images,
       'title': instance.title,
       'content': instance.content,
-      'comments': instance.comments,
-      'created_by': instance.created_by,
-      'type': instance.type,
       'category': instance.category,
-      'channelName': instance.channelName,
-      'channelImage': instance.channelImage,
       'views': instance.views,
-      'created_date': instance.create_date?.toIso8601String(),
+      'created_by': instance.createdBy,
+      'created_date': instance.createdDate?.toIso8601String(),
     };
