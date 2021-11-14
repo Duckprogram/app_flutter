@@ -31,11 +31,20 @@ Future<dynamic> http_get({header, String? path}) async {
   var response;
 
   try {
-    response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt!
-    });
+    var header;
+    if (jwt != null) {
+      header = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + jwt
+      };
+    } else {
+      header = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      };
+    }
+    response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: header);
     return response;
   } catch (ex) {
     print(ex);
