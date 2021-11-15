@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 import '../../data/models/channellist.dart';
 import '../../common/type.dart';
-import 'channellist.dart';
-import 'mychannel.dart';
-import 'timeline.dart';
+import 'home_channellist.dart';
+import 'home_mychannel.dart';
+import 'home_timeline.dart';
 import '../../styles/styles.dart';
 import 'package:collection/collection.dart';
 
