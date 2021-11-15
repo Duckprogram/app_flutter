@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:duckie_app/data/models/auth.dart';
 
+import 'home/home.dart';
+
 class SplashPage extends StatefulWidget {
   @override
   SplashPageState createState() => SplashPageState();
@@ -25,7 +27,7 @@ class SplashPageState extends State<SplashPage> {
       var user = _auth.getLoginedUser();
       if (user != null) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => Home()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => KakoaLoginPage()));

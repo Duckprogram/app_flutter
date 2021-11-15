@@ -37,8 +37,6 @@ class _MyPageState extends State<MyPage> {
   initState() {
     super.initState();
     _loadProfile();
-    print(_username);
-    print(_picture);
   }
 
   _loadProfile() async {
@@ -48,7 +46,12 @@ class _MyPageState extends State<MyPage> {
     setState(() => {_username = username, _picture = picture});
   }
 
-  _logout() {
+  _logout() async {
+    final storage = FlutterSecureStorage();
+    await storage.delete(key: "accessToken");
+    await storage.delete(key: "username");
+    await storage.delete(key: "picture");
+    await storage.delete(key: "refreshToken");
     AlertDialog dialog = AlertDialog(content: Text("로그아웃 되었습니다"));
     showDialog(context: context, builder: (BuildContext context) => dialog);
     Navigator.of(context)
