@@ -1,7 +1,7 @@
 import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/data/classes/postitem.dart';
 import 'package:duckie_app/styles/styles.dart';
-import 'package:duckie_app/ui/post/posthome.dart';
+import 'package:duckie_app/ui/post/post_home.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -54,13 +54,13 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(list[position].username!,
+                                Text( list[position].user_name == null ? "익명" : list[position].user_name! ,
                                     style: captionGray03),
                                 Padding(
                                   padding: EdgeInsets.only(left: 6),
                                   child: Text(
                                       getCreatedDateStr(
-                                          list[position].createdDate!),
+                                          list[position].create_date!),
                                       style: captionGray03),
                                 ),
                                 Padding(

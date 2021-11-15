@@ -8,7 +8,7 @@ import '../../data/classes/channel.dart';
 import '../../data/models/postlist.dart';
 import '../../data/classes/postitem.dart';
 import '../channel/channelhome.dart';
-import '../post/posthome.dart';
+import '../post/post_home.dart';
 
 import 'package:collection/collection.dart';
 
@@ -62,14 +62,6 @@ class _ChannelPostListState extends State<ChannelPostList> {
           return _postlist.postmarketlist;
         }
     }
-  }
-
-  _movePostdetail(Postitem postitem, Channel channel) {
-    //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
-    //rootNavigator를 추가하면 bottombar 제거 가능
-    // return PostHome(postitem: postitem);
-    return Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => PostHome(postitem: postitem, channel : channel)));
   }
 
   @override

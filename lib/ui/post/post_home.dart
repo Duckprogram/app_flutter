@@ -1,10 +1,14 @@
 import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/components/commentScrollView.dart';
+import 'package:duckie_app/data/models/auth.dart';
+import 'package:duckie_app/data/models/commentlist.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../styles/styles.dart';
 import '../../data/classes/postitem.dart';
 import '../../data/classes/channel.dart';
-import 'postcomment.dart';
+import 'post_comment.dart';
 //list 비교 함수
 
 class PostHome extends StatefulWidget {
@@ -19,11 +23,20 @@ class PostHome extends StatefulWidget {
 class _PostHomeState extends State<PostHome> {
   late final Postitem _postitem;
   late Channel _channel;
+  final CommentListModel _commentlist = CommentListModel();
+  bool _isLoadedComment = false;
 
   @override
   void initState() {
     _postitem = widget.postitem;
     _channel = widget.channel;
+    _commentlist.post_id = _postitem.id;
+    _commentlist.getCommentList().then((_) => {
+          setState(() {
+            _isLoadedComment = true;
+          })
+        });
+
     super.initState();
     print(_postitem.id);
   }
@@ -34,16 +47,10 @@ class _PostHomeState extends State<PostHome> {
   }
 
   _movePostComment() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => PostComment(postitem: _postitem)));
-  }
-
-  _getProfileImage(String? image) {
-    if (image == null) {
-      return Image.asset('assets/images/ic_person.png');
-    } else {
-      return Image.network(image, width: 30, height: 20);
-    }
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider<CommentListModel>.value(
+            value: _commentlist, child: PostComment(postitem: _postitem)
+    ))); 
   }
 
   @override
@@ -91,18 +98,18 @@ class _PostHomeState extends State<PostHome> {
                 shape: BoxShape.circle,
                 image: new DecorationImage(
                     fit: BoxFit.cover,
-                    image: _getProfileImage(_postitem.userImage).image)),
+                    image: getImageOrBasic(_postitem.userImage).image)),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_postitem.username.toString(), style: body1),
+              Text(_postitem.user_name.toString(), style: body1),
               Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: 6, bottom: 2),
                     child: Text(
-                      getCreatedDateStr(_postitem.createdDate!),
+                      getCreatedDateStr(_postitem.create_date!),
                       style: captionGray03,
                     ),
                   ),
@@ -117,60 +124,61 @@ class _PostHomeState extends State<PostHome> {
     );
 
     Widget postSection = Container(
-        decoration: BorderBottom,
         padding: EdgeInsets.symmetric(vertical: 36),
         child: Text(
           _postitem.content.toString(),
           style: body1,
         ));
 
-    Widget CommentNavigation = Container(
+    Widget commentNavigation = Container(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("댓글 " + _postitem.views.toString(), style: body1Bold),
+        Row(
+          children: [
+            Text("댓글 ", style: body1Bold),
+            Text(
+                _isLoadedComment
+                    ? _commentlist.commentlist!.length.toString()
+                    : '0',
+                style: body1Bold),
+          ],
+        ),
         GestureDetector(
-            child: Text("더보기 >", style: body2Gray03), onTap: _movePostComment)
+            child: Text("더보기 >", style: body2Gray03),
+            onTap: () => {_movePostComment()})
       ],
     ));
 
-    Widget commentlist = Container(
-      padding: EdgeInsets.only(left: 25, top: 15),
-      // padding: flex,
-      // child: ListView.builder(
-      //     shrinkWrap: true,
-      //     physics: AlwaysScrollableScrollPhysics(),
-      //     itemCount: postitemlist?.length ?? 0,
-      //     padding: const EdgeInsets.all(6.0),
-      //     itemBuilder: (context, index) => ListTile(
-      //           shape: RoundedRectangleBorder(
-      //               side: BorderSide(color: Colors.grey, width: 0.5),
-      //               borderRadius: BorderRadius.circular(5)),
-      //           title: Text(postitemlist![index].title.toString() +
-      //               postitemlist[index].username.toString() +
-      //               postitemlist[index].views.toString()),
-      //           minVerticalPadding: 50,
-      //         ))
-      //   );
-    );
+    Widget Commentlist() {
+      if (_isLoadedComment) {
+        return CommentScrollListView(_commentlist.commentlist!, null);
+      } else {
+        return Scaffold(body: Container(child: Text("로딩중...")));
+      }
+    }
 
-    return Scaffold(
-        appBar: appBarSection,
-        backgroundColor: white,
-        body: Container(
-            padding: EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                titleSection,
-                writerSection,
-                dividerLine,
-                postSection,
-                dividerLine,
-                CommentNavigation,
-                commentlist
-              ],
-            )));
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CommentListModel>.value(value: _commentlist),
+      ],
+      child: Scaffold(
+          appBar: appBarSection,
+          backgroundColor: white,
+          body: Container(
+              padding: EdgeInsets.symmetric(horizontal: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  titleSection,
+                  writerSection,
+                  postSection,
+                  dividerLine,
+                  commentNavigation,
+                  Expanded(child: Commentlist(),)
+                ],
+              ))),
+    );
   }
 }

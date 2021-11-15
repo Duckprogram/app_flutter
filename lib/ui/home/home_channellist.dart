@@ -45,7 +45,6 @@ class _ChannelListState extends State<ChannelList> {
   }
 
   _moveChannelHome(Channel channel) {
-    //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
     //rootNavigator를 추가하면 bottombar 제거 가능
     return Navigator.of(context, rootNavigator: true).push(
         MaterialPageRoute(builder: (context) => ChannelHome(channel: channel)));
