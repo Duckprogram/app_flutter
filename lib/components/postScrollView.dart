@@ -11,7 +11,7 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
   }
 
   _movePostdetail(Postitem postitem) {
-    return Navigator.of(context).push(MaterialPageRoute(
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
         builder: (context) => PostHome(postitem: postitem, channel: _channel)));
   }
 

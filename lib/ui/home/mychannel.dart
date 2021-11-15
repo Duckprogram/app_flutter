@@ -1,3 +1,4 @@
+import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/ui/channel/channelhome.dart';
 import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,18 @@ class MyChannel extends StatefulWidget {
 
 class _MyChannelState extends State<MyChannel> {
   final PostListModel _postlist = PostListModel();
-  var channel_info;
+  final ChannelListModel _channel = ChannelListModel();
+  late Channel channel_info;
 
   @override
   void initState() {
     channel_info = widget.choice;
-    _postlist.channel_id = channel_info.id;
+    _channel.getChannel(widget.choice.id!.toInt()).then((_) => {
+          setState(() {
+            channel_info = _channel.channel!;
+          })
+        });
+    _postlist.channel_id = widget.choice.id;
     _postlist.getPostList().then((_) => setState(() {}));
     super.initState();
   }
@@ -38,26 +45,25 @@ class _MyChannelState extends State<MyChannel> {
   }
 
   _moveMyChannelHome() {
-    return Navigator.of(context, rootNavigator: true)
-        .push(MaterialPageRoute(builder: (context) => ChannelHome( channel : channel_info)));
+    print(channel_info.id.toString());
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+        builder: (context) => ChannelHome(channel: channel_info)));
     // return ChannelHome( channel : channel_info);
   }
 
   _movePostHome(Postitem postitem) {
-    return Navigator.of(context, rootNavigator: true)
-        .push(MaterialPageRoute(builder: (context) => PostHome( postitem : postitem, channel: channel_info,)));
+    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+        builder: (context) => PostHome(
+              postitem: postitem,
+              channel: channel_info,
+            )));
     // return PostHome( postitem : postitem, channel: channel_info,);
   }
 
   @override
   Widget build(BuildContext context) {
-    final postitemlist = _postlist.postlist;
-
     Widget channelsection() {
-      return Container(
-        color: Colors.transparent,
-        padding: EdgeInsets.only(top: 15, left: 26, right: 26),
-        child: GestureDetector(
+      return GestureDetector(
           child: Container(
             padding: EdgeInsets.only(top: 15, right: 15, left: 25),
             decoration: BoxDecoration(
@@ -76,30 +82,43 @@ class _MyChannelState extends State<MyChannel> {
                     ),
                     borderRadius: BorderRadius.all(Radius.circular(20.0)),
                   ),
-                  child: Text("#관심사",
-                      style: hashTag),
+                  child: Text("#관심사", style: hashTag),
                 ),
                 Padding(padding: EdgeInsets.all(5.0)),
                 Container(
-                  padding: EdgeInsets.only(bottom: 6),
-                  child: Text(channel_info.name.toString() + "\n채널 바로가기",
-                      style: channelName),
+                  height: 110,
+                  // padding: EdgeInsets.only(bottom: 6, right : 25),
+                  child: Row(
+                    mainAxisSize : MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Text(channel_info.name.toString() + "\n채널 바로가기",
+                        maxLines: 4,
+                        softWrap: true,
+                        // overflow: TextOverflow.fade,
+                        style: channelName),
+                    ]
+                  )
                 ),
                 Container(
+                  height: 110,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                          padding: EdgeInsets.only(right: 2),
-                          child: Image.asset('assets/images/ic_person.png',
-                              width: 12, height: 12)),
-                      Text(channel_info.userCount.toString() + " 모임중",
-                          style: smallDescStyle),
+                          padding: EdgeInsets.only(right: 2, bottom : 10),
+                          child: Row (
+                            children : [ 
+                                Image.asset('assets/images/ic_person.png',fit : BoxFit.fitHeight),
+                                Text( " " + channel_info.userCount.toString() + " 모임중",
+                                    style: smallDescStyle) ]
+                          )
+                      ),
                       Container(
-                        padding: EdgeInsets.only(left: 80),
-                        child: Image.asset('assets/images/tree.png',
-                            width: 150, height: 145),
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: Image.network(channel_info.icon.toString(),
+                            fit: BoxFit.fitHeight),
                       )
                     ],
                   ),
@@ -107,44 +126,31 @@ class _MyChannelState extends State<MyChannel> {
               ],
             ),
           ),
-        onTap: () => _moveMyChannelHome(),
-        ),
-      );
+          onTap: () => _moveMyChannelHome(),
+        );
     }
 
     Widget listSection() {
-      return Container(
-          padding: EdgeInsets.all(20),
-          // padding: flex,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: AlwaysScrollableScrollPhysics(),
-              itemCount: postitemlist?.length ?? 0,
-              padding: const EdgeInsets.all(6.0),
-              itemBuilder: (context, index) => ListTile(
-                    // leading: Container(
-                    //   height: 40,
-                    //   width: 40,
-                    //   decoration:
-                    //       BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
-                    //   alignment: Alignment.center,
-                    //   child: Text(index.toString()),
-                    // ),
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.grey, width: 0.5),
-                        borderRadius: BorderRadius.circular(5)),
-                    title: Text(postitemlist![index].title.toString() +
-                        postitemlist[index].createdBy.toString() +
-                        postitemlist[index].views.toString()),
-                    minVerticalPadding: 50,
-                    onTap: () => _movePostHome(postitemlist[index]),
-                  )));
+      return postScrollView(
+        context,
+        channel_info,
+        _postlist.postlist,
+      );
     }
 
-    return Scaffold(
-        body: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-      Flexible(child: channelsection()),
-      Expanded(child: listSection())
-    ]));
+    return 
+      Scaffold(
+        appBar: AppBar(
+            toolbarHeight: 280,
+            backgroundColor: Colors.white,
+            title: channelsection(),
+            elevation: 0),
+        body: listSection());
+
+    // Scaffold(
+    //     body: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+    //   Flexible(child: channelsection()),
+    //   Expanded(child: listSection())
+    // ]));
   }
 }

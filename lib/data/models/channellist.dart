@@ -7,8 +7,17 @@ import '../classes/channel.dart';
 import '../../api/channel.dart';
 import '../../common/type.dart';
 
+enum LoadMoreStatus { LOADING, STABLE }
+
 class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
+
+  //infinite scroll 구현을 위해 추가 코드
+  int ChannelTotalPage = 1;
+  bool ChannelPageLast = false;
+
+  LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
+  getLoadMoreStatus() => _loadMoreStatus;
 
   List<Channel>? _channellist;
   List<Channel>? _mychannellist;
@@ -32,18 +41,42 @@ class ChannelListModel extends ChangeNotifier {
 
   getChannelList() async {
     var path = '/channels';
+    final queryParameters = {
+      'page': ChannelTotalPage.toString(),
+    };
+    path = path + '?' + Uri(queryParameters: queryParameters).query;
     try {
       var response = await api_ChannelList(header: null, path: path);
-      _channellist =
-          List<Channel>.from(response.map((json) => Channel.fromJson(json)));
-      notifyListeners();
+      var res_data = response['data']["content"];
+      // ChannelPageLast = response["data"]["totalPages"];
+      print(ChannelTotalPage.toString() +
+          " 비교 " +
+          response["data"]["totalPages"].toString());
+      if (res_data != null &&
+          ChannelTotalPage != response["data"]["totalPages"]) {
+        var newChannellist =
+            List<Channel>.from(res_data.map((json) => Channel.fromJson(json)));
+        if (_channellist == null) {
+          _channellist = newChannellist;
+        } else {
+          _channellist!.addAll(newChannellist);
+          setLoadingState(LoadMoreStatus.STABLE);
+        }
+        ++ChannelTotalPage;
+        notifyListeners();
+      }
     } catch (e) {
       print(e);
     }
   }
 
+  setLoadingState(LoadMoreStatus loadMoreStatus) {
+    _loadMoreStatus = loadMoreStatus;
+    notifyListeners();
+  }
+
   getChannel(int id) async {
-    var path = '/channels/$id/info/brief';
+    var path = '/channels/$id/info/detail';
     try {
       var response = await apiGetChannel(header: null, path: path);
       _channel = Channel.fromJson(response);
@@ -54,18 +87,15 @@ class ChannelListModel extends ChangeNotifier {
   }
 
   getMyChannelList() async {
-    // final queryParameters = {
-    //   'param1': 'one',
-    //   'param2': 'two',
-    // };
-    var path = '/user/channels';
-    // var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
-
-    print(path);
     try {
+      var path = '/auth/registered';
       var response = await api_MyChannelList(header: null, path: path);
+      var res_data = response['data'];
+      path = '/auth/created';
+      response = await api_MyChannelList(header: null, path: path);
+      res_data.addAll(response['data']);
       _mychannellist =
-          List<Channel>.from(response.map((json) => Channel.fromJson(json)));
+          List<Channel>.from(res_data.map((json) => Channel.fromJson(json)));
       notifyListeners();
     } catch (e) {
       print(e);

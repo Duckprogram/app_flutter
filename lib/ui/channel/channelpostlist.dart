@@ -1,3 +1,4 @@
+import 'package:duckie_app/components/postScrollView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -76,6 +77,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
     final postitemlist = selectpost(_index);
 
     Widget dropdownbutton = Container(
+      padding: EdgeInsets.only(top: 10, left: 15, right: 15),
       child: DropdownButton(
         value: _index,
         items: _droplist.map((value) {
@@ -92,28 +94,18 @@ class _ChannelPostListState extends State<ChannelPostList> {
       ),
     );
 
-    Widget listSection = Container(
-        padding: EdgeInsets.all(20),
-        // padding: flex,
-        child: ListView.builder(
-            shrinkWrap: true,
-            physics: AlwaysScrollableScrollPhysics(),
-            itemCount: postitemlist?.length ?? 0,
-            padding: const EdgeInsets.all(6.0),
-            itemBuilder: (context, index) => ListTile(
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.grey, width: 0.5),
-                    borderRadius: BorderRadius.circular(5)),
-                title: Text(postitemlist![index].title.toString() +
-                    postitemlist[index].createdBy.toString() +
-                    postitemlist[index].views.toString()),
-                minVerticalPadding: 50,
-                onTap: () => _movePostdetail( postitemlist[index], _channel))));
+    Widget listSection() {
+      return postScrollView(
+        context,
+        _channel,
+        _postlist.postlist,
+      );
+    }
 
     return Scaffold(
         body: Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [dropdownbutton, listSection],
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [ dropdownbutton, Row ( children : [listSection()] )],
     ));
     // return listSection;
   }

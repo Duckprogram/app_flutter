@@ -31,11 +31,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     final _channellist = Provider.of<ChannelListModel>(context, listen: false);
 
-    _channellist
-        .getChannelList()
-        .then((_) => _channellist.getMyChannelList())
+    _channellist.getMyChannelList()
         .then((_) => _asyncMethod(_channellist.mychannellist));
-
+    // _channellist
+    //     .getChannelList()
+    //     .then((_) => _channellist.getMyChannelList())
+    //     .then((_) => _asyncMethod(_channellist.mychannellist));
     super.initState();
   }
 

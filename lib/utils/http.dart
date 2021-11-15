@@ -7,12 +7,12 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-var BACK_END_HOST =
-    'https://621b7c0e-4c1b-4ef3-ae88-814814c0c06e.mock.pstmn.io';
+// var BACK_END_HOST =
+//     'https://621b7c0e-4c1b-4ef3-ae88-814814c0c06e.mock.pstmn.io';
 
 // var BACK_END_HOST =
 //     'https://1b4bc78c-8c0f-4944-a114-a34b8223d2e9.mock.pstmn.io';
-// var BACK_END_HOST = 'http://133.186.251.46';
+var BACK_END_HOST = 'http://133.186.251.46';
 
 var IMAGE_PUT_URL =
     'https://api-image.cloud.toast.com/image/v2.0/appkeys/tUtVzC4V8dqjKqtP/images';
@@ -142,8 +142,9 @@ Future<dynamic> http_image_get({required String path}) async {
 Future<dynamic> http_image_put(
     {required String role,
     required String id,
-    required List<String> image_files}) async {
+    required var image_files}) async {
   /*
+    단일로 이미지 
   {
     "header": {
         // 생략
@@ -190,9 +191,11 @@ Future<dynamic> http_image_put(
   //nhn클라우드 특성상 길이가 무조건 2이상이어야한다. 따라서 00001 이런식으로 폴더를 생성하게 만들었다.
   id = id.padLeft(5, '0');
 
-  if (image_files.length == 1) {
-    return await single_image_put(role, id, image_files[0], url);
-  } else {
+  if (image_files is String) {
+    return await single_image_put(role, id, image_files, url);
+  } 
+  else if (image_files is List<String>) {
+    // 다중 이미지 처리api가 있지만.. 구현이 되지 않아 단일로 여러개 처리하게 구현
     // var path = Uri.parse(url);
     // var response;
     // var headers = {

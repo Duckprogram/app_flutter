@@ -54,15 +54,15 @@ class _ModifyProfileState extends State<ModifyProfile> {
   Future getImageFromGallery() async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    print(image!.path);
-    setState(() {
-      _newPicture = image.path;
-    });
-    // var image =
-    //     await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    var response =
-        await http_image_put(role: 'test', id: '2', image_files: [image.path]);
-    print("response" + response.toString());
+    if (image != null ) {
+      print(image.path);
+      setState(() {
+        _newPicture = image.path;
+      });
+      var response =
+          await http_image_put(role: 'test', id: '2', image_files: image.path);
+      print("response" + response.toString());
+    }
   }
 
   _onSubmit() {
