@@ -1,4 +1,5 @@
 import 'package:duckie_app/components/postScrollView.dart';
+import 'package:duckie_app/ui/post/post_write.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -45,6 +46,11 @@ class _ChannelPostListState extends State<ChannelPostList> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  _movePostwrite(Channel channel) {
+    return Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) => PostWrite(channel: _channel)));
   }
 
   List<Postitem>? selectpost(String index) {
@@ -95,10 +101,20 @@ class _ChannelPostListState extends State<ChannelPostList> {
     }
 
     return Scaffold(
-        body: Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: [ dropdownbutton, Row ( children : [listSection()] )],
-    ));
-    // return listSection;
+        children: [
+          dropdownbutton,
+          Row(children: [listSection()])
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _movePostwrite(_channel);
+        },
+        child: const Icon(Icons.edit),
+        backgroundColor: primaryColor,
+      ),
+    );
   }
 }

@@ -44,7 +44,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     var token = await TokenManager.instance.getToken();
     // user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     // await storage.write(key: "accessToken", value: null);
-    if (token.refreshToken != null && jwttoken != null ) {
+    if (token.refreshToken != null && jwttoken != null) {
       print("token access " + token.accessToken.toString());
       print("token refresh " + token.refreshToken.toString());
       print('is it not null?');
@@ -133,11 +133,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       try {
         // listen 은 전체를 rebuild 한다는 뜻으로 set 함수를 사용하기 위해서 단순하게
         // listen 을 false로 하여 진행한다.
-        final _auth = Provider.of<AuthModel>(context, listen: false);
-        _auth.user = await UserApi.instance.me();
-        print("카카오톡 에서 보내준 유저 정보 user : " + _auth.user.toString());
-        final snackBar = SnackBar(
-            content: Text(_auth.user.properties!['nickname']! + "님 반갑습니다."));
+        var user = await UserApi.instance.me();
+        print("카카오톡 에서 보내준 유저 정보 user : " + user.toString());
+        final snackBar =
+            SnackBar(content: Text(user.properties!['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         // if (!(await _registerUserInfoWithKakao(token.accessToken))) {
         //   print("회원가입 실패");
@@ -145,6 +144,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
         //   return;
         // }
+    
         await _issueJWTandLogin(token.accessToken);
       } on KakaoAuthException catch (e) {
       } catch (e) {

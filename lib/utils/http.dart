@@ -84,6 +84,7 @@ Future<dynamic> http_post(
         body: convert.jsonEncode(body),
       );
     } else {
+      print("jwt 있음");  
       response = await http.post(
         Uri.parse(Uri.encodeFull(url)),
         headers: {

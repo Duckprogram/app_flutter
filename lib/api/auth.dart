@@ -114,3 +114,13 @@ Future<bool> _reissueAccessToken() async {
     return false;
   }
 }
+
+Future<dynamic> apiGetUserProfile({header, required String path}) async {
+  var response = await http_get(header: header, path: path);
+  var responseJson = json.decode(utf8.decode(response.bodyBytes));
+  if (response.statusCode == 200) {
+    return responseJson;
+  } else {
+    throw Exception('Failed to HTTP GET Channellist');
+  }
+}

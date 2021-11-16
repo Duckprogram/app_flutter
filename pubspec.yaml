@@ -28,6 +28,8 @@ dependencies:
     #무한 스크래핑
     infinite_scroll_pagination: ^3.1.0
     image_picker: ^0.8.4+4
+    #editor
+    flutter_quill: ^2.0.14
 
 dev_dependencies:
     flutter_test:

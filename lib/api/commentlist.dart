@@ -20,15 +20,15 @@ Future<dynamic> api_CommentlList({header, required String path}) async {
 }
 
 
-// Future<dynamic> api_MyChannelList({header, required String path}) async {
-//   var response = await http_get(header: header, path : path);
+Future<dynamic> api_postCommentWrite({header,  required String path, required Map<String, dynamic> body}) async {
+  var response = await http_post(header: header, path: path, body: body);
 
-//   var responseJson = json.decode(utf8.decode(response.bodyBytes));
+  var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
-//   if (response.statusCode == 200) {
-//     print(responseJson);
-//     return responseJson;
-//   } else{
-//     throw Exception('Failed to HTTP GET Channellist');
-//   }
-// }
+  if (response.statusCode == 200) {
+    print(responseJson);
+    return responseJson;
+  } else{
+    throw Exception("Failed to HTTP POST(2)");
+  }
+}

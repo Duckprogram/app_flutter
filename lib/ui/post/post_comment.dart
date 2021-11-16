@@ -121,6 +121,7 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
           onFieldSubmitted: (value) {
             // postCubit.addPostComment(postCubit.state.posts![index],
             //     _messageController.text);
+            _commentlist.postCommentWrite( _messageController.text , _auth.user!.userId! );
             setState(() {
               _messageController.text = "";
             });
@@ -133,6 +134,7 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
                     // postCubit.addPostComment(
                     //     postCubit.state.posts![index],
                     // _messageController.text);
+                    _commentlist.postCommentWrite( _messageController.text , _auth.user!.userId! );
                     myFocusNode.unfocus();
                     setState(() {
                       _messageController.text = "";
