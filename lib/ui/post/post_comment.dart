@@ -21,7 +21,7 @@ class PostComment extends StatefulWidget {
   _PostCommentState createState() => _PostCommentState();
 }
 
-class _PostCommentState extends State<PostComment> {
+class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
   late final Postitem _postitem;
   late FocusNode myFocusNode;
   final TextEditingController _messageController = TextEditingController();
@@ -33,13 +33,25 @@ class _PostCommentState extends State<PostComment> {
     myFocusNode.addListener(() {
       print(myFocusNode.hasFocus);
     });
+    WidgetsBinding.instance!.addObserver(this);
     super.initState();
   }
 
   @override
-  void dispose() {
+  void dispose() { 
+    WidgetsBinding.instance!.removeObserver(this);
     myFocusNode.dispose();
     super.dispose();
+  }
+
+  //댓글 작성 창 활성화시 뒤로가기 버튼을 누르면 자동적으로 창이 없어지게끔 개발완료 
+  @override
+  void didChangeMetrics() {
+    super.didChangeMetrics();
+    final value = WidgetsBinding.instance!.window.viewInsets.bottom;
+    if (value == 0) {
+      myFocusNode.unfocus();
+    }
   }
 
   @override
@@ -101,7 +113,7 @@ class _PostCommentState extends State<PostComment> {
 
     Widget newComment = Padding(
       padding: MediaQuery.of(context).viewInsets,
-      child: Focus( 
+      child: Focus(
         focusNode: myFocusNode,
         child: TextFormField(
           controller: _messageController,
@@ -115,12 +127,13 @@ class _PostCommentState extends State<PostComment> {
           },
           decoration: InputDecoration(
               hintText: " 댓글을 남겨보세요",
-              suffixIcon: RaisedButton(
+              suffixIcon: MaterialButton(
                   shape: CircleBorder(),
                   onPressed: () {
                     // postCubit.addPostComment(
                     //     postCubit.state.posts![index],
                     // _messageController.text);
+                    myFocusNode.unfocus();
                     setState(() {
                       _messageController.text = "";
                     });
