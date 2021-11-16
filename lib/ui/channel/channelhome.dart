@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/components/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
@@ -30,6 +32,8 @@ class _ChannelHomeState extends State<ChannelHome> {
   @override
   void initState() {
     _channel = widget.channel;
+    print("_channel");
+    print(_channel);
     super.initState();
   }
 
@@ -65,15 +69,27 @@ class _ChannelHomeState extends State<ChannelHome> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            backpageArrow(context),
             Container(
-              padding: EdgeInsets.only(right: 15, left: 25),
-              child: Text("모동숲",
-                  style: TextStyle(
-                    color: secondaryColor,
-                    fontSize: 20,
-                    fontFamily: "Spoqa Han Sans Neo",
-                  )),
+              decoration: BorderBottom,
+              child: IconButton(
+                icon: iconImageSmall("back", 24.0),
+                alignment: Alignment.bottomLeft,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
+            Row(
+              children: [
+                // getChannelIcon(""),
+                Container(
+                  padding: EdgeInsets.only(right: 15, left: 25),
+                  child: Text("모동숲",
+                      style: TextStyle(
+                        color: secondaryColor,
+                        fontSize: 20,
+                        fontFamily: "Spoqa Han Sans Neo",
+                      )),
+                ),
+              ],
             ),
             Padding(padding: EdgeInsets.all(5.0)),
             Container(

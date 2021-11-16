@@ -1,3 +1,4 @@
+import 'package:duckie_app/components/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -37,13 +38,6 @@ class _ChannelListState extends State<ChannelList> {
         MaterialPageRoute(builder: (context) => ChannelHome(channel: channel)));
   }
 
-  _getChannelIcon(icon) {
-    if (icon != null) {
-      return Image.network(icon.toString());
-    } else {
-      return Image.asset('assets/images/reading_glasses.png');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +102,7 @@ class _ChannelListState extends State<ChannelList> {
                             color: gray08,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: _getChannelIcon(list![position].icon)),
+                          child: getChannelIcon(list![position].icon)),
                       Flexible(
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
