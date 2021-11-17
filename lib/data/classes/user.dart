@@ -7,17 +7,23 @@ class User {
   User({
     this.token,
     this.avatar,
-    this.id,
+    this.userId,
     this.email,
     this.name,
     this.picture,
+    this.createDate,
+    this.lastModifiedDate,
+    this.role,
   });
 
-  final int? id;
+  final int? userId;
   final String? name;
   final String? avatar;
   final String? email;
   final String? picture;
+  final DateTime? createDate;
+  final DateTime? lastModifiedDate;
+  final String? role;
 
   @JsonKey(nullable: true)
   String? token;

@@ -39,6 +39,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    //가장 초기 화면에서 user 정보를 가져온다. 
+    final _auth = Provider.of<AuthModel>(context, listen: false);
+    _auth.getUserProfile();
     return Scaffold(
       body: Center(
         child: _pages[_selectedIndex],
