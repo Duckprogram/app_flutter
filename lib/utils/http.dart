@@ -84,7 +84,7 @@ Future<dynamic> http_post(
         body: convert.jsonEncode(body),
       );
     } else {
-      print("jwt 있음");  
+      print("jwt 있음");
       response = await http.post(
         Uri.parse(Uri.encodeFull(url)),
         headers: {
@@ -203,8 +203,7 @@ Future<dynamic> http_image_put(
 
   if (image_files is String) {
     return await single_image_put(role, id, image_files, url);
-  } 
-  else if (image_files is List<String>) {
+  } else if (image_files is List<String>) {
     // 다중 이미지 처리api가 있지만.. 구현이 되지 않아 단일로 여러개 처리하게 구현
     // var path = Uri.parse(url);
     // var response;
@@ -250,8 +249,7 @@ Future<dynamic> http_image_put(
 
 Future<dynamic> single_image_put(
     String role, String id, String image_file, String url) async {
-  var querypath =
-      'path=/' + role + '/' + id + '/' + image_file.split('/').last;
+  var querypath = 'path=/' + role + '/' + id + '/' + image_file.split('/').last;
   print(querypath);
   final queryParameters = {
     'overwrite': 'true',
@@ -270,11 +268,14 @@ Future<dynamic> single_image_put(
       },
       body: File(image_file).readAsBytesSync(),
     );
-    print(File(image_file).readAsBytesSync().toString());
-    print("image put 전송 진행");
-    print(Uri.parse(Uri.encodeFull(path)));
+
     print("결과" + response.body.toString() + response.statusCode.toString());
-    return response;
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    print(responseJson['header']['isSuccessful']);
+    if (responseJson['header']['isSuccessful'] == true) {
+      return responseJson;
+    }
+    Exception("이미지가 제대로 전송되지 않았습니다.");
   } catch (ex) {
     print(ex);
     debugPrint("http_image_put.exception: " +

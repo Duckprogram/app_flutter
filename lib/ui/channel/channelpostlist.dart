@@ -50,7 +50,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
 
   _movePostwrite(Channel channel) {
     return Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) => PostWrite(channel: _channel)));
+        MaterialPageRoute(builder: (context) => PostWrite(channel: channel)));
   }
 
   List<Postitem>? selectpost(String index) {
@@ -96,7 +96,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
       return postScrollView(
         context,
         _channel,
-        _postlist.postlist,
+        postitemlist,
       );
     }
 
@@ -105,7 +105,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           dropdownbutton,
-          Row(children: [listSection()])
+          Expanded( child : listSection())
         ],
       ),
       floatingActionButton: FloatingActionButton(

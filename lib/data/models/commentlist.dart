@@ -53,9 +53,6 @@ class CommentListModel extends ChangeNotifier {
       var response =
           await api_postCommentWrite(header: null, path: path, body: body);
       print("댓글 정상여부" + response.toString());
-      // _commentlist =
-      //     List<Commentitem>.from(response.map((json) => Commentitem.fromJson(json)));
-      // notifyListeners();
     } catch (e) {
       print(e);
     }

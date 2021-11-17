@@ -29,7 +29,12 @@ Image iconImageSmall(name, size) {
 
 Image getImageOrBasic(String? image) {
   if (image != null) {
-    return Image.network(image.toString(), width: 30, height: 20);
+    // try {
+    //   var data = Image.network(image.toString(), width: 30, height: 20);
+    //   return data;
+    // } catch (e) {
+      return Image.asset('assets/images/ic_person.png');
+    // }
   } else {
     return Image.asset('assets/images/ic_person.png');
   }

@@ -56,7 +56,6 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final _auth = Provider.of<AuthModel>(context, listen: false);
     final _commentlist = Provider.of<CommentListModel>(context, listen: false);
     final commentlist = _commentlist.commentlist;
     AppBar appBarSection = AppBar(
@@ -108,7 +107,7 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
         ));
 
     Widget Commentlist() {
-      return CommentScrollListView(commentlist!, true);
+      return CommentScrollListView(commentlist, true);
     }
 
     Widget newComment = Padding(
@@ -119,26 +118,24 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
           controller: _messageController,
           scrollPadding: EdgeInsets.only(bottom: 40),
           onFieldSubmitted: (value) {
-            // postCubit.addPostComment(postCubit.state.posts![index],
-            //     _messageController.text);
-            _commentlist.postCommentWrite( _messageController.text , _auth.user!.userId! );
-            setState(() {
-              _messageController.text = "";
-            });
+            _commentlist.postCommentWrite( _messageController.text , _postitem.id! ).then( (_) => _commentlist.getCommentList() ).then(
+              (_) => setState(() {
+                _messageController.text = "";
+              })
+            );
+            
           },
           decoration: InputDecoration(
               hintText: " 댓글을 남겨보세요",
               suffixIcon: MaterialButton(
                   shape: CircleBorder(),
                   onPressed: () {
-                    // postCubit.addPostComment(
-                    //     postCubit.state.posts![index],
-                    // _messageController.text);
-                    _commentlist.postCommentWrite( _messageController.text , _auth.user!.userId! );
                     myFocusNode.unfocus();
-                    setState(() {
-                      _messageController.text = "";
-                    });
+                    _commentlist.postCommentWrite( _messageController.text ,  _postitem.id! ).then( (_) => _commentlist.getCommentList() ).then(
+                      (_) => setState(() {
+                        _messageController.text = "";
+                      })
+                    );
                   },
                   color: myFocusNode.hasFocus ? primaryColor : gray04,
                   textColor: gray08,

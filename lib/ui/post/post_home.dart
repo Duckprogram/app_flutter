@@ -138,10 +138,7 @@ class _PostHomeState extends State<PostHome> {
         Row(
           children: [
             Text("댓글 ", style: body1Bold),
-            Text(
-                _isLoadedComment
-                    ? _commentlist.commentlist!.length.toString()
-                    : '0',
+            Text(converInttoString(_commentlist.commentlist != null ? _commentlist.commentlist!.length : 0),
                 style: body1Bold),
           ],
         ),

@@ -53,7 +53,7 @@ class PostListModel extends ChangeNotifier {
     };
     var path = home + Uri(queryParameters: queryParameters).query;
     try {
-      var response = await api_PostlList(header: null, path: path);
+      var response = await api_getPostlList(header: null, path: path);
       _postlist =
           List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
       notifyListeners();
@@ -69,7 +69,7 @@ class PostListModel extends ChangeNotifier {
     };
     var path = home + Uri(queryParameters: queryParameters).query;
     try {
-      var response = await api_PostlList(header: null, path: path);
+      var response = await api_getPostlList(header: null, path: path);
       _postnormallist =
           List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
       notifyListeners();
@@ -85,7 +85,7 @@ class PostListModel extends ChangeNotifier {
     };
     var path = home + Uri(queryParameters: queryParameters).query;
     try {
-      var response = await api_PostlList(header: null, path: path);
+      var response = await api_getPostlList(header: null, path: path);
       _postmarketlist =
           List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
       notifyListeners();

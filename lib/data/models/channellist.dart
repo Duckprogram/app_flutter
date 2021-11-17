@@ -46,7 +46,7 @@ class ChannelListModel extends ChangeNotifier {
     };
     path = path + '?' + Uri(queryParameters: queryParameters).query;
     try {
-      var response = await api_ChannelList(header: null, path: path);
+      var response = await api_getChannelList(header: null, path: path);
       var res_data = response['data']["content"];
       // ChannelPageLast = response["data"]["totalPages"];
       print(ChannelTotalPage.toString() +
@@ -78,7 +78,7 @@ class ChannelListModel extends ChangeNotifier {
   getChannel(int id) async {
     var path = '/channels/$id/info/detail';
     try {
-      var response = await apiGetChannel(header: null, path: path);
+      var response = await api_getChannel(header: null, path: path);
       _channel = Channel.fromJson(response);
       notifyListeners();
     } catch (e) {
@@ -89,10 +89,10 @@ class ChannelListModel extends ChangeNotifier {
   getMyChannelList() async {
     try {
       var path = '/auth/registered';
-      var response = await api_MyChannelList(header: null, path: path);
+      var response = await api_getMyChannelList(header: null, path: path);
       var res_data = response['data'];
       path = '/auth/created';
-      response = await api_MyChannelList(header: null, path: path);
+      response = await api_getMyChannelList(header: null, path: path);
       res_data.addAll(response['data']);
       _mychannellist =
           List<Channel>.from(res_data.map((json) => Channel.fromJson(json)));

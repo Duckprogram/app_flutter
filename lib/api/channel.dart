@@ -7,7 +7,7 @@ import '../utils/http.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-Future<dynamic> api_ChannelList({header, required String path}) async {
+Future<dynamic> api_getChannelList({header, required String path}) async {
   var response = await http_get(header: header, path: path);
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
   print(responseJson);
@@ -18,7 +18,7 @@ Future<dynamic> api_ChannelList({header, required String path}) async {
   }
 }
 
-Future<dynamic> api_MyChannelList({header, required String path}) async {
+Future<dynamic> api_getMyChannelList({header, required String path}) async {
   var response = await http_get(header: header, path: path);
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
   // responseJson = responseJson['data'];
@@ -29,23 +29,7 @@ Future<dynamic> api_MyChannelList({header, required String path}) async {
   }
 }
 
-Future<dynamic> api_ChannelDetail({header, required int id}) async {
-  var path = '/channels/' + id.toString() + '/info/detail';
-
-  var response = await http_get(header: header, path: path);
-
-  var responseJson = json.decode(utf8.decode(response.bodyBytes));
-  responseJson = responseJson['data'];
-  if (response.statusCode == 200) {
-    print(responseJson);
-    return responseJson;
-  } else {
-    throw Exception('Failed to HTTP GET Channellist');
-  }
-}
-
-
-Future<dynamic> apiGetChannel({header, required String path}) async {
+Future<dynamic> api_getChannel({header, required String path}) async {
   var response = await http_get(header: header, path: path);
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
   if (response.statusCode == 200) {

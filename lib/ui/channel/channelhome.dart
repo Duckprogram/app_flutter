@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:duckie_app/components/Icons.dart';
+import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
@@ -21,6 +23,8 @@ class ChannelHome extends StatefulWidget {
 
 class _ChannelHomeState extends State<ChannelHome> {
   late Channel _channel;
+  bool _isLoadedPost = false;
+  bool _isLoadedChannel = false;
 
   List<String> channel_info = [
     '채널 게시글',
@@ -66,16 +70,33 @@ class _ChannelHomeState extends State<ChannelHome> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             backpageArrow(context),
-            Container(
-              padding: EdgeInsets.only(right: 15, left: 25),
-              child: Text("모동숲",
-                  style: TextStyle(
-                    color: secondaryColor,
-                    fontSize: 20,
-                    fontFamily: "Spoqa Han Sans Neo",
-                  )),
+            Row(
+              children: [
+                Container(
+                  width: 55.0,
+                  height: 55.0,
+                  margin: EdgeInsets.only(left: 20),
+                  decoration: new BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: new DecorationImage(
+                          fit: BoxFit.cover,
+                          image: getImageOrBasic(_channel.icon).image)),
+                ),
+                Padding(padding: EdgeInsets.only(left: 20)),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_channel.name.toString(), style: body1),
+                    Row (
+                        children : [ 
+                            Text( " " + converInttoString(_channel.userCount) + "명 모임중",
+                                style: smallDescStyle) ]
+                      )
+                  ],
+                )
+              ],
             ),
-            Padding(padding: EdgeInsets.all(5.0)),
+            Padding(padding: EdgeInsets.all(15.0)),
             Container(
                 padding: EdgeInsets.only(right: 25, left: 25),
                 child: Container(
@@ -107,7 +128,7 @@ class _ChannelHomeState extends State<ChannelHome> {
         child: Scaffold(
           appBar: AppBar(
             title: titleSection,
-            toolbarHeight: 120,
+            toolbarHeight: 185,
             backgroundColor: gray08,
             bottom: TabBar(
               labelColor: gray01,

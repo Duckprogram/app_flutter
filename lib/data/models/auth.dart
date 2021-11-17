@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthModel extends ChangeNotifier {
+  final storage = FlutterSecureStorage();
+
   String errorMessage = "";
   bool _isKakaoTalkInstalled = false;
 
@@ -22,7 +24,7 @@ class AuthModel extends ChangeNotifier {
   }
 
   getLoginedUser() async {
-    final storage = FlutterSecureStorage();
+    
     String? accessToken = await storage.read(key: 'access_token');
     if (accessToken != null) {
       String? refreshToken = await storage.read(key: 'refresh_token');
@@ -44,12 +46,28 @@ class AuthModel extends ChangeNotifier {
     var path = '/auth/profile';
 
     try {
-      var response = await apiGetUserProfile(header: null, path: path);
+      var response = await api_getUserProfile(header: null, path: path);
       print("get user profile data");
       print(response);
       response = response["data"];
       _user = User.fromJson(response);
+      //user_id를 가져올 곳이 없어 getuserProfile 시 가져오도록 구현 완료 
+      await storage.write(key: "userId", value: _user!.userId.toString());
       // notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
+  postUserProfile(String name, String picture ) async {
+    var path = '/auth/profile';
+    var body = {
+      'name': name,
+      'picture': picture
+    };
+    try {
+      var response =
+          await api_postUserProfile(header: null, path: path, body: body);
+      print("정상 수정여부" + response.toString());
     } catch (e) {
       print(e);
     }

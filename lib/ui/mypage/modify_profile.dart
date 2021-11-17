@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:duckie_app/components/Icons.dart';
 import 'package:duckie_app/components/appBarWithBack.dart';
+import 'package:duckie_app/data/models/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../styles/styles.dart';
 import '../../utils/http.dart';
 
@@ -18,10 +20,11 @@ class _ModifyProfileState extends State<ModifyProfile> {
 
   String? _username;
   String? _picture;
-  bool isEnabled = false;
+  bool isNickNameChange = false;
+  bool isPictureChange = false;
   String? _inputName;
   String? _newPicture;
-
+  String? _userId;
   @override
   initState() {
     super.initState();
@@ -31,8 +34,14 @@ class _ModifyProfileState extends State<ModifyProfile> {
   _loadProfile() async {
     String? username = await storage.read(key: 'username');
     String? picture = await storage.read(key: 'picture');
-    setState(() =>
-        {_username = username, _inputName = username, _picture = picture});
+    String? userId = await storage.read(key: 'userId');
+
+    setState(() => {
+          _username = username,
+          _inputName = username,
+          _picture = picture,
+          _userId = userId
+        });
   }
 
   final ButtonStyle style = ElevatedButton.styleFrom(
@@ -54,19 +63,28 @@ class _ModifyProfileState extends State<ModifyProfile> {
   Future getImageFromGallery() async {
     var image =
         await ImagePicker.platform.pickImage(source: ImageSource.gallery);
-    if (image != null ) {
+    if (image != null) {
       print(image.path);
       setState(() {
         _newPicture = image.path;
+        isPictureChange = true;
       });
-      var response =
-          await http_image_put(role: 'test', id: '2', image_files: image.path);
-      print("response" + response.toString());
     }
   }
 
-  _onSubmit() {
-    if (isEnabled) {
+  _onSubmit() async {
+    final _auth = Provider.of<AuthModel>(context, listen: false);
+    if (isPictureChange) {
+      var response = await http_image_put(
+          role: 'auth', id: _userId!, image_files: _newPicture);
+      print(response['file']['url']);
+      _auth.postUserProfile(_inputName!, response['file']['url']);
+      final snackBar = SnackBar(content: Text('프로필이 변경되었습니다.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      storage.write(key: 'username', value: _inputName);
+      storage.write(key: 'picture', value: response['file']['url']);
+    } else if (isNickNameChange) {
+      _auth.postUserProfile(_inputName!, _picture!);
       final snackBar = SnackBar(content: Text('프로필이 변경되었습니다.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       storage.write(key: 'username', value: _inputName);
@@ -78,11 +96,11 @@ class _ModifyProfileState extends State<ModifyProfile> {
     if (value != null && value.length > 1 && value.length <= 20) {
       setState(() {
         _inputName = value;
-        isEnabled = true;
+        isNickNameChange = true;
       });
     } else {
       setState(() {
-        isEnabled = false;
+        isNickNameChange = false;
       });
     }
   }
@@ -92,7 +110,7 @@ class _ModifyProfileState extends State<ModifyProfile> {
     return Scaffold(
         appBar: appBarWithBack("프로필 설정"),
         body: _buildbody(),
-        bottomNavigationBar: _bottomNavigationBar(isEnabled));
+        bottomNavigationBar: _bottomNavigationBar(isNickNameChange));
   }
 
   Widget _buildbody() {

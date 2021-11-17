@@ -25,13 +25,13 @@ class SplashPageState extends State<SplashPage> {
     super.initState();
     Timer(Duration(milliseconds: 1500), () {
       var user = _auth.getLoginedUser();
-      if (user != null) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      } else {
+      // if (user != null) {
+      //   Navigator.push(
+      //       context, MaterialPageRoute(builder: (context) => Home()));
+      // } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => KakoaLoginPage()));
-      }
+      // }
     });
   }
 
