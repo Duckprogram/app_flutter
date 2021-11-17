@@ -43,7 +43,7 @@ class ChannelListModel extends ChangeNotifier {
   }
 
   getChannel(int id) async {
-    var path = '/channels/$id/info/brief';
+    var path = '/channels/$id/info/detail';
     try {
       var response = await apiGetChannel(header: null, path: path);
       _channel = Channel.fromJson(response);
