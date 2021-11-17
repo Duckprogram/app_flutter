@@ -10,10 +10,10 @@ class Postitem {
       this.content,
       this.images,
       this.views,
-      this.username,
+      this.user_name,
       this.userImage,
       this.createdBy,
-      this.createdDate,
+      this.create_date,
       this.channel,
       this.channelImage});
 
@@ -22,13 +22,13 @@ class Postitem {
   final String? title;
   final String? category;
   final String? content;
-  final String? username;
+  final String? user_name;
   final String? userImage;
   final List<dynamic>? images;
   final int? views;
   final String? createdBy;
   final String? channel;
-  final DateTime? createdDate;
+  final DateTime? create_date;
   final String? channelImage;
 
   factory Postitem.fromJson(Map<String, dynamic> json) =>

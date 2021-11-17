@@ -95,13 +95,13 @@ class _PostHomeState extends State<PostHome> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(_postitem.username.toString(), style: body1),
+              Text(_postitem.user_name.toString(), style: body1),
               Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(right: 6, bottom: 2),
                     child: Text(
-                      getCreatedDateStr(_postitem.createdDate!),
+                      getCreatedDateStr(_postitem.create_date!),
                       style: captionGray03,
                     ),
                   ),
