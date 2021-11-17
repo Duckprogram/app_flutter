@@ -26,3 +26,12 @@ Image iconImageSmall(name, size) {
     width: size,
   );
 }
+
+
+Image getImageOrBasic(String? image) {
+  if (image != null) {
+    return Image.network(image.toString(), width: 30, height: 20);
+  } else {
+    return Image.asset('assets/images/ic_person.png');
+  }
+}
