@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'data/models/auth.dart';
 
-import 'ui/home/home_bottombar.dart';
+import 'ui/home/home.dart';
 import 'ui/signin/Kakaologin.dart';
 
 void main() => runApp(MyApp());

@@ -1,5 +1,5 @@
 import 'package:duckie_app/components/postScrollView.dart';
-import 'package:duckie_app/ui/post/post_write.dart';
+import 'package:duckie_app/ui/post/postwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';
@@ -9,7 +9,7 @@ import '../../data/classes/channel.dart';
 import '../../data/models/postlist.dart';
 import '../../data/classes/postitem.dart';
 import '../channel/channelhome.dart';
-import '../post/post_home.dart';
+import '../post/posthome.dart';
 
 import 'package:collection/collection.dart';
 

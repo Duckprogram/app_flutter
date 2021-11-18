@@ -3,7 +3,7 @@ import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/data/classes/comment.dart';
 import 'package:duckie_app/data/classes/postitem.dart';
 import 'package:duckie_app/styles/styles.dart';
-import 'package:duckie_app/ui/post/post_home.dart';
+import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 

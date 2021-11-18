@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../../styles/styles.dart';
 import '../../data/classes/postitem.dart';
 import '../../data/classes/channel.dart';
-import 'post_comment.dart';
+import 'postcomment.dart';
 //list 비교 함수
 
 class PostHome extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../styles/styles.dart';
 import '../../data/classes/postitem.dart';
 import '../../data/classes/channel.dart';
-import 'post_comment.dart';
+import 'postcomment.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 
 class PostWrite extends StatefulWidget {

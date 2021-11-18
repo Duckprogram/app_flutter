@@ -1,6 +1,6 @@
 import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/ui/channel/channelhome.dart';
-import 'package:duckie_app/ui/post/post_home.dart';
+import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../common/type.dart';

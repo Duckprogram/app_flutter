@@ -1,6 +1,6 @@
 import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/styles/styles.dart';
-import 'package:duckie_app/ui/post/post_write.dart';
+import 'package:duckie_app/ui/post/postwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/data/models/channellist.dart';
