@@ -24,17 +24,18 @@ List<Channel> init_categories = [
 
 late List<Channel> categories = List.of(init_categories);
 
+// Our MrTabs class.
+//Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final _channellist = Provider.of<ChannelListModel>(context, listen: false);
 
-    _channellist.getMyChannelList()
+    _channellist
+        .getChannelList()
+        .then((_) => _channellist.getMyChannelList())
         .then((_) => _asyncMethod(_channellist.mychannellist));
-    // _channellist
-    //     .getChannelList()
-    //     .then((_) => _channellist.getMyChannelList())
-    //     .then((_) => _asyncMethod(_channellist.mychannellist));
+
     super.initState();
   }
 

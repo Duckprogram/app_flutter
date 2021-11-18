@@ -38,11 +38,11 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   _asyncMethod() async {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
-    var jwttoken = await storage.read(key: "accessToken");
-    print("token check");
+    // var token = await storage.read(key: "accessToken");
+    // print("token check");
     // 신규 버전이 나오면서 더 이상 storage를 굳이 안써도 될 거 같다.
-    var token = await TokenManager.instance.getToken();
-    // user의 정보가 있다면 바로 자동 로그인 method로 넘어감
+    // var token = await TokenManager.instance.getToken();
+    //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     // await storage.write(key: "accessToken", value: null);
     // if (token.refreshToken != null && jwttoken != null) {
     //   print("token access " + token.accessToken.toString());
@@ -60,57 +60,72 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-              padding: EdgeInsets.only(bottom: 20),
-              child: Text(
-                "어서오세요 덕님!\n더키에 오신걸 환영해요! ",
-                style: h1,
-                textAlign: TextAlign.center,
-              )),
-          Container(
-              padding: EdgeInsets.only(bottom: 45),
-              child: Text(
-                "다른 곳에선 못했던 이야기\n덕친들과 자유롭게 애기하세요!",
-                style: body1MediumGray3,
-                textAlign: TextAlign.center,
-              )),
-          Container(
-              width: 220,
-              padding: EdgeInsets.only(bottom: 85),
-              child: Image.asset('assets/login/duckie_character.png')),
-          Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 20,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: Color(0xfffae100),
-            ),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith((states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Color(0xfffae100);
-                    } else {
-                      return Color(0xfffae100);
-                    }
-                  }),
-                  // alignment: 0,
-                ),
-                child: Text("카카오톡 으로 로그인 하기",
-                    textAlign: TextAlign.center, style: body1Bold),
-                onPressed: _loginWithKakaoTalk),
-          ),
-        ],
+        child: Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: 56,
+        foregroundColor: gray01,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0.1,
+        shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+        title: Text(
+          "로그인",
+          textAlign: TextAlign.center,
+          style: body2Bold,
+        ),
       ),
-    );
+      body: SingleChildScrollView(
+          child: Container(
+        color: white,
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.only(
+                  top: 56,
+                  bottom: 20,
+                ),
+                child: Text(
+                  "어서오세요 덕님!\n더키에 오신걸 환영해요! ",
+                  style: h1,
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+                padding: EdgeInsets.only(bottom: 45),
+                child: Text(
+                  "다른 곳에선 못했던 이야기\n덕친들과 자유롭게 애기하세요!",
+                  style: body1MediumGray3,
+                  textAlign: TextAlign.center,
+                )),
+            Container(
+                height: 280,
+                width: 225,
+                padding: EdgeInsets.only(bottom: 40),
+                child: Image.asset('assets/login/duckie_character.png')),
+            Container(
+              height: 60,
+              margin: EdgeInsets.only(bottom: 40),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 60,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Color(0xfffae100),
+              ),
+              child: TextButton(
+                  child: Text("카카오톡으로 로그인",
+                      textAlign: TextAlign.center, style: body1BoldBlack),
+                  onPressed: _loginWithKakaoTalk),
+            ),
+          ],
+        ),
+      )),
+    ));
   }
 
   _initKakaoTalkInstalled() async {
@@ -188,13 +203,13 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       // final _auth = Provider.of<AuthModel>(context, listen: false);
       // _auth.user = await UserApi.instance.me();
       print(response);
-      if (response['data']['access_token'] != null) {
+      if (response['access_token'] != null) {
         await storage.write(
-            key: "accessToken", value: response['data']['access_token']);
-        await storage.write(key: "username", value: response['data']['name']);
-        await storage.write(key: "picture", value: response['data']['picture']);
+            key: "accessToken", value: response['access_token']);
+        await storage.write(key: "username", value: response['name']);
+        await storage.write(key: "picture", value: response['picture']);
         await storage.write(
-            key: "refreshToken", value: response['data']['refresh_token']);
+            key: "refreshToken", value: response['refresh_token']);
         // 이상없이 잘 되었다면 main 화면으로 넘어가기
         Navigator.pushReplacementNamed(context, '/home');
       }

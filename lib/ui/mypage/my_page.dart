@@ -91,9 +91,12 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          shape: Border(bottom: BorderSide(color: gray07, width: 1)),
           automaticallyImplyLeading: false,
           backgroundColor: white,
           foregroundColor: gray01,
+          elevation: 0.1,
+          centerTitle: true,
           title: Text(
             "마이페이지",
             style: body2Bold,
@@ -219,6 +222,10 @@ class _MyPageState extends State<MyPage> {
         ));
   }
 
+  _onClickIsAgree() {
+    print("helllo");
+  }
+
   _showWidrawModal() {
     return showModalBottomSheet<void>(
       context: context,
@@ -266,17 +273,16 @@ class _MyPageState extends State<MyPage> {
                       ],
                     )),
                 GestureDetector(
-                    onTap: () => {
-                          setState(() {
-                            _isAgree = true;
-                          })
-                        },
-                    child: Row(children: [
-                      _isAgree
-                          ? iconImageSmall("checkbox_active", 25.0)
-                          : iconImageSmall("checkbox", 25.0),
-                      Text("안내 사항을 모두 확인하였으며, 이에 동의합니다.", style: body2Primary),
-                    ])),
+                    onTap: _onClickIsAgree,
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 32),
+                        child: Row(children: [
+                          _isAgree
+                              ? iconImageSmall("checkbox_active", 25.0)
+                              : iconImageSmall("checkbox", 25.0),
+                          Text("  안내 사항을 모두 확인하였으며, 이에 동의합니다.",
+                              style: body2Primary),
+                        ]))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -294,7 +300,7 @@ class _MyPageState extends State<MyPage> {
                             padding: const EdgeInsets.all(20),
                             child: Text('좀 더 고민해볼게요',
                                 textAlign: TextAlign.center,
-                                style: body1Bold))),
+                                style: body1BoldBlack))),
                     ElevatedButton(
                         style: style,
                         onPressed: withdrawal,

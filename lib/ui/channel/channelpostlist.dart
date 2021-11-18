@@ -70,12 +70,19 @@ class _ChannelPostListState extends State<ChannelPostList> {
     }
   }
 
+  _movePostdetail(Postitem postitem, Channel channel) {
+    //id를 추가한 이유는 채널의 id를 받기 위해서 추가진행
+    //rootNavigator를 추가하면 bottombar 제거 가능
+    // return PostHome(postitem: postitem);
+    return Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => PostHome(postitem: postitem, channel : channel)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final postitemlist = selectpost(_index);
 
     Widget dropdownbutton = Container(
-      padding: EdgeInsets.only(top: 10, left: 15, right: 15),
       child: DropdownButton(
         value: _index,
         items: _droplist.map((value) {

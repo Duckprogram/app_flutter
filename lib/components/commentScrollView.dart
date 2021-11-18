@@ -10,12 +10,14 @@ import 'package:flutter/material.dart';
 Widget CommentScrollListView(List<Commentitem>? commentList, bool? iscommentlist) {
 
   if (commentList == null || commentList.length == 0) {
-    return Container(padding :EdgeInsets.only(top: 15),child: Text("댓글을 달아보세요"));
+    return Container(
+        padding: EdgeInsets.only(top: 15), child: Text("댓글을 달아보세요"));
   }
 
   CommentDelete() {
     final snackBar = SnackBar(content: Text('해당 댓글을 삭제 하시겠습니까?'));
   }
+
   return SingleChildScrollView(
       padding: EdgeInsets.only(left: 12, top: 12, right: 12),
       child: Column(children: <Widget>[
@@ -47,9 +49,9 @@ Widget CommentScrollListView(List<Commentitem>? commentList, bool? iscommentlist
                             shape: BoxShape.circle,
                             image: new DecorationImage(
                                 fit: BoxFit.cover,
-                                image:
-                                    getImageOrBasic(commentList[position].user_picture)
-                                        .image)),
+                                image: getImageOrBasic(
+                                        commentList[position].user_picture)
+                                    .image)),
                       ),
                       Padding(padding: EdgeInsets.all( 8)),
                       Column(
@@ -59,13 +61,16 @@ Widget CommentScrollListView(List<Commentitem>? commentList, bool? iscommentlist
                             children: [
                               Padding(
                                 padding: EdgeInsets.only(right: 6, bottom: 2),
-                                child: Text(commentList[position].user_name.toString(),
-                                  style: body1),
+                                child: Text(
+                                    commentList[position].user_name.toString(),
+                                    style: body1),
                               ),
-                              commentList[position].writtenBy_yn == true ? Text(
-                                "작성자",
-                                style: body1BoldPrimary,
-                              ) : Container(),
+                              commentList[position].writtenBy_yn == true
+                                  ? Text(
+                                      "작성자",
+                                      style: body1BoldPrimary,
+                                    )
+                                  : Container(),
                             ],
                           ),
                           Padding(
@@ -90,7 +95,7 @@ Widget CommentScrollListView(List<Commentitem>? commentList, bool? iscommentlist
                     ],
                   ),
                 ),
-                onTap: () => { iscommentlist == true  ? CommentDelete() : {} } );
+                onTap: () => {iscommentlist == true ? CommentDelete() : {}});
           },
         )
       ]));

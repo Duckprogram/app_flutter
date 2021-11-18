@@ -3,19 +3,17 @@ part 'comment.g.dart';
 
 @JsonSerializable()
 class Commentitem {
-  Commentitem(
-    {
-      this.id,
-      this.comment,
-      this.commnet_count,
-      this.created_by,
-      this.create_date,
-      this.post,
-      this.user_picture,
-      this.user_name,
-      this.writtenBy_yn,
-    }
-  );
+  Commentitem({
+    this.id,
+    this.comment,
+    this.commnet_count,
+    this.created_by,
+    this.create_date,
+    this.post,
+    this.user_picture,
+    this.user_name,
+    this.writtenBy_yn,
+  });
 
   final int? id;
   final String? comment;

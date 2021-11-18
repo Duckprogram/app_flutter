@@ -1,3 +1,4 @@
+import 'package:duckie_app/components/Icons.dart';
 import 'package:duckie_app/components/commentScrollView.dart';
 import 'package:duckie_app/data/classes/comment.dart';
 import 'package:duckie_app/data/models/auth.dart';
@@ -59,15 +60,20 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
     final _commentlist = Provider.of<CommentListModel>(context, listen: false);
     final commentlist = _commentlist.commentlist;
     AppBar appBarSection = AppBar(
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+      backgroundColor: white,
+      foregroundColor: gray01,
+      elevation: 0.1,
       title: Text(
         "댓글",
-        style: h4,
+        style: body2Bold,
       ),
-      backgroundColor: gray08,
+      centerTitle: true,
+      actions: <Widget>[
+        IconButton(
+            icon: iconImageSmall("close", 24.0),
+            onPressed: () => Navigator.of(context).pop()),
+      ],
     );
     Widget titleSection = Container(
         padding: EdgeInsets.only(left: 25, top: 15),
@@ -77,7 +83,8 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
         ));
 
     Widget CommentNavigation = Container(
-        padding: EdgeInsets.only(left: 25, top: 20, right: 25),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+        decoration: BorderBottom,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -49,8 +49,7 @@ class _PostHomeState extends State<PostHome> {
   _movePostComment() {
     return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider<CommentListModel>.value(
-            value: _commentlist, child: PostComment(postitem: _postitem)
-    ))); 
+            value: _commentlist, child: PostComment(postitem: _postitem))));
   }
 
   @override
@@ -131,7 +130,8 @@ class _PostHomeState extends State<PostHome> {
         ));
 
     Widget commentNavigation = Container(
-        child: Row(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -163,7 +163,7 @@ class _PostHomeState extends State<PostHome> {
       child: Scaffold(
           appBar: appBarSection,
           backgroundColor: white,
-          body: Container(
+          body: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,9 @@ class _PostHomeState extends State<PostHome> {
                   postSection,
                   dividerLine,
                   commentNavigation,
-                  Expanded(child: Commentlist(),)
+                  Expanded(
+                    child: Commentlist(),
+                  )
                 ],
               ))),
     );

@@ -34,6 +34,8 @@ class _ChannelHomeState extends State<ChannelHome> {
   @override
   void initState() {
     _channel = widget.channel;
+    print("_channel");
+    print(_channel);
     super.initState();
   }
 
