@@ -130,7 +130,8 @@ class _PostHomeState extends State<PostHome> {
         ));
 
     Widget commentNavigation = Container(
-        child: Row(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -162,7 +163,7 @@ class _PostHomeState extends State<PostHome> {
       child: Scaffold(
           appBar: appBarSection,
           backgroundColor: white,
-          body: Container(
+          body: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
