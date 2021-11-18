@@ -58,9 +58,13 @@ class _SearchPageState extends State<SearchPage> {
           automaticallyImplyLeading: false,
           backgroundColor: white,
           foregroundColor: gray01,
+          elevation: 0.1,
+          shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+          centerTitle: true,
           title: Text(
             "검색",
             style: body2Bold,
+            textAlign: TextAlign.center,
           )),
       body: _buildbody(),
     );

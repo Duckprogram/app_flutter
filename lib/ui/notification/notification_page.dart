@@ -41,9 +41,13 @@ class _NotificationPageState extends State<NotificationPage> {
           automaticallyImplyLeading: false,
           backgroundColor: white,
           foregroundColor: gray01,
+          elevation: 0.1,
+          shape: Border(bottom: BorderSide(color: gray07, width: 1)),
+          centerTitle: true,
           title: Text(
             "알림",
             style: body2Bold,
+            textAlign: TextAlign.center,
           )),
       body: _buildbody(),
     );
@@ -65,7 +69,7 @@ class _NotificationPageState extends State<NotificationPage> {
             2,
             "oprNotice",
             "방금",
-            "iF 디자인 어워드 2021 수상작에 담긴 디자인 인사이트를 나누는 시간",
+            "iF 디자인 어워드 2021 수상작 인사이트는?",
             "디자인 요소를 최소화한 표현 방식, 정보 전달에 담긴 디자인적 의도, 유용성을 높인 규칙 등을 설명했다. 실제 진행했던 프로젝트를 예로 들어 이 방식이 디지털 프로덕트의 커뮤니케이션에서 어떤 효과를 주는지도 보여주었다.",
             _isOpen2),
         _operatorNotice(
@@ -75,8 +79,6 @@ class _NotificationPageState extends State<NotificationPage> {
             "MZ세대의 관점에서 본 증권업에 대한 이해",
             "디자인 요소를 최소화한 표현 방식, 정보 전달에 담긴 디자인적 의도, 유용성을 높인 규칙 등을 설명했다. 실제 진행했던 프로젝트를 예로 들어 이 방식이 디지털 프로덕트의 커뮤니케이션에서 어떤 효과를 주는지도 보여주었다.",
             _isOpen3),
-        _operatorNotice(4, "comment", "1시간 전",
-            "디지털 프로덕트의 실용적인 커뮤니케이션 방법론이 발표되었습니다.", "", false),
       ],
     )));
   }
@@ -102,6 +104,7 @@ class _NotificationPageState extends State<NotificationPage> {
                               Text(
                                 title,
                                 style: body2Bold,
+                                softWrap: true, // 텍스트가 영역을 넘어갈 경우 줄바꿈 여부
                               ),
                               type == "oprNotice"
                                   ? (isOpen

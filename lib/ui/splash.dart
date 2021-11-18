@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:duckie_app/styles/styles.dart';
-import 'package:duckie_app/ui/home/home_tabbar.dart';
+import 'package:duckie_app/ui/home/home_page.dart';
 import 'package:duckie_app/ui/signin/Kakaologin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:duckie_app/data/models/auth.dart';
 
-import 'home/home_bottombar.dart';
+import 'home/home.dart';
 
 class SplashPage extends StatefulWidget {
   @override

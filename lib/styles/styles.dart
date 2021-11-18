@@ -49,16 +49,20 @@ const h4 = TextStyle(
 );
 
 const body1 = TextStyle(
-  color: Colors.black,
   fontSize: 15,
   fontFamily: "Spoqa Han Sans Neo",
 );
 
 const body1Bold = TextStyle(
-  color: Colors.black,
   fontSize: 15,
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: FontWeight.w700,
+);
+const body1BoldBlack = TextStyle(
+  fontSize: 15,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+  color: Colors.black,
 );
 const body1BoldGray3 = TextStyle(
   color: gray03,
@@ -118,6 +122,12 @@ const body2Primary = TextStyle(
   fontFamily: "Spoqa Han Sans Neo",
 );
 
+const body2White = TextStyle(
+  color: white,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+);
+
 const body2Regular = TextStyle(
   color: Colors.black,
   fontSize: 13,
@@ -148,6 +158,14 @@ const body2Gray04 = TextStyle(
 
 const body2Bold = TextStyle(
   color: Colors.black,
+  fontSize: 13,
+  fontFamily: "Spoqa Han Sans Neo",
+  fontWeight: FontWeight.w700,
+);
+
+
+const body2BoldGray3 = TextStyle(
+  color: gray03,
   fontSize: 13,
   fontFamily: "Spoqa Han Sans Neo",
   fontWeight: FontWeight.w700,

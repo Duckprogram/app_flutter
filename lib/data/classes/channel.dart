@@ -37,6 +37,6 @@ class Channel {
 
   @override
   String toString() {
-    return "$name".toString();
+    return "id: $id, name: $name, introduction: $introduction, rule: $rule, content: $content, background: $background, interest: $interest, created_date: $created_date, last_modified_date: $last_modified_date, is_active: $is_active, icon: $icon, userCount: $userCount";
   }
 }

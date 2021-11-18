@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import '../../data/models/auth.dart';
 import '../../data/models/channellist.dart';
 import '../../common/type.dart';
-import 'home_channellist.dart';
-import 'home_mychannel.dart';
-import 'home_timeline.dart';
+import 'channellist.dart';
+import 'mychannel.dart';
+import 'timeline.dart';
 import '../../styles/styles.dart';
 import 'package:collection/collection.dart';
 
@@ -24,17 +24,18 @@ List<Channel> init_categories = [
 
 late List<Channel> categories = List.of(init_categories);
 
+// Our MrTabs class.
+//Will build and return our app structure.
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final _channellist = Provider.of<ChannelListModel>(context, listen: false);
 
-    _channellist.getMyChannelList()
+    _channellist
+        .getChannelList()
+        .then((_) => _channellist.getMyChannelList())
         .then((_) => _asyncMethod(_channellist.mychannellist));
-    // _channellist
-    //     .getChannelList()
-    //     .then((_) => _channellist.getMyChannelList())
-    //     .then((_) => _asyncMethod(_channellist.mychannellist));
+
     super.initState();
   }
 

@@ -1,7 +1,7 @@
 import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/data/classes/postitem.dart';
 import 'package:duckie_app/styles/styles.dart';
-import 'package:duckie_app/ui/post/post_home.dart';
+import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,7 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
   }
 
   _movePostdetail(Postitem postitem) {
-    return Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+    return Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PostHome(postitem: postitem, channel: _channel)));
   }
 
@@ -38,23 +38,22 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
+                      Flexible(
+                          child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
                               padding: EdgeInsets.only(bottom: 12),
-                              child: // 텍스트가 영역을 넘어갈 경우 줄바꿈 여부
+                              child: 
                                   Text(list[position].title!,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                      maxLines: 2,
                                       style: channelName)),
                           Container(
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text( list[position].user_name == null ? "익명" : list[position].user_name! ,
+                                Text(list[position].user_name!,
                                     style: captionGray03),
                                 Padding(
                                   padding: EdgeInsets.only(left: 6),
@@ -72,7 +71,7 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                             ),
                           )
                         ],
-                      ),
+                      )),
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: list[position].images != null &&
