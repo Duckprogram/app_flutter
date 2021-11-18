@@ -17,7 +17,7 @@ class CommunityListModel extends ChangeNotifier {
   getPostListByTitle(text) async {
     var path = '/community/search?title=$text';
     try {
-      var response = await api_PostlList(header: null, path: path);
+      var response = await api_getPostlList(header: null, path: path);
       _postlist =
           List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
       notifyListeners();
@@ -30,7 +30,7 @@ class CommunityListModel extends ChangeNotifier {
   getCommunityPosts() async {
     var path = '/community';
     try {
-      var response = await api_PostlList(header: null, path: path);
+      var response = await api_getPostlList(header: null, path: path);
 
       _postlist =
           List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));

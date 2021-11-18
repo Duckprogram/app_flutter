@@ -14,3 +14,12 @@ String getCreatedDateStr(DateTime datetime) {
     return "$days일전";
   }
 }
+
+String converInttoString(int? data) {
+  if (data == null || data == 0) {
+    return '0';
+  } else if (data > 0) {
+    return data.toString();
+  }
+  return '0';
+}

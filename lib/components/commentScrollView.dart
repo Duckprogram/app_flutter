@@ -3,11 +3,12 @@ import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/data/classes/comment.dart';
 import 'package:duckie_app/data/classes/postitem.dart';
 import 'package:duckie_app/styles/styles.dart';
+import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-Widget CommentScrollListView(
-    List<Commentitem> commentList, bool? iscommentlist) {
+Widget CommentScrollListView(List<Commentitem>? commentList, bool? iscommentlist) {
+
   if (commentList == null || commentList.length == 0) {
     return Container(
         padding: EdgeInsets.only(top: 15), child: Text("댓글을 달아보세요"));
@@ -22,16 +23,12 @@ Widget CommentScrollListView(
       child: Column(children: <Widget>[
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: iscommentlist == true
-              ? commentList.length
-              : commentList.length > 2
-                  ? 2
-                  : commentList.length,
+          shrinkWrap: true, 
+          itemCount: iscommentlist == true ? commentList.length : commentList.length > 4 ? 4 : commentList.length ,
           itemBuilder: (context, position) {
             return GestureDetector(
                 child: Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -42,12 +39,12 @@ Widget CommentScrollListView(
                     color: Colors.white,
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
-                        width: 30.0,
-                        height: 30.0,
-                        margin: EdgeInsets.only(right: 8),
+                        width: 25.0,
+                        height: 25.0,
+                        // margin: EdgeInsets.only(right: 8),
                         decoration: new BoxDecoration(
                             shape: BoxShape.circle,
                             image: new DecorationImage(
@@ -56,6 +53,7 @@ Widget CommentScrollListView(
                                         commentList[position].user_picture)
                                     .image)),
                       ),
+                      Padding(padding: EdgeInsets.all( 8)),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -91,10 +89,9 @@ Widget CommentScrollListView(
                           ),
                         ],
                       ),
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: getImageOrBasic(
-                              commentList[position].user_picture)),
+                      // ClipRRect(
+                      //     borderRadius: BorderRadius.circular(5),
+                      //     child: getImageOrBasic(commentList[position].user_picture)),
                     ],
                   ),
                 ),

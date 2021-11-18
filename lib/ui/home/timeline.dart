@@ -1,4 +1,6 @@
 import 'package:duckie_app/data/classes/channel.dart';
+import 'package:duckie_app/styles/styles.dart';
+import 'package:duckie_app/ui/post/postwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/data/models/channellist.dart';
@@ -23,14 +25,19 @@ class _TimeLineState extends State<TimeLine> {
     super.initState();
     _channel.getChannel(1).then((_) => {
           setState(() {
-            _isLoadedChannel = true;
+            if( _channel.channel != null) _isLoadedChannel = true;
           })
         });
     _postlist.getCommunityPosts().then((_) => {
           setState(() {
-            _isLoadedPost = true;
+           if (_postlist.postlist != null ) _isLoadedPost = true;
           })
         });
+  }
+
+  _movePostwrite(Channel channel) {
+    return Navigator.of(context, rootNavigator: true).push(
+        MaterialPageRoute(builder: (context) => PostWrite(channel: channel)));
   }
 
   @override
@@ -41,7 +48,15 @@ class _TimeLineState extends State<TimeLine> {
         context,
         _channel.channel!,
         _postlist.postlist,
-      ));
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _movePostwrite(_channel.channel!);
+        },
+        child: const Icon(Icons.edit),
+        backgroundColor: primaryColor,
+      ),
+      );
     } else {
       return Scaffold(body: Container(child: Text("로딩중...")));
     }

@@ -44,7 +44,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     // var token = await TokenManager.instance.getToken();
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
     // await storage.write(key: "accessToken", value: null);
-    // if (token.refreshToken != null) {
+    // if (token.refreshToken != null && jwttoken != null) {
     //   print("token access " + token.accessToken.toString());
     //   print("token refresh " + token.refreshToken.toString());
     //   print('is it not null?');

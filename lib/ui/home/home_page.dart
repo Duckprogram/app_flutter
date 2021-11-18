@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 List<Channel> init_categories = [
   Channel(name: '채널 리스트'),
-  Channel(name: '타임라인'),
+  Channel(name: '꽥꽥'),
 ];
 
 late List<Channel> categories = List.of(init_categories);

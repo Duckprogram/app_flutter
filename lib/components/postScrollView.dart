@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
   if (list == null || list.length == 0) {
-    return Container(child: Text("아직 게시글이 없습니다"));
+    return Scaffold( body : Text("아직 게시글이 없습니다") );
   }
 
   _movePostdetail(Postitem postitem) {

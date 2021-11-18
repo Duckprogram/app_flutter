@@ -65,9 +65,16 @@ class _MyPageState extends State<MyPage> {
   }
 
   _moveProfileModify() {
+    final storage = FlutterSecureStorage();
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ModifyProfile()))
-        .then((_) => setState(() {}));
+        .then((_) => setState(() async {
+      String? username = await storage.read(key: 'username');
+      String? picture = await storage.read(key: 'picture');
+      print("변경완료?");
+      setState(() => {_username = username, _picture = picture});
+    }));
+    
   }
 
   _moveMyChannel() {

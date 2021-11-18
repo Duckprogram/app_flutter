@@ -84,7 +84,7 @@ Future<dynamic> http_post(
         body: convert.jsonEncode(body),
       );
     } else {
-      print("jwt 있음");  
+      print("jwt 있음");
       response = await http.post(
         Uri.parse(Uri.encodeFull(url)),
         headers: {
@@ -152,7 +152,7 @@ Future<dynamic> http_image_get({required String path}) async {
 Future<dynamic> http_image_put(
     {required String role,
     required String id,
-    required List<String> image_files}) async {
+    required var image_files}) async {
   /*
   {
     "header": {
@@ -200,9 +200,10 @@ Future<dynamic> http_image_put(
   //nhn클라우드 특성상 길이가 무조건 2이상이어야한다. 따라서 00001 이런식으로 폴더를 생성하게 만들었다.
   id = id.padLeft(5, '0');
 
-  if (image_files.length == 1) {
-    return await single_image_put(role, id, image_files[0], url);
-  } else {
+  if (image_files is String) {
+    return await single_image_put(role, id, image_files, url);
+  } else if (image_files is List<String>) {
+    // 다중 이미지 처리api가 있지만.. 구현이 되지 않아 단일로 여러개 처리하게 구현
     // var path = Uri.parse(url);
     // var response;
     // var headers = {
@@ -247,8 +248,7 @@ Future<dynamic> http_image_put(
 
 Future<dynamic> single_image_put(
     String role, String id, String image_file, String url) async {
-  var querypath =
-      'path=/' + role + '/' + id + '/' + image_file.split('/').last;
+  var querypath = 'path=/' + role + '/' + id + '/' + image_file.split('/').last;
   print(querypath);
   final queryParameters = {
     'overwrite': 'true',
@@ -267,11 +267,14 @@ Future<dynamic> single_image_put(
       },
       body: File(image_file).readAsBytesSync(),
     );
-    print(File(image_file).readAsBytesSync().toString());
-    print("image put 전송 진행");
-    print(Uri.parse(Uri.encodeFull(path)));
+
     print("결과" + response.body.toString() + response.statusCode.toString());
-    return response;
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    print(responseJson['header']['isSuccessful']);
+    if (responseJson['header']['isSuccessful'] == true) {
+      return responseJson;
+    }
+    Exception("이미지가 제대로 전송되지 않았습니다.");
   } catch (ex) {
     print(ex);
     debugPrint("http_image_put.exception: " +
