@@ -19,6 +19,11 @@ class ChannelListModel extends ChangeNotifier {
   LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
   getLoadMoreStatus() => _loadMoreStatus;
 
+  setLoadingState(LoadMoreStatus loadMoreStatus) {
+    _loadMoreStatus = loadMoreStatus;
+    notifyListeners();
+  }
+
   List<Channel>? _channellist;
   List<Channel>? _mychannellist;
   Channel? _channel;
@@ -39,13 +44,23 @@ class ChannelListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setLoadingState(LoadMoreStatus loadMoreStatus) {
-    _loadMoreStatus = loadMoreStatus;
-    notifyListeners();
+  getChannel(int id) async {
+    var path = '/channels/$id/info/detail';
+    try {
+      var response = await api_getChannel(header: null, path: path);
+      _channel = Channel.fromJson(response);
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 
   getChannelList() async {
-    var path = '/channels';
+    var path = '/channels?';
+    final queryParameters = {
+      'page': ChannelTotalPage.toString(),
+    };
+    path = path + Uri(queryParameters: queryParameters).query;
     try {
       var response = await api_getChannelList(header: null, path: path);
       var res_data = response['data']["content"];
@@ -71,26 +86,12 @@ class ChannelListModel extends ChangeNotifier {
     }
   }
 
-  getChannel(int id) async {
-    var path = '/channels/$id/info/detail';
-    try {
-      var response = await api_getChannel(header: null, path: path);
-      _channel = Channel.fromJson(response);
-      notifyListeners();
-    } catch (e) {
-      print(e);
-    }
-  }
-
   getMyChannelList() async {
     // final queryParameters = {
     //   'param1': 'one',
     //   'param2': 'two',
     // };
-    var path = '/user/channels';
     // var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
-
-    print(path);
     try {
       var path = '/auth/registered';
       var response = await api_getMyChannelList(header: null, path: path);

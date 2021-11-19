@@ -7,10 +7,23 @@ import '../classes/postitem.dart';
 import '../../api/postitem.dart';
 import '../../common/type.dart';
 
+enum LoadMoreStatus { LOADING, STABLE }
+
 class PostListModel extends ChangeNotifier {
   String errorMessage = "";
 
   int _channel_id = 0;
+
+  int postTotalPage = 1;
+  bool postPageLast = false;
+
+  LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
+  getLoadMoreStatus() => _loadMoreStatus;
+
+  setLoadingState(LoadMoreStatus loadMoreStatus) {
+    _loadMoreStatus = loadMoreStatus;
+    notifyListeners();
+  }
 
   List<Postitem>? _postlist;
   List<Postitem>? _postnormallist;
@@ -44,19 +57,36 @@ class PostListModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
   getPostList() async {
-    var home = '/channels/' + _channel_id.toString() + '/posts?';
+    var path = '/channels/' + _channel_id.toString() + '/posts?';
     final queryParameters = {
       'category': 'all',
+      'page': postTotalPage.toString(),
     };
-    var path = home + Uri(queryParameters: queryParameters).query;
+    path = path + Uri(queryParameters: queryParameters).query;
     try {
       var response = await api_getPostlList(header: null, path: path);
-      _postlist =
-          List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
-      notifyListeners();
+      var res_data = response['data']["content"];
+      print(postTotalPage.toString() +
+          " 비교 " +
+          response["data"]["totalPages"].toString());
+      if (res_data != null &&
+          postTotalPage != response["data"]["totalPages"]) {
+        var newpostlist =
+            List<Postitem>.from(res_data.map((json) => Postitem.fromJson(json)));
+        if (_postlist == null) {
+          _postlist = newpostlist;
+        } else {
+          _postlist!.addAll(newpostlist);
+          setLoadingState(LoadMoreStatus.STABLE);
+        }
+        ++postTotalPage;
+        notifyListeners();
+      }
+      // var response = await api_getPostlList(header: null, path: path);
+      // _postlist =
+      //     List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
+      // notifyListeners();
     } catch (e) {
       print(e);
     }

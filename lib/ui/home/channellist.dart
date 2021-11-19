@@ -101,16 +101,15 @@ class _ChannelListState extends State<ChannelList> {
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(5),
-                          margin: const EdgeInsets.only(right: 12),
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: gray08,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: getImageOrBasic(list[position].icon )
-                        ),
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.only(right: 12),
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              color: gray08,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: getImageOrBasic(list[position].icon)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

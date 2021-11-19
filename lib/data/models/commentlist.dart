@@ -9,10 +9,23 @@ import '../classes/postitem.dart';
 import '../../api/postitem.dart';
 import '../../common/type.dart';
 
+enum LoadMoreStatus { LOADING, STABLE }
+
 class CommentListModel extends ChangeNotifier {
   String errorMessage = "";
 
   int _post_id = 0;
+
+  int  CommentTotalPage = 1;
+  bool CommentPageLast = false;
+
+  LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
+  getLoadMoreStatus() => _loadMoreStatus;
+
+  setLoadingState(LoadMoreStatus loadMoreStatus) {
+    _loadMoreStatus = loadMoreStatus;
+    notifyListeners();
+  }
 
   List<Commentitem>? _commentlist;
 
@@ -31,13 +44,30 @@ class CommentListModel extends ChangeNotifier {
   }
 
   getCommentList() async {
-    var path = '/post/' + _post_id.toString() + '/comment';
+    var path = '/post/' + _post_id.toString() + '/comment?';
+    final queryParameters = {
+      'page': CommentTotalPage.toString(),
+    };
+    path = path + Uri(queryParameters: queryParameters).query;
     try {
       var response = await api_CommentlList(header: null, path: path);
-      response = response["data"]["content"];
-      _commentlist = List<Commentitem>.from(
-          response.map((json) => Commentitem.fromJson(json)));
-      notifyListeners();
+      var res_data = response['data']["content"];
+      print(CommentTotalPage.toString() +
+          " 비교 " +
+          response["data"]["totalPages"].toString());
+      if (res_data != null &&
+          CommentTotalPage != response["data"]["totalPages"]) {
+        var newCommentlist =
+            List<Commentitem>.from(res_data.map((json) => Commentitem.fromJson(json)));
+        if (_commentlist == null) {
+          _commentlist = newCommentlist;
+        } else {
+          _commentlist!.addAll(newCommentlist);
+          setLoadingState(LoadMoreStatus.STABLE);
+        }
+        ++CommentTotalPage;
+        notifyListeners();
+      }
     } catch (e) {
       print(e);
     }
