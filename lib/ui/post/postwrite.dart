@@ -8,8 +8,8 @@ import '../../data/classes/postitem.dart';
 import '../../data/classes/channel.dart';
 import 'postcomment.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:photo/photo.dart';
-import 'package:photo_manager/photo_manager.dart';
+// import 'package:photo/photo.dart';
+// import 'package:photo_manager/photo_manager.dart';
 
 class PostWrite extends StatefulWidget {
   PostWrite({Key? key, required this.channel}) : super(key: key);
@@ -57,12 +57,12 @@ class _PostWriteState extends State<PostWrite> {
     }
   }
 
-  void pickAssets() async {
-    List<AssetEntity> assetList = await PhotoPicker.pickAsset(context: context);
+  // void pickAssets() async {
+    // List<AssetEntity> assetList = await PhotoPicker.pickAsset(context: context);
     /// Use assetList to do something.
-    print(assetList.toString());
-    imageList = assetList.cast<String>();
-  }
+    // print(assetList.toString());
+    // imageList = assetList.cast<String>();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,13 +164,13 @@ class _PostWriteState extends State<PostWrite> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          pickAssets();
-        },
-        child: const Icon(Icons.image),
-        backgroundColor: primaryColor,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     pickAssets();
+      //   },
+      //   child: const Icon(Icons.image),
+      //   backgroundColor: primaryColor,
+      // ),
     );
   }
 }
