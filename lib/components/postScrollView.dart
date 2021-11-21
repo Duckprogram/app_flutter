@@ -1,13 +1,27 @@
 import 'package:duckie_app/data/classes/channel.dart';
 import 'package:duckie_app/data/classes/postitem.dart';
+import 'package:duckie_app/data/models/postlist.dart';
 import 'package:duckie_app/styles/styles.dart';
 import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
+Widget postScrollView(context, Channel _channel, PostListModel? postlistmodel) {
+  var list = postlistmodel!.postlist;
+
+  ScrollController _scrollController = new ScrollController();
+
+  postlistmodel.getPostList();
+  _scrollController.addListener(() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      postlistmodel.setLoadingState(LoadMoreStatus.LOADING);
+      postlistmodel.getPostList();
+    }
+  });
+
   if (list == null || list.length == 0) {
-    return Scaffold( body : Text("아직 게시글이 없습니다") );
+    return Scaffold(body: Text("아직 게시글이 없습니다"));
   }
 
   _movePostdetail(Postitem postitem) {
@@ -19,6 +33,7 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
       padding: EdgeInsets.only(left: 12, top: 12, right: 12),
       child: Column(children: <Widget>[
         ListView.builder(
+          controller: _scrollController,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: list.length,
@@ -45,9 +60,8 @@ Widget postScrollView(context, Channel _channel, List<Postitem>? list) {
                         children: [
                           Container(
                               padding: EdgeInsets.only(bottom: 12),
-                              child: 
-                                  Text(list[position].title!,
-                                      style: channelName)),
+                              child: Text(list[position].title!,
+                                  style: channelName)),
                           Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,

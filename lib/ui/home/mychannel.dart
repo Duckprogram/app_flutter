@@ -134,7 +134,7 @@ class _MyChannelState extends State<MyChannel> {
       return postScrollView(
         context,
         channel_info,
-        _postlist.postlist,
+        _postlist,
       );
     }
 

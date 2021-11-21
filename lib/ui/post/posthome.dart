@@ -150,7 +150,7 @@ class _PostHomeState extends State<PostHome> {
 
     Widget Commentlist() {
       if (_isLoadedComment) {
-        return CommentScrollListView(_commentlist.commentlist!, null);
+        return CommentScrollListView(_commentlist, null);
       } else {
         return Scaffold(body: Container(child: Text("로딩중...")));
       }
@@ -163,7 +163,7 @@ class _PostHomeState extends State<PostHome> {
       child: Scaffold(
           appBar: appBarSection,
           backgroundColor: white,
-          body: SingleChildScrollView(
+          body: Container(
               padding: EdgeInsets.symmetric(horizontal: 32),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,6 +176,7 @@ class _PostHomeState extends State<PostHome> {
                   Expanded(
                     child: Commentlist(),
                   )
+                  // Commentlist(),
                 ],
               ))),
     );

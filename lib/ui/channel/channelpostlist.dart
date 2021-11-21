@@ -103,7 +103,7 @@ class _ChannelPostListState extends State<ChannelPostList> {
       return postScrollView(
         context,
         _channel,
-        postitemlist,
+        _postlist,
       );
     }
 

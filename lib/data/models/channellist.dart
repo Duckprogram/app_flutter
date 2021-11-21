@@ -48,6 +48,8 @@ class ChannelListModel extends ChangeNotifier {
     var path = '/channels/$id/info/detail';
     try {
       var response = await api_getChannel(header: null, path: path);
+      print("getchannel 가져오기" + response);
+      response = response['data'];
       _channel = Channel.fromJson(response);
       notifyListeners();
     } catch (e) {

@@ -12,7 +12,7 @@ enum LoadMoreStatus { LOADING, STABLE }
 class PostListModel extends ChangeNotifier {
   String errorMessage = "";
 
-  int _channel_id = 0;
+  int _channel_id = 1;
 
   int postTotalPage = 1;
   bool postPageLast = false;
@@ -64,16 +64,16 @@ class PostListModel extends ChangeNotifier {
       'page': postTotalPage.toString(),
     };
     path = path + Uri(queryParameters: queryParameters).query;
+    print("getpost list 가져오기 ");
     try {
       var response = await api_getPostlList(header: null, path: path);
       var res_data = response['data']["content"];
       print(postTotalPage.toString() +
           " 비교 " +
           response["data"]["totalPages"].toString());
-      if (res_data != null &&
-          postTotalPage != response["data"]["totalPages"]) {
-        var newpostlist =
-            List<Postitem>.from(res_data.map((json) => Postitem.fromJson(json)));
+      if (res_data != null && postTotalPage != response["data"]["totalPages"]) {
+        var newpostlist = List<Postitem>.from(
+            res_data.map((json) => Postitem.fromJson(json)));
         if (_postlist == null) {
           _postlist = newpostlist;
         } else {

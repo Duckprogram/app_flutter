@@ -25,7 +25,7 @@ Future<dynamic> api_getMyChannelList({header, required String path}) async {
     print( "getMyChannelList" + responseJson);
     return responseJson;
   } else {
-    throw Exception('Failed to HTTP GET Channellist');
+    throw Exception('Failed to HTTP GET MyChannel');
   }
 }
 
@@ -35,6 +35,6 @@ Future<dynamic> api_getChannel({header, required String path}) async {
   if (response.statusCode == 200) {
     return responseJson;
   } else {
-    throw Exception('Failed to HTTP GET Channellist');
+    throw Exception('Failed to HTTP GET Channel');
   }
 }

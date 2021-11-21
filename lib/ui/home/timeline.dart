@@ -1,4 +1,5 @@
 import 'package:duckie_app/data/classes/channel.dart';
+import 'package:duckie_app/data/models/postlist.dart';
 import 'package:duckie_app/styles/styles.dart';
 import 'package:duckie_app/ui/post/postwrite.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class TimeLine extends StatefulWidget {
 }
 
 class _TimeLineState extends State<TimeLine> {
-  final CommunityListModel _postlist = CommunityListModel();
+  final PostListModel _postlist = PostListModel();
   final ChannelListModel _channel = ChannelListModel();
   bool _isLoadedPost = false;
   bool _isLoadedChannel = false;
@@ -28,7 +29,7 @@ class _TimeLineState extends State<TimeLine> {
             if( _channel.channel != null) _isLoadedChannel = true;
           })
         });
-    _postlist.getCommunityPosts().then((_) => {
+    _postlist.getPostList().then((_) => {
           setState(() {
            if (_postlist.postlist != null ) _isLoadedPost = true;
           })
@@ -42,12 +43,12 @@ class _TimeLineState extends State<TimeLine> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoadedPost && _isLoadedChannel) {
+    if ( _isLoadedChannel) {
       return Scaffold(
           body: postScrollView(
         context,
         _channel.channel!,
-        _postlist.postlist,
+        _postlist,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

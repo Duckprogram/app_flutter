@@ -138,7 +138,7 @@ class _PostWriteState extends State<PostWrite> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(_channel.name!, style: body1Bold),
+                    Text(_channel.name == null ? "꽥꽥" : _channel.name! , style: body1Bold),
                   ],
                 ),
               ),

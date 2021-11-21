@@ -114,7 +114,7 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
         ));
 
     Widget Commentlist() {
-      return CommentScrollListView(commentlist, true);
+      return CommentScrollListView( _commentlist, true);
     }
 
     Widget newComment = Padding(

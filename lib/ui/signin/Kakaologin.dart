@@ -43,7 +43,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     // 신규 버전이 나오면서 더 이상 storage를 굳이 안써도 될 거 같다.
     // var token = await TokenManager.instance.getToken();
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
-    // await storage.write(key: "accessToken", value: null);
+    await storage.write(key: "accessToken", value: null);
     // if (token.refreshToken != null && jwttoken != null) {
     //   print("token access " + token.accessToken.toString());
     //   print("token refresh " + token.refreshToken.toString());
@@ -87,7 +87,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
           children: <Widget>[
             Container(
                 padding: EdgeInsets.only(
-                  top: 56,
+                  top: 20,
                   bottom: 20,
                 ),
                 child: Text(
@@ -203,13 +203,13 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       // final _auth = Provider.of<AuthModel>(context, listen: false);
       // _auth.user = await UserApi.instance.me();
       print(response);
-      if (response['access_token'] != null) {
+      if (response['data']['access_token'] != null) {
         await storage.write(
-            key: "accessToken", value: response['access_token']);
-        await storage.write(key: "username", value: response['name']);
-        await storage.write(key: "picture", value: response['picture']);
+            key: "accessToken", value: response['data']['access_token']);
+        await storage.write(key: "username", value: response['data']['name']);
+        await storage.write(key: "picture", value: response['data']['picture']);
         await storage.write(
-            key: "refreshToken", value: response['refresh_token']);
+            key: "refreshToken", value: response['data']['refresh_token']);
         // 이상없이 잘 되었다면 main 화면으로 넘어가기
         Navigator.pushReplacementNamed(context, '/home');
       }
