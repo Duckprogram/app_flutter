@@ -101,9 +101,8 @@ class _ChannelPostListState extends State<ChannelPostList> {
 
     Widget listSection() {
       return postScrollView(
-        context,
-        _channel,
-        _postlist,
+        channel : _channel,
+        postlistmodel : _postlist,
       );
     }
 

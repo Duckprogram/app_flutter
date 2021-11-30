@@ -6,22 +6,36 @@ import 'package:duckie_app/ui/post/posthome.dart';
 import 'package:duckie_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-Widget postScrollView(context, Channel _channel, PostListModel? postlistmodel) {
-  var list = postlistmodel!.postlist;
+class postScrollView extends StatefulWidget {
+  postScrollView({Key? key, required this.channel, required this.postlistmodel})
+      : super(key: key);
+  final Channel channel;
+  final PostListModel postlistmodel;
 
+  @override
+  _postScrollViewState createState() => _postScrollViewState();
+}
+
+class _postScrollViewState extends State<postScrollView> {
+  late final Channel _channel;
+  late final PostListModel postlistmodel;
   ScrollController _scrollController = new ScrollController();
 
-  postlistmodel.getPostList();
-  _scrollController.addListener(() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      postlistmodel.setLoadingState(LoadMoreStatus.LOADING);
-      postlistmodel.getPostList();
-    }
-  });
+  @override
+  void initState() {
+    _channel = widget.channel;
+    postlistmodel = widget.postlistmodel;
+    postlistmodel.getPostList().then((_) => setState(() {}));
 
-  if (list == null || list.length == 0) {
-    return Scaffold(body: Text("아직 게시글이 없습니다"));
+    _scrollController.addListener(() {
+      print("listener");
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        postlistmodel.setLoadingState(LoadMoreStatus.LOADING);
+        postlistmodel.getPostList().then((_) => setState(() {}));
+      }
+    });
+    super.initState();
   }
 
   _movePostdetail(Postitem postitem) {
@@ -29,15 +43,26 @@ Widget postScrollView(context, Channel _channel, PostListModel? postlistmodel) {
         builder: (context) => PostHome(postitem: postitem, channel: _channel)));
   }
 
-  return SingleChildScrollView(
-      padding: EdgeInsets.only(left: 12, top: 12, right: 12),
-      child: Column(children: <Widget>[
-        ListView.builder(
+  @override
+  Widget build(BuildContext context) {
+    var list = postlistmodel.postlist;
+    print(list.toString());
+
+    if (list == null || list.length == 0) {
+      return Scaffold(body: Text("아직 게시글이 없습니다"));
+    }
+
+    return Container(
+        //height가 너무 크면 더 scroll이 먹지 않으므로 height를 줄였다 크기가 커지면 크기를 늘린다. 
+        height: list.length < 6 ? 500 : 550,
+        padding: EdgeInsets.only(left: 12, top: 12, right: 12),
+        child: ListView.builder(
           controller: _scrollController,
-          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
+          physics: AlwaysScrollableScrollPhysics(),
           itemCount: list.length,
           itemBuilder: (context, position) {
+            // print( "_scrollController.position.pixels" + _scrollController.position.pixels.toString());
             return GestureDetector(
                 child: Container(
                   padding: const EdgeInsets.all(24),
@@ -96,8 +121,9 @@ Widget postScrollView(context, Channel _channel, PostListModel? postlistmodel) {
                     ],
                   ),
                 ),
-                onTap: () => {_movePostdetail(list[position])});
+                onTap: () => {_movePostdetail(list[position])}
+            );
           },
-        )
-      ]));
+        ));
+  }
 }

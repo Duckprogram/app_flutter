@@ -10,8 +10,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 // var BACK_END_HOST =
 //     'https://404d2c7e-ad99-4228-bc8a-4376dd6ff9e2.mock.pstmn.io';
 
-// var BACK_END_HOST =
-//     'https://1b4bc78c-8c0f-4944-a114-a34b8223d2e9.mock.pstmn.io';
 var BACK_END_HOST = 'http://133.186.251.46';
 
 var IMAGE_PUT_URL =

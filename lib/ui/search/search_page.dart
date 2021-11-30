@@ -163,7 +163,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
       );
     } else {
-      return postScrollView(context, _channel.channel!, list);
+      return postScrollView( channel : _channel.channel!, postlistmodel : list);
     }
   }
 }

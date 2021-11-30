@@ -17,23 +17,10 @@ class TimeLine extends StatefulWidget {
 
 class _TimeLineState extends State<TimeLine> {
   final PostListModel _postlist = PostListModel();
-  final ChannelListModel _channel = ChannelListModel();
-  bool _isLoadedPost = false;
-  bool _isLoadedChannel = false;
 
   @override
   void initState() {
     super.initState();
-    _channel.getChannel(1).then((_) => {
-          setState(() {
-            if( _channel.channel != null) _isLoadedChannel = true;
-          })
-        });
-    _postlist.getPostList().then((_) => {
-          setState(() {
-           if (_postlist.postlist != null ) _isLoadedPost = true;
-          })
-        });
   }
 
   _movePostwrite(Channel channel) {
@@ -43,23 +30,21 @@ class _TimeLineState extends State<TimeLine> {
 
   @override
   Widget build(BuildContext context) {
-    if ( _isLoadedChannel) {
-      return Scaffold(
-          body: postScrollView(
-        context,
-        _channel.channel!,
-        _postlist,
+    return Scaffold(
+      body: postScrollView(
+        channel: Channel(id: 1, name: '꽥꽥'),
+        // _channel.channel!,
+        postlistmodel: _postlist,
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "new_write",
         onPressed: () {
-          _movePostwrite(_channel.channel!);
+          // _movePostwrite(_channel.channel!);
+          _movePostwrite(Channel(id: 1, name: '꽥꽥'));
         },
         child: const Icon(Icons.edit),
         backgroundColor: primaryColor,
       ),
-      );
-    } else {
-      return Scaffold(body: Container(child: Text("로딩중...")));
-    }
+    );
   }
 }

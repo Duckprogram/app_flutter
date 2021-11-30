@@ -43,7 +43,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     // 신규 버전이 나오면서 더 이상 storage를 굳이 안써도 될 거 같다.
     // var token = await TokenManager.instance.getToken();
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
-    await storage.write(key: "accessToken", value: null);
+    await storage.write(key: "accessToken", value: null );
     // if (token.refreshToken != null && jwttoken != null) {
     //   print("token access " + token.accessToken.toString());
     //   print("token refresh " + token.refreshToken.toString());
@@ -204,8 +204,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       // _auth.user = await UserApi.instance.me();
       print(response);
       if (response['data']['access_token'] != null) {
-        await storage.write(
-            key: "accessToken", value: response['data']['access_token']);
+        // await storage.write(
+        //     key: "accessToken", value: response['data']['access_token']);
+         await storage.write(
+            key: "accessToken", value: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjIiLCJzdWIiOiIyIiwiaWF0IjoxNjM2ODk5Njg2LCJleHAiOjE2ODAwOTk2ODZ9.teVXxkIV_NLvnQg0KsFfcNaXPJ2IYkipicZwUju-7Es');
         await storage.write(key: "username", value: response['data']['name']);
         await storage.write(key: "picture", value: response['data']['picture']);
         await storage.write(

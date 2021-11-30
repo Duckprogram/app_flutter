@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../classes/postitem.dart';
 import '../../api/postitem.dart';
 import '../../common/type.dart';
+import 'package:collection/collection.dart';
 
 enum LoadMoreStatus { LOADING, STABLE }
 
@@ -14,7 +15,7 @@ class PostListModel extends ChangeNotifier {
 
   int _channel_id = 1;
 
-  int postTotalPage = 1;
+  int postTotalPage = 0;
   bool postPageLast = false;
 
   LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
@@ -58,35 +59,53 @@ class PostListModel extends ChangeNotifier {
   }
 
   getPostList() async {
-    var path = '/channels/' + _channel_id.toString() + '/posts?';
-    final queryParameters = {
-      'category': 'all',
-      'page': postTotalPage.toString(),
-    };
-    path = path + Uri(queryParameters: queryParameters).query;
-    print("getpost list 가져오기 ");
     try {
+      var path = '/channels/' + _channel_id.toString() + '/posts?';
+      print("path  " + path + " " + postTotalPage.toString());
+      var queryParameters = {
+        'category': 'all',
+        'page': postTotalPage.toString(),
+      };
+      path = path + Uri(queryParameters: queryParameters).query;
+
       var response = await api_getPostlList(header: null, path: path);
       var res_data = response['data']["content"];
+
       print(postTotalPage.toString() +
           " 비교 " +
           response["data"]["totalPages"].toString());
+
       if (res_data != null && postTotalPage != response["data"]["totalPages"]) {
-        var newpostlist = List<Postitem>.from(
+        var newPostlist = List<Postitem>.from(
             res_data.map((json) => Postitem.fromJson(json)));
         if (_postlist == null) {
-          _postlist = newpostlist;
+          _postlist = newPostlist;
+          if (newPostlist.length == 5) {
+            ++postTotalPage;
+          }
+          notifyListeners();
         } else {
-          _postlist!.addAll(newpostlist);
-          setLoadingState(LoadMoreStatus.STABLE);
+          if (ListEquality().equals([
+                _postlist!
+                    .sublist(_postlist!.length - newPostlist.length)
+                    .toString()
+              ], [
+                newPostlist.toString()
+              ]) ==
+              false) {
+            // postlist 신규 생성시 기존 5페이지 이하 list 제거 후 추가 list 적재 
+            _postlist!.removeRange(
+                _postlist!.length - _postlist!.length % 5, _postlist!.length);
+            _postlist!.addAll(newPostlist);
+            setLoadingState(LoadMoreStatus.STABLE);
+            if (newPostlist.length == 5) {
+              ++postTotalPage;
+            }
+            notifyListeners();
+          }
         }
-        ++postTotalPage;
-        notifyListeners();
       }
-      // var response = await api_getPostlList(header: null, path: path);
-      // _postlist =
-      //     List<Postitem>.from(response.map((json) => Postitem.fromJson(json)));
-      // notifyListeners();
+
     } catch (e) {
       print(e);
     }

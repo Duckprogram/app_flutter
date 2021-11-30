@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../classes/channel.dart';
 import '../../api/channel.dart';
 import '../../common/type.dart';
+import 'package:collection/collection.dart';
 
 enum LoadMoreStatus { LOADING, STABLE }
 
@@ -13,7 +14,7 @@ class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
 
   //infinite scroll 구현을 위해 추가 코드
-  int ChannelTotalPage = 1;
+  int ChannelTotalPage = 0;
   bool ChannelPageLast = false;
 
   LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
@@ -58,14 +59,16 @@ class ChannelListModel extends ChangeNotifier {
   }
 
   getChannelList() async {
-    var path = '/channels?';
-    final queryParameters = {
-      'page': ChannelTotalPage.toString(),
-    };
-    path = path + Uri(queryParameters: queryParameters).query;
     try {
+      var path = '/channels?';
+      final queryParameters = {
+        'page': ChannelTotalPage.toString(),
+      };
+      path = path + Uri(queryParameters: queryParameters).query;
       var response = await api_getChannelList(header: null, path: path);
       var res_data = response['data']["content"];
+
+      print("path" + path);
       // ChannelPageLast = response["data"]["totalPages"];
       print(ChannelTotalPage.toString() +
           " 비교 " +
@@ -74,13 +77,34 @@ class ChannelListModel extends ChangeNotifier {
           ChannelTotalPage != response["data"]["totalPages"]) {
         var newChannellist =
             List<Channel>.from(res_data.map((json) => Channel.fromJson(json)));
+        print("newlist" + newChannellist.toString());
         if (_channellist == null) {
           _channellist = newChannellist;
+          if (newChannellist!.length == 5) {
+            ++ChannelTotalPage;
+          }
         } else {
-          _channellist!.addAll(newChannellist);
-          setLoadingState(LoadMoreStatus.STABLE);
+          print("sublist");
+          print(_channellist!
+              .sublist(_channellist!.length - newChannellist.length));
+          if (ListEquality().equals([
+                _channellist!
+                    .sublist(_channellist!.length - newChannellist.length)
+                    .toString()
+              ], [
+                newChannellist.toString()
+              ]) ==
+              false) {
+            // _channellist 신규 생성시 기존 5페이지 이하 list 제거 후 추가 list 적재 
+            _channellist!.removeRange(
+                _channellist!.length - _channellist!.length % 5, _channellist!.length);
+            _channellist!.addAll(newChannellist);
+            if (newChannellist!.length == 5) {
+              ++ChannelTotalPage;
+            }
+            setLoadingState(LoadMoreStatus.STABLE);
+          }
         }
-        ++ChannelTotalPage;
         notifyListeners();
       }
     } catch (e) {
@@ -89,11 +113,6 @@ class ChannelListModel extends ChangeNotifier {
   }
 
   getMyChannelList() async {
-    // final queryParameters = {
-    //   'param1': 'one',
-    //   'param2': 'two',
-    // };
-    // var path = '/channels/my?' + Uri(queryParameters: queryParameters).query;
     try {
       var path = '/auth/registered';
       var response = await api_getMyChannelList(header: null, path: path);

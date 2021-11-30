@@ -16,7 +16,7 @@ class CommentListModel extends ChangeNotifier {
 
   int _post_id = 0;
 
-  int  CommentTotalPage = 1;
+  int  CommentTotalPage = 0;
   bool CommentPageLast = false;
 
   LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
