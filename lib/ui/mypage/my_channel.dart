@@ -14,7 +14,7 @@ class MyChannel extends StatefulWidget {
 }
 
 class _MyChannelState extends State<MyChannel> {
-  late final List<Channel> _mychannellist;
+  late final List<Channel>? _mychannellist;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _MyChannelState extends State<MyChannel> {
     // 뭔가 multi provider 가 해당 my_channel 화면을 못잡는듯...
     // 따라서 아래의 provider 기능을 못씀 ㅠ
     _mychannellist = context.select((ChannelListModel channellistmodel) {
-      return channellistmodel.mychannellist!;
+      return channellistmodel.mychannellist != null ? channellistmodel.mychannellist : null ;
     });
   }
 

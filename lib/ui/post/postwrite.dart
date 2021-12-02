@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:duckie_app/api/postitem.dart';
+import 'package:duckie_app/utils/http.dart';
 import 'package:duckie_app/utils/utils.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../styles/styles.dart';
@@ -8,8 +10,8 @@ import '../../data/classes/postitem.dart';
 import '../../data/classes/channel.dart';
 import 'postcomment.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-// import 'package:photo/photo.dart';
-// import 'package:photo_manager/photo_manager.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PostWrite extends StatefulWidget {
   PostWrite({Key? key, required this.channel}) : super(key: key);
@@ -24,7 +26,8 @@ class _PostWriteState extends State<PostWrite> {
   bool isToolBarVisible = true;
   TextEditingController _titleController = TextEditingController();
   QuillController _controller = QuillController.basic();
-  List<String>? imageList;
+
+  var imageList;
   final FocusNode editorFocusNode = FocusNode();
 
   @override
@@ -40,14 +43,27 @@ class _PostWriteState extends State<PostWrite> {
 
   postWrite(String title, String content) async {
     var path = '/post/new';
+    var img_url;
+    if (imageList != null) {
+      var response =
+          await http_image_put(role: 'post', id: 'all', image_files: imageList);
+      print(response.toString());
+      if (response is List) {
+        // ignore: deprecated_member_use
+        img_url = <String>[];
+        for (var _response in response) {
+          img_url.addAll(_response['file']['url']);
+        }
+      } else {
+        img_url = response['file']['url'];
+      }
+    }
     var body = {
       "category": "normal",
       "content": content,
       "title": title,
       "channel": {"id": _channel.id},
-      "images": [
-        imageList
-      ]
+      "images": img_url != null ? img_url : [null]
     };
     try {
       var response = await api_postPost(header: null, path: path, body: body);
@@ -57,12 +73,22 @@ class _PostWriteState extends State<PostWrite> {
     }
   }
 
-  // void pickAssets() async {
-    // List<AssetEntity> assetList = await PhotoPicker.pickAsset(context: context);
-    /// Use assetList to do something.
-    // print(assetList.toString());
-    // imageList = assetList.cast<String>();
-  // }
+  void pickAssets() async {
+    if (await Permission.camera.request().isGranted) {
+      FilePickerResult? resultList = await FilePicker.platform
+          .pickFiles(type: FileType.image, allowMultiple: true);
+
+      // imageList = List<String>.from(resultList.map((data) => data.identifier));
+      if (resultList != null) {
+        imageList = resultList.paths;
+        print(imageList.toString());
+        print(imageList[0].toString());
+      }
+
+      // imageList = resultList.cast<String>();
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,8 +122,6 @@ class _PostWriteState extends State<PostWrite> {
                 var content = _controller.document.toPlainText();
                 // jsonEncode(_controller.document.toDelta().toJson());
                 // var plainContent = _controller.document.toPlainText();
-                print('title' + title);
-                print('content' + content);
                 // print('plaincontent' + plainContent);
                 postWrite(title, content);
                 showDialog(
@@ -138,7 +162,8 @@ class _PostWriteState extends State<PostWrite> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(_channel.name == null ? "꽥꽥" : _channel.name! , style: body1Bold),
+                    Text(_channel.name == null ? "꽥꽥" : _channel.name!,
+                        style: body1Bold),
                   ],
                 ),
               ),
@@ -164,13 +189,13 @@ class _PostWriteState extends State<PostWrite> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     pickAssets();
-      //   },
-      //   child: const Icon(Icons.image),
-      //   backgroundColor: primaryColor,
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          pickAssets();
+        },
+        child: const Icon(Icons.image),
+        backgroundColor: primaryColor,
+      ),
     );
   }
 }

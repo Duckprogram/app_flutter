@@ -14,7 +14,7 @@ class ChannelListModel extends ChangeNotifier {
   String errorMessage = "";
 
   //infinite scroll 구현을 위해 추가 코드
-  int ChannelTotalPage = 0;
+  int ChannelTotalPage = 1;
   bool ChannelPageLast = false;
 
   LoadMoreStatus _loadMoreStatus = LoadMoreStatus.STABLE;
@@ -58,6 +58,7 @@ class ChannelListModel extends ChangeNotifier {
     }
   }
 
+  // infinity scroll 기능 구현 
   getChannelList() async {
     try {
       var path = '/channels?';
@@ -80,7 +81,7 @@ class ChannelListModel extends ChangeNotifier {
         print("newlist" + newChannellist.toString());
         if (_channellist == null) {
           _channellist = newChannellist;
-          if (newChannellist!.length == 5) {
+          if (newChannellist.length == 5) {
             ++ChannelTotalPage;
           }
         } else {
@@ -99,7 +100,7 @@ class ChannelListModel extends ChangeNotifier {
             _channellist!.removeRange(
                 _channellist!.length - _channellist!.length % 5, _channellist!.length);
             _channellist!.addAll(newChannellist);
-            if (newChannellist!.length == 5) {
+            if (newChannellist.length == 5) {
               ++ChannelTotalPage;
             }
             setLoadingState(LoadMoreStatus.STABLE);

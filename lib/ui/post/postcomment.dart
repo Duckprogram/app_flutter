@@ -76,11 +76,11 @@ class _PostCommentState extends State<PostComment> with WidgetsBindingObserver {
       ],
     );
     Widget titleSection = Container(
-        padding: EdgeInsets.only(left: 25, top: 15),
-        child: Text(
-          _postitem.title.toString(),
-          style: h2,
-        ));
+      padding: EdgeInsets.only(left: 25, top: 15),
+      child: Text(
+        _postitem.title.toString(),
+        style: h2,
+    ));
 
     Widget CommentNavigation = Container(
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),

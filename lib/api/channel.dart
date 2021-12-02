@@ -10,8 +10,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 Future<dynamic> api_getChannelList({header, required String path}) async {
   var response = await http_get(header: header, path: path);
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
+  print(responseJson.toString());
   if (response.statusCode == 200) {
-    print( "getChannelList" + responseJson);
+    print("getChannelList" + responseJson);
     return responseJson;
   } else {
     throw Exception('Failed to HTTP GET Channellist');
@@ -22,7 +23,7 @@ Future<dynamic> api_getMyChannelList({header, required String path}) async {
   var response = await http_get(header: header, path: path);
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
   if (response.statusCode == 200) {
-    print( "getMyChannelList" + responseJson);
+    print("getMyChannelList" + responseJson);
     return responseJson;
   } else {
     throw Exception('Failed to HTTP GET MyChannel');

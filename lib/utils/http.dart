@@ -7,10 +7,10 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-// var BACK_END_HOST =
-//     'https://404d2c7e-ad99-4228-bc8a-4376dd6ff9e2.mock.pstmn.io';
+var BACK_END_HOST =
+    'https://07958ad3-14e2-4032-880c-929eec7fffce.mock.pstmn.io';
 
-var BACK_END_HOST = 'http://133.186.251.46';
+// var BACK_END_HOST = 'http://133.186.251.46';
 
 var IMAGE_PUT_URL =
     'https://api-image.cloud.toast.com/image/v2.0/appkeys/tUtVzC4V8dqjKqtP/images';
@@ -200,7 +200,7 @@ Future<dynamic> http_image_put(
 
   if (image_files is String) {
     return await single_image_put(role, id, image_files, url);
-  } else if (image_files is List<String>) {
+  } else {
     // 다중 이미지 처리api가 있지만.. 구현이 되지 않아 단일로 여러개 처리하게 구현
     // var path = Uri.parse(url);
     // var response;
@@ -248,6 +248,7 @@ Future<dynamic> single_image_put(
     String role, String id, String image_file, String url) async {
   var querypath = 'path=/' + role + '/' + id + '/' + image_file.split('/').last;
   print(querypath);
+  print("image_file" + image_file);
   final queryParameters = {
     'overwrite': 'true',
   };
