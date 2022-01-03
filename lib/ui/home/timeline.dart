@@ -26,7 +26,9 @@ class _TimeLineState extends State<TimeLine> {
 
   _movePostwrite(Channel channel) {
     return Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) => PostWrite(channel: channel))).then( (_) => { print("정상 확인 ")});
+        MaterialPageRoute(builder: (context) => PostWrite(channel: channel))).then( (_) => { 
+          _postlist.getPostList().then((_) => setState(() {}))
+        });
   }
 
   @override

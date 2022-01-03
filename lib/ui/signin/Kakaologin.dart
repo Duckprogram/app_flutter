@@ -30,8 +30,8 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       _asyncMethod();
     });
 
-    KakaoContext.clientId = 'aca6149f183ca8e52113ddcb5cafe2eb';
-    KakaoContext.javascriptClientId = '1dd0e6325c1be9c1451814daa0839a87';
+    KakaoContext.clientId = 'b4446af28f0cd1ba8c26bad8d3b44d50';
+    KakaoContext.javascriptClientId = '8f78f01633b4050249b25cc2ccf9395d';
     isKakaoTalkInstalled();
   }
 
@@ -41,15 +41,16 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
     // var token = await storage.read(key: "accessToken");
     // print("token check");
     // 신규 버전이 나오면서 더 이상 storage를 굳이 안써도 될 거 같다.
-    // var token = await TokenManager.instance.getToken();
+    var jwttoken = await storage.read(key: "accessToken");
+    var token = await TokenManager.instance.getToken();
     //user의 정보가 있다면 바로 자동 로그인 method로 넘어감
-    await storage.write(key: "accessToken", value: null );
-    // if (token.refreshToken != null && jwttoken != null) {
-    //   print("token access " + token.accessToken.toString());
-    //   print("token refresh " + token.refreshToken.toString());
-    //   print('is it not null?');
-    //   await _issueJWTandLogin(token.accessToken.toString());
-    // }
+    await storage.write(key: "accessToken", value: null);
+    if (token.refreshToken != null && jwttoken != null) {
+      print("token access " + token.accessToken.toString());
+      print("token refresh " + token.refreshToken.toString());
+      print('is it not null?');
+      await _issueJWTandLogin(token.accessToken.toString());
+    }
   }
 
   @override
@@ -159,7 +160,7 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
         //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
         //   return;
         // }
-    
+
         await _issueJWTandLogin(token.accessToken);
       } on KakaoAuthException catch (e) {
       } catch (e) {
@@ -206,8 +207,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       if (response['data']['access_token'] != null) {
         // await storage.write(
         //     key: "accessToken", value: response['data']['access_token']);
-         await storage.write(
-            key: "accessToken", value: 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjIiLCJzdWIiOiIyIiwiaWF0IjoxNjM2ODk5Njg2LCJleHAiOjE2ODAwOTk2ODZ9.teVXxkIV_NLvnQg0KsFfcNaXPJ2IYkipicZwUju-7Es');
+        await storage.write(
+            key: "accessToken",
+            value:
+                'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjIiLCJzdWIiOiIyIiwiaWF0IjoxNjM2ODk5Njg2LCJleHAiOjE2ODAwOTk2ODZ9.teVXxkIV_NLvnQg0KsFfcNaXPJ2IYkipicZwUju-7Es');
         await storage.write(key: "username", value: response['data']['name']);
         await storage.write(key: "picture", value: response['data']['picture']);
         await storage.write(
@@ -236,7 +239,10 @@ class KakoaLoginPageState extends State<KakoaLoginPage> {
       //카톡이 깔려있지 않으면 웹으로 진행
       print("로그인 이상여부 확인 ");
       try {
+        print("응답 여부 확인");
         var code = await AuthCodeClient.instance.request();
+        print( "code 확인" );
+        print(code);
         await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);

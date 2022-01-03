@@ -124,29 +124,50 @@ class _PostHomeState extends State<PostHome> {
 
     Widget postSection = Container(
         padding: EdgeInsets.symmetric(vertical: 36),
-        child: Text(
-          _postitem.content.toString(),
-          style: body1,
-        ));
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Text(
+            _postitem.content.toString(),
+            style: body1,
+          ),
+          GridView.builder(
+            padding: EdgeInsets.all(10),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0,
+            ),
+            itemCount: _postitem.images != null ? _postitem.images!.length : 0,
+            itemBuilder: (context, index) {
+              return Image.network(_postitem.images![index]);
+            },
+          )
+        ]));
 
     Widget commentNavigation = Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("댓글 ", style: body1Bold),
-            Text(converInttoString(_commentlist.commentlist != null ? _commentlist.commentlist!.length : 0),
-                style: body1Bold),
+            Row(
+              children: [
+                Text("댓글 ", style: body1Bold),
+                Text(
+                    converInttoString(_commentlist.commentlist != null
+                        ? _commentlist.commentlist!.length
+                        : 0),
+                    style: body1Bold),
+              ],
+            ),
+            GestureDetector(
+                child: Text("더보기 >", style: body2Gray03),
+                onTap: () => {_movePostComment()})
           ],
-        ),
-        GestureDetector(
-            child: Text("더보기 >", style: body2Gray03),
-            onTap: () => {_movePostComment()})
-      ],
-    ));
+        ));
 
     Widget Commentlist() {
       if (_isLoadedComment) {

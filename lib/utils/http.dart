@@ -7,10 +7,10 @@ import 'package:dio/dio.dart' as dio;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-var BACK_END_HOST =
-    'https://07958ad3-14e2-4032-880c-929eec7fffce.mock.pstmn.io';
+// var BACK_END_HOST =
+//     'https://07958ad3-14e2-4032-880c-929eec7fffce.mock.pstmn.io';
 
-// var BACK_END_HOST = 'http://133.186.251.46';
+var BACK_END_HOST = 'http://133.186.251.46';
 
 var IMAGE_PUT_URL =
     'https://api-image.cloud.toast.com/image/v2.0/appkeys/tUtVzC4V8dqjKqtP/images';

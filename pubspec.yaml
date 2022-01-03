@@ -29,7 +29,7 @@ dependencies:
     flutter_bloc: ^0.13.0
     image_picker: ^0.8.4+4
     #editor
-    flutter_quill: ^2.0.14
+    flutter_quill: ^2.5.1
     # multi image
     file_picker: ^3.0.3
     permission_handler: ^8.3.0

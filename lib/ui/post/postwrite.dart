@@ -52,7 +52,7 @@ class _PostWriteState extends State<PostWrite> {
         // ignore: deprecated_member_use
         img_url = <String>[];
         for (var _response in response) {
-          img_url.addAll(_response['file']['url']);
+          img_url.add(_response['file']['url']);
         }
       } else {
         img_url = response['file']['url'];

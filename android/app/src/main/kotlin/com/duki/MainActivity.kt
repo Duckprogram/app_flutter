@@ -1,4 +1,4 @@
-package com.example.duki
+package com.duki
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

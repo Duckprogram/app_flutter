@@ -125,7 +125,8 @@ Future<dynamic> api_getUserProfile({header, required String path}) async {
   }
 }
 
-Future<dynamic> api_postUserProfile({header, required String path, required Map<String, dynamic> body}) async {
+Future<dynamic> api_postUserProfile(
+    {header, required String path, required Map<String, dynamic> body}) async {
   var response = await http_post(header: header, path: path, body: body);
 
   var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -133,7 +134,7 @@ Future<dynamic> api_postUserProfile({header, required String path, required Map<
   if (response.statusCode == 200) {
     print(responseJson);
     return responseJson;
-  } else{
+  } else {
     throw Exception("Failed to HTTP POST(2)");
   }
 }
