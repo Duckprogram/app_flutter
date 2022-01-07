@@ -54,7 +54,7 @@ class _postScrollViewState extends State<postScrollView> {
 
     return Container(
         //height가 너무 크면 더 scroll이 먹지 않으므로 height를 줄였다 크기가 커지면 크기를 늘린다. 
-        height: list.length < 6 ? 500 : 550,
+        height: list.length < 6 ? 520 : 550,
         padding: EdgeInsets.only(left: 12, top: 12, right: 12),
         child: ListView.builder(
           controller: _scrollController,

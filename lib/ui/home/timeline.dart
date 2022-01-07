@@ -7,6 +7,7 @@ import 'package:duckie_app/components/postScrollView.dart';
 import 'package:duckie_app/data/models/channellist.dart';
 import 'package:duckie_app/data/models/community.dart';
 import '../../../common/type.dart';
+import 'dart:io';
 
 class TimeLine extends StatefulWidget {
   TimeLine({Key? key, required this.choice}) : super(key: key);
@@ -25,10 +26,15 @@ class _TimeLineState extends State<TimeLine> {
   }
 
   _movePostwrite(Channel channel) {
-    return Navigator.of(context, rootNavigator: true).push(
-        MaterialPageRoute(builder: (context) => PostWrite(channel: channel))).then( (_) => { 
-          _postlist.getPostList().then((_) => setState(() {}))
-        });
+    return Navigator.of(context, rootNavigator: true)
+        .push(MaterialPageRoute(
+            builder: (context) => PostWrite(channel: channel)))
+        .then((_) => {
+              _postlist.getPostList().then((_) => setState(() {
+                    print("아마 제대로 안들어 갔을듯");
+                    print(_postlist.postlist.toString());
+                  }))
+            });
   }
 
   @override

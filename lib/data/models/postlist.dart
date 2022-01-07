@@ -70,7 +70,8 @@ class PostListModel extends ChangeNotifier {
 
       var response = await api_getPostlList(header: null, path: path);
       var res_data = response['data']["content"];
-
+      print("response");
+      print(response);
       print(postTotalPage.toString() +
           " 비교 " +
           response["data"]["totalPages"].toString());
@@ -87,13 +88,13 @@ class PostListModel extends ChangeNotifier {
         } else {
           if (ListEquality().equals([
                 _postlist!
-                    .sublist(_postlist!.length - newPostlist.length)
+                    .sublist( _postlist!.length - newPostlist.length < 0 ? 0 : _postlist!.length - newPostlist.length )
                     .toString()
               ], [
                 newPostlist.toString()
               ]) ==
               false) {
-            // postlist 신규 생성시 기존 5페이지 이하 list 제거 후 추가 list 적재 
+            // postlist 신규 생성시 기존 5페이지 이하 list 제거 후 추가 list 적재
             _postlist!.removeRange(
                 _postlist!.length - _postlist!.length % 5, _postlist!.length);
             _postlist!.addAll(newPostlist);
@@ -105,7 +106,6 @@ class PostListModel extends ChangeNotifier {
           }
         }
       }
-
     } catch (e) {
       print(e);
     }
